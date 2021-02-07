@@ -21,7 +21,12 @@ namespace LibAnkiCardsTests
 
             List<Card> cards = deck.GetCards(context).Include(x => x.Note).ToList();
             Assert.AreEqual(6, cards.Count);
-            Assert.That(cards.Any(x => x.Note.ShortField == "Front"));
+
+            Card card = cards.FirstOrDefault(x => x.Note.ShortField == "Front");
+            Assert.IsNotNull(card);
+
+            CardType type = card.Note.GetCardType(context);
+            Assert.That(type.Name == "CustomCardTypeTest");
         }
     }
 }

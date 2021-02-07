@@ -20,5 +20,11 @@ namespace LibAnkiCards
         [Required]
         [Column("did")]
         public long DeckId { get; set; }
+
+        [Required]
+        [Column("ord")]
+        public int VariantId { get; set; }
+
+        public CardVariant GetVariant(AnkiContext context) => Note.GetCardType(context).Variants[VariantId];
     }
 }

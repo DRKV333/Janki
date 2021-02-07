@@ -13,6 +13,7 @@ namespace LibAnkiCards
         {
             public void Configure(EntityTypeBuilder<Collection> builder)
             {
+                builder.Property(x => x.CardTypes).HasConversion(JsonValueConverter<Dictionary<long, CardType>>.Instace);
                 builder.Property(x => x.Decks).HasConversion(JsonValueConverter<Dictionary<long, Deck>>.Instace);
             }
         }
@@ -20,6 +21,10 @@ namespace LibAnkiCards
         [Key]
         [Column("id")]
         public long Id { get; set; }
+
+        [Required]
+        [Column("models")]
+        public Dictionary<long, CardType> CardTypes { get; set; }
 
         [Required]
         [Column("decks")]

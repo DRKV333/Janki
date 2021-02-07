@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace LibAnkiCards
 {
@@ -9,6 +10,12 @@ namespace LibAnkiCards
         [Key]
         [Column("id")]
         public long Id { get; set; }
+
+        [Required]
+        [Column("mid")]
+        public long CardTypeId { get; set; }
+
+        public CardType GetCardType(AnkiContext context) => context.Collections.First().CardTypes[CardTypeId];
 
         [Required]
         [Column("tags")]
