@@ -8,6 +8,7 @@ namespace LibAnkiCards
         public DbSet<Card> Cards { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public AnkiContext(DbContextOptions options) : base(options)
         {
