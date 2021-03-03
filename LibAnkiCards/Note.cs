@@ -30,7 +30,7 @@ namespace LibAnkiCards
         [Column("mid")]
         public long CardTypeId { get; set; }
 
-        public CardType GetCardType(AnkiContext context) => context.Collections.First().CardTypes[CardTypeId];
+        public CardType GetCardType(AnkiContext context) => context.Collection.CardTypes[CardTypeId];
 
         [Required]
         [Column("mod")]

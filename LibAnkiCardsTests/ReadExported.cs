@@ -13,8 +13,7 @@ namespace LibAnkiCardsTests
         {
             using AnkiContext context = AnkiContext.OpenSQLite("samples/collectionSmall.anki2", true);
 
-            Assert.AreEqual(1, context.Collections.Count());
-            Collection collection = context.Collections.First();
+            Collection collection = context.Collection;
 
             Deck deck = collection.Decks.FirstOrDefault(x => x.Value.Name == "TestDeckSmall").Value;
             Assert.IsNotNull(deck);
