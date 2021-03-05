@@ -1,11 +1,14 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LibAnkiCards
 {
     public class AnkiContext : DbContext
     {
+        private Collection collection;
+
         public DbSet<Card> Cards { get; set; }
         protected DbSet<Collection> Collections { get; set; }
         public DbSet<Note> Notes { get; set; }
@@ -13,7 +16,28 @@ namespace LibAnkiCards
 
         //If support for multiple users becomes a thing, this could change.
         //AnkiContext would probably only expose objects for one user.
-        public Collection Collection => Collections.Single();
+        public Collection Collection
+        {
+            get
+            {
+                if (collection == null)
+                {
+                    collection = Collections.SingleOrDefault();
+
+                    if (collection == null)
+                    {
+                        collection = new Collection()
+                        {
+                            CardTypes = new Dictionary<long, CardType>(),
+                            Decks = new Dictionary<long, Deck>()
+                        };
+                        Collections.Add(collection);
+                    }
+                }
+
+                return collection;
+            }
+        }
 
         public AnkiContext(DbContextOptions options) : base(options)
         {

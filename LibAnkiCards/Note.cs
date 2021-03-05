@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace LibAnkiCards
 {
@@ -63,5 +63,7 @@ namespace LibAnkiCards
         [Required]
         [Column("data")]
         public string Data { get; set; }
+
+        public List<Card> Cards { get; set; }
     }
 }

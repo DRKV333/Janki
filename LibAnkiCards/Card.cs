@@ -33,6 +33,8 @@ namespace LibAnkiCards
         [Column("did")]
         public long DeckId { get; set; }
 
+        public Deck GetDeck(AnkiContext context) => context.Collection.Decks[DeckId];
+
         [Required]
         [Column("ord")]
         public int VariantId { get; set; }
