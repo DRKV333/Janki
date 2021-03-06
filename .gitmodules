@@ -1,0 +1,3 @@
+[submodule "ironpython3"]
+	path = ironpython3
+	url = https://github.com/IronLanguages/ironpython3.git
