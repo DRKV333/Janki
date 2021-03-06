@@ -8,6 +8,7 @@ namespace LibAnkiCardsTests
     {
         public MemoryAnkiContext() : base(new DbContextOptionsBuilder().UseSqlite(CreateMemoryConnection()).Options)
         {
+            Database.EnsureCreated();
         }
 
         private static SqliteConnection CreateMemoryConnection()

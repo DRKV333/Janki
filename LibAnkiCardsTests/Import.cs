@@ -1,6 +1,7 @@
 ﻿using LibAnkiCards;
 using LibAnkiCards.Importing;
 using NUnit.Framework;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +28,6 @@ namespace LibAnkiCardsTests
         {
             using AnkiContext fromContext = AnkiContext.OpenSQLite("samples/collectionMerge.anki2", true);
             using AnkiContext toContext = new MemoryAnkiContext();
-            toContext.Database.EnsureCreated();
 
             int oldNoteCount = toContext.Notes.Count();
 
@@ -37,6 +37,23 @@ namespace LibAnkiCardsTests
             await toContext.SaveChangesAsync();
 
             Assert.AreEqual(oldNoteCount + 3, toContext.Notes.Count());
+        }
+
+        [Test]
+        public async Task Package()
+        {
+            using FileStream packageStream = new FileStream("samples/TestDeckSmall.apkg", FileMode.Open, FileAccess.Read);
+            using AnkiContext toContext = new MemoryAnkiContext();
+
+            MockMediaImporter mediaImporter = new MockMediaImporter();
+
+            PackageImporter packageImporter = new PackageImporter(toContext, mediaImporter);
+            await packageImporter.Import(packageStream);
+            await toContext.SaveChangesAsync();
+
+            Assert.That(mediaImporter.Imported, Is.EquivalentTo(new[] { "icon.png" }));
+            Assert.AreEqual(5, toContext.Notes.Count());
+            Assert.AreEqual(6, toContext.Cards.Count());
         }
     }
 }
