@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.Converters
 {
-    public static class UnixDateTimeValueConverter
+    internal static class UnixDateTimeValueConverter
     {
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 

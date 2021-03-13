@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.Converters
 {
-    public static class JsonValueConverter<T>
+    internal static class JsonValueConverter<T>
     {
         private static readonly ValueConverter<T, string> instace = new ValueConverter<T, string>(
             x => JsonConvert.SerializeObject(x),

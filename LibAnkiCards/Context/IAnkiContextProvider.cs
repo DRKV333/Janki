@@ -1,4 +1,4 @@
-﻿namespace LibAnkiCards
+﻿namespace LibAnkiCards.Context
 {
     public interface IAnkiContextProvider
     {

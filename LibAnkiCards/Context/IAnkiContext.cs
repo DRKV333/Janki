@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.Context
 {
     public interface IAnkiContext : IDisposable
     {
