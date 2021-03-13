@@ -33,13 +33,13 @@ namespace LibAnkiCards
         [Column("did")]
         public long DeckId { get; set; }
 
-        public Deck GetDeck(AnkiContext context) => context.Collection.Decks[DeckId];
+        public Deck GetDeck(IAnkiContext context) => context.Collection.Decks[DeckId];
 
         [Required]
         [Column("ord")]
         public int VariantId { get; set; }
 
-        public CardVariant GetVariant(AnkiContext context) => Note.GetCardType(context).Variants[VariantId];
+        public CardVariant GetVariant(IAnkiContext context) => Note.GetCardType(context).Variants[VariantId];
 
         [Required]
         [Column("mod")]

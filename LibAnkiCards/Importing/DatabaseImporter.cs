@@ -8,7 +8,7 @@ namespace LibAnkiCards.Importing
 {
     public class DatabaseImporter
     {
-        private readonly AnkiContext toContext;
+        private readonly IAnkiContext toContext;
 
         private readonly Dictionary<CardType, CardType> existingTypes;
         private long cardTypeNextId;
@@ -16,7 +16,7 @@ namespace LibAnkiCards.Importing
         private Dictionary<long, Deck> importedDecks;
         private long deckNextId;
 
-        public DatabaseImporter(AnkiContext toContext)
+        public DatabaseImporter(IAnkiContext toContext)
         {
             this.toContext = toContext;
 
@@ -32,7 +32,7 @@ namespace LibAnkiCards.Importing
 
         private long GetNextDictKey<T>(Dictionary<long, T> dict) => dict.Any() ? dict.Max(x => x.Key) + 1 : DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        public async Task Import(AnkiContext fromContext)
+        public async Task Import(IAnkiContext fromContext)
         {
             importedDecks = new Dictionary<long, Deck>();
 

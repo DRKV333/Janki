@@ -11,6 +11,6 @@ namespace LibAnkiCards
         [JsonProperty("name", Required = Required.Always)]
         public string Name { get; set; }
 
-        public IQueryable<Card> GetCards(AnkiContext context) => context.Cards.Where(x => x.DeckId == Id);
+        public IQueryable<Card> GetCards(IAnkiContext context) => context.Cards.Where(x => x.DeckId == Id);
     }
 }

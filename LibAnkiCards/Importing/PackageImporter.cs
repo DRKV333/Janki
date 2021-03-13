@@ -12,7 +12,7 @@ namespace LibAnkiCards.Importing
         private readonly DatabaseImporter databaseImporter;
         private readonly IMediaImporter mediaImporter;
 
-        public PackageImporter(AnkiContext toContext, IMediaImporter mediaImporter)
+        public PackageImporter(IAnkiContext toContext, IMediaImporter mediaImporter)
         {
             databaseImporter = new DatabaseImporter(toContext);
             this.mediaImporter = mediaImporter;

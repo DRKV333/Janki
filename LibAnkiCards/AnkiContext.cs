@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LibAnkiCards
 {
-    public class AnkiContext : DbContext
+    public class AnkiContext : DbContext, IAnkiContext
     {
         private Collection collection;
 
