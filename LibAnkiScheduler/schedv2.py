@@ -79,6 +79,17 @@ class Scheduler:
         if c:
             return c
 
+        # new first, or time for one?
+        if self._timeForNewCard():
+            c = self._getNewCard()
+            if c:
+                return c
+
+        # new cards left?
+        c = self._getNewCard()
+        if c:
+            return c
+
     # Learning queues
     ##########################################################################
 
@@ -87,7 +98,7 @@ class Scheduler:
         self._resetLrnCount()
         self._lrnQueue = []
         self._lrnDayQueue = []
-        # TODO self._lrnDids = self.col.decks.active()[:]
+        self._lrnDids = self.cs.MakeCopyOfActives()
 
     def _maybeResetLrn(self, force):
         if self._updateLrnCutoff(force):
@@ -145,7 +156,7 @@ class Scheduler:
 
     def _resetNew(self):
         self._resetNewCount()
-        # TODO self._newDids = self.col.decks.active()[:]
+        self._newDids = self.cs.MakeCopyOfActives()
         self._newQueue = []
         self._updateNewCardRatio()
 
@@ -161,3 +172,45 @@ class Scheduler:
                     self.newCardModulus = max(2, self.newCardModulus)
                 return
         self.newCardModulus = 0
+
+    def _timeForNewCard(self):
+        "True if it's time to display a new card when distributing."
+        if not self.newCount:
+            return False
+        if self.cs.Collection.Configuration.NewCardOrdering == NewCardOrdering.Last:
+            return False
+        elif self.cs.Collection.Configuration.NewCardOrdering == NewCardOrdering.First:
+            return True
+        elif self.newCardModulus:
+            return self.reps and self.reps % self.newCardModulus == 0
+        else:
+            # shouldn't reach
+            return False
+
+    def _getNewCard(self):
+        if self._fillNew():
+            self.newCount -= 1
+            return self.cs.GetCard(self._newQueue.pop())
+        return None
+
+    def _fillNew(self) :
+        if self._newQueue:
+            return True
+        if not self.newCount:
+            return False
+        while self._newDids:
+            did = self._newDids[0]
+            lim = min(self.queueLimit, self.cs.DeckNewLimit(did))
+            if lim:
+                # fill the queue with the current did
+                self._newQueue = self.cs.QueryNewQueue(did, lim)
+                if self._newQueue:
+                    return True
+            # nothing left in the deck; move to next
+            self._newDids.pop(0)
+        if self.newCount:
+            # if we didn't get a card but the count is non-zero,
+            # we need to check again for any cards that were
+            # removed from the queue but not buried
+            self._resetNew()
+            return self._fillNew()

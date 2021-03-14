@@ -44,9 +44,9 @@ namespace LibAnkiScheduler
         public void SetActiveDecks(IEnumerable<Deck> decks)
         {
             cs.ActiveDecks.Clear();
-            cs.ActiveDecks.AddRange(decks.Select(x => x.Id));
             if (cs.SelectedDeck != null)
                 cs.ActiveDecks.Add(cs.SelectedDeck.Id);
+            cs.ActiveDecks.AddRange(decks.Select(x => x.Id));
         }
 
         public void SetSelectedDeck(Deck deck)

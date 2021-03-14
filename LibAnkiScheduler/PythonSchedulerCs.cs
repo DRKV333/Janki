@@ -63,6 +63,13 @@ namespace LibAnkiScheduler
             return ((DateTimeOffset)cutoff).ToUnixTimeSeconds();
         }
 
+        public PythonList MakeCopyOfActives()
+        {
+            PythonList list = new PythonList();
+            list.__init__(ActiveDecks);
+            return list;
+        }
+
         #endregion Daily cutoff
 
         #region Fetching the next card
@@ -103,6 +110,7 @@ namespace LibAnkiScheduler
                                              (x.Queue == CardQueueType.LearnRelearn || x.Queue == CardQueueType.Preview) &&
                                              x.Due < cutoff)
                                  .OrderBy(x => x.Due)
+                                 .ThenBy(x => x.Id)
                                  .Select(x => new { x.Due, x.Id })
                                  .Take(limit)
                                  .AsEnumerable()
@@ -137,14 +145,36 @@ namespace LibAnkiScheduler
 
         #region New Cards
 
+        // TODO: New limits for nested decks should accumulate
+        public int DeckNewLimit(long deckId) => Math.Max(0, Collection.Decks[deckId].GetConfiguration(Collection).NewConfiguration.PerDayLimit - Collection.Decks[deckId].NewToday.Value);
+
         public int NewCount()
         {
             using (IAnkiContext context = contextProvider.CreateContext())
             {
-                // TODO: New limits for nested decks should accumulate
-                return Math.Min(Math.Max(0, SelectedDeck.GetConfiguration(Collection).NewConfiguration.PerDayLimit - SelectedDeck.NewToday.Value),
+                
+                return Math.Min(DeckNewLimit(SelectedDeck.Id),
                                 context.Cards.Count(x => ActiveDecks.Contains(x.DeckId) && x.Queue == CardQueueType.New));
             }
+        }
+
+        public PythonList QueryNewQueue(long deckId, int limit)
+        {
+            PythonList list = new PythonList();
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                list.__init__(
+                    context.Cards.Where(x => x.DeckId == deckId && x.Queue == CardQueueType.New)
+                                 .OrderByDescending(x => x.Due)
+                                 .ThenByDescending(x => x.VariantId)
+                                 .Select(x => x.Id)
+                                 .Take(limit)
+                                 .AsEnumerable()
+                );
+            }
+
+            return list;
         }
 
         #endregion New Cards
