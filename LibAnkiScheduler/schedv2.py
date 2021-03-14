@@ -85,6 +85,11 @@ class Scheduler:
             if c:
                 return c
 
+        # card due for review?
+        c = self._getRevCard()
+        if c:
+            return c
+
         # new cards left?
         c = self._getNewCard()
         if c:
@@ -150,6 +155,32 @@ class Scheduler:
 
     def _currentRevLimit(self):
         return self.cs.DeckRevLimitSingle(self.cs.SelectedDeck)
+
+    def _getRevCard(self):
+        if self._fillRev():
+            self.revCount -= 1
+            return self.cs.GetCard(self._revQueue.pop())
+        return None
+
+    def _fillRev(self):
+        if self._revQueue:
+            return True
+        if not self.revCount:
+            return False
+
+        lim = min(self.queueLimit, self._currentRevLimit())
+        if lim:
+            self._revQueue = self.cs.QueryReviewQueue(self.today, lim)
+
+            if self._revQueue:
+                return True
+
+        if self.revCount:
+            # if we didn't get a card but the count is non-zero,
+            # we need to check again for any cards that were
+            # removed from the queue but not buried
+            self._resetRev()
+            return self._fillRev()
 
     # New cards
     ##########################################################################

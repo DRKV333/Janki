@@ -42,10 +42,17 @@ namespace LibAnkiSchedulerTests
                 scheduler.SetSelectedDeck(context.Collection.Decks[1611747606148]);
             }
 
+            Card card = null;
+
             for (int i = 0; i < 3; i++)
             {
-                Card card = scheduler.GetCard();
+                card = scheduler.GetCard();
                 Assert.NotNull(card);
+            }
+
+            while (card != null)
+            {
+                card = scheduler.GetCard();
             }
         }
     }

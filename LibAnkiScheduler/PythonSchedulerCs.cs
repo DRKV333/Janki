@@ -141,6 +141,24 @@ namespace LibAnkiScheduler
             }
         }
 
+        public PythonList QueryReviewQueue(int today, int limit)
+        {
+            PythonList list = new PythonList();
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                list.__init__(
+                    context.Cards.Where(x => ActiveDecks.Contains(x.DeckId) && x.Queue == CardQueueType.Review && x.Due < today)
+                                 .OrderByDescending(x => x.Due)
+                                 .Select(x => x.Id)
+                                 .Take(limit)
+                                 .AsEnumerable()
+                );
+            }
+
+            return list;
+        }
+
         #endregion Review
 
         #region New Cards
