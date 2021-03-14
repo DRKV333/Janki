@@ -1,11 +1,16 @@
-﻿using System;
+﻿using LibAnkiCards;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LibAnkiScheduler
 {
     public interface IScheduler
     {
         string Name { get; }
+
+        void SetActiveDecks(IEnumerable<Deck> decks);
+
+        void SetSelectedDeck(Deck deck);
+
+        void Reset();
     }
 }

@@ -11,7 +11,7 @@ namespace LibAnkiCards.Context
         DbSet<Note> Notes { get; set; }
         DbSet<Review> Reviews { get; set; }
 
-        Collection Collection { get; }
+        Collection Collection { get; set; }
 
         int SaveChanges();
 

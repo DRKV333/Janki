@@ -17,6 +17,7 @@ namespace LibAnkiCards
             public void Configure(EntityTypeBuilder<Card> builder)
             {
                 builder.Property(x => x.LastModified).HasConversion(UnixDateTimeValueConverter.Instance);
+                builder.Property(x => x.Queue).HasConversion<int>();
             }
         }
 
@@ -57,7 +58,7 @@ namespace LibAnkiCards
 
         [Required]
         [Column("queue")]
-        public int Queue { get; set; }
+        public CardQueueType Queue { get; set; }
 
         [Required]
         [Column("due")]

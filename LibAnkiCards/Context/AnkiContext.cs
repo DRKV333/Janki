@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,14 +29,23 @@ namespace LibAnkiCards.Context
                     {
                         collection = new Collection()
                         {
+                            Created = DateTime.UtcNow,
+                            Configuration = new Configuration(),
                             CardTypes = new Dictionary<long, CardType>(),
-                            Decks = new Dictionary<long, Deck>()
+                            Decks = new Dictionary<long, Deck>(),
+                            DeckConfigurations = new Dictionary<long, DeckConfiguration>()
                         };
                         Collections.Add(collection);
                     }
                 }
 
                 return collection;
+            }
+
+            set
+            {
+                Collections.Add(value);
+                collection = value;
             }
         }
 
