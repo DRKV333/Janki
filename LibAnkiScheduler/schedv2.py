@@ -85,15 +85,31 @@ class Scheduler:
             if c:
                 return c
 
+        # day learning first and card due?
+        dayLearnFirst = self.cs.Collection.Configuration.DayLearnFirst
+        if dayLearnFirst:
+            c = self._getLrnDayCard()
+            if c:
+                return c
+
         # card due for review?
         c = self._getRevCard()
         if c:
             return c
 
+        # day learning card due?
+        if not dayLearnFirst:
+            c = self._getLrnDayCard()
+            if c:
+                return c
+
         # new cards left?
         c = self._getNewCard()
         if c:
             return c
+
+        # collapse or finish
+        return self._getLrnCard(collapse=True)
 
     # Learning queues
     ##########################################################################
@@ -141,6 +157,31 @@ class Scheduler:
         self._lrnQueue = self.cs.QueryLearnQueue(cutoff, self.reportLimit)
 
         return self._lrnQueue
+
+    def _getLrnDayCard(self):
+        if self._fillLrnDay():
+            self.lrnCount -= 1
+            return self.cs.GetCard(self._lrnDayQueue.pop())
+        return None
+
+    def _fillLrnDay(self):
+        if not self.lrnCount:
+            return False
+        if self._lrnDayQueue:
+            return True
+        while self._lrnDids:
+            did = self._lrnDids[0]
+            # fill the queue with the current did
+            self._lrnDayQueue = self.cs.QueryLearnDayQueue(did, self.today, self.queueLimit)
+            if self._lrnDayQueue:
+                # is the current did empty?
+                if len(self._lrnDayQueue) < self.queueLimit:
+                    self._lrnDids.pop(0)
+                return True
+            # nothing left in the deck; move to next
+            self._lrnDids.pop(0)
+        # shouldn't reach here
+        return False
 
     # Reviews
     ##########################################################################

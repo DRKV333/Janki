@@ -15,5 +15,8 @@ namespace LibAnkiCards
 
         [JsonProperty("newSpread")]
         public NewCardOrdering NewCardOrdering { get; set; } = NewCardOrdering.Distribute;
+
+        [JsonProperty("dayLearnFirst")]
+        public bool DayLearnFirst { get; set; } = false;
     }
 }

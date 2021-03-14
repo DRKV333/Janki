@@ -49,11 +49,6 @@ namespace LibAnkiSchedulerTests
                 card = scheduler.GetCard();
                 Assert.NotNull(card);
             }
-
-            while (card != null)
-            {
-                card = scheduler.GetCard();
-            }
         }
     }
 }

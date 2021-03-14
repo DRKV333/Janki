@@ -121,6 +121,40 @@ namespace LibAnkiScheduler
             return list;
         }
 
+        public PythonList QueryLearnDayQueue(int deckId, int today, int limit)
+        {
+            PythonList list = new PythonList();
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                list.__init__(
+                    context.Cards.Where(x => x.DeckId == deckId && x.Queue == CardQueueType.DayLearnRelearn && x.Due <= today)
+                                 .Select(x => x.Id)
+                                 .Take(limit)
+                                 .AsEnumerable()
+                );
+            }
+
+            Shuffle(today, list);
+
+            return list;
+        }
+
+        private void Shuffle<T>(int seed, IList<T> list)
+        {
+            Random rng = new Random(seed);
+
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
         #endregion Learning queues
 
         #region Review
