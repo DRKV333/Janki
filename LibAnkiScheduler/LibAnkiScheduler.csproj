@@ -43,7 +43,7 @@
     
   <Target Name="PrecompilePylib" DependsOnTargets="SetPrecompileIntermediatePaths" BeforeTargets="ResolveProjectReferences" Inputs="@(PySources)" Outputs="$(DLRPFOutputPath)">
     <MSBuild Projects="$(IronPythonBinPath)" Targets="Build" Properties="Configuration=Release;" />
-    <Exec Command="$(IronPythonCompilerBin) /out:$(IPCOutputPath) /main:$(PythonMain) @(PySources, ' ')" />
+    <Exec Command="$(IronPythonCompilerBin) /out:$(IPCOutputPath) /main:$(PythonMain) /target:dll @(PySources, ' ')" />
     <ItemGroup>
       <FileWrites Include="$(IPCOutputPath)" />
     </ItemGroup>
