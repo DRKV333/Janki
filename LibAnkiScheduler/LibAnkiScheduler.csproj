@@ -19,7 +19,11 @@
   <ItemGroup>
     <PySources Include="schedv2.py" />
   </ItemGroup>
-    
+
+  <PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+
   <PropertyGroup>
     <IronPythonCompilerProj>..\ironpython3\Src\IronPythonCompiler\IronPythonCompiler.csproj</IronPythonCompilerProj>
     <IronPythonCompilerBin>..\ironpython3\bin\Release\net46\ipyc.exe</IronPythonCompilerBin>
