@@ -8,6 +8,8 @@ clr.AddReference("LibAnkiCards")
 
 from LibAnkiCards import NewCardOrdering
 
+from heapq import *
+
 class Scheduler:
     name = "std2"
 
@@ -63,12 +65,19 @@ class Scheduler:
             self.reset()
         card = self._getCard()
         if card:
-            self.col.log(card)
-            if not self._burySiblingsOnAnswer:
-                self._burySiblings(card)
-            card.startTimer()
+            # TODO
+            # if not self._burySiblingsOnAnswer:
+            #    self._burySiblings(card)
+            self.cs.CardStartTimer(card)
             return card
         return None
+
+    def _getCard(self):
+        """Return the next due card, or None."""
+        # learning card due?
+        c = self._getLrnCard()
+        if c:
+            return c
 
     # Learning queues
     ##########################################################################
@@ -80,6 +89,10 @@ class Scheduler:
         self._lrnDayQueue = []
         # TODO self._lrnDids = self.col.decks.active()[:]
 
+    def _maybeResetLrn(self, force):
+        if self._updateLrnCutoff(force):
+            self._resetLrn()
+
     def _updateLrnCutoff(self, force):
         nextCutoff = self.cs.Time + self.cs.Collection.Configuration.CollapseTime
         if nextCutoff - self._lrnCutoff > 60 or force:
@@ -89,6 +102,29 @@ class Scheduler:
 
     def _resetLrnCount(self):
         self.lrnCount = self.cs.LearnCount(self._lrnCutoff, self.today)
+
+    def _getLrnCard(self, collapse = False):
+        self._maybeResetLrn(force=collapse and self.lrnCount == 0)
+        if self._fillLrn():
+            cutoff = self.cs.Time
+            if collapse:
+                cutoff += self.cs.Collection.Configuration.CollapseTime
+            if self._lrnQueue[0][0] < cutoff:
+                id = heappop(self._lrnQueue)[1]
+                card = self.cs.GetCard(id)
+                self.lrnCount -= 1
+                return card
+        return None
+
+    def _fillLrn(self):
+        if not self.lrnCount:
+            return False
+        if self._lrnQueue:
+            return True
+        cutoff = self.cs.Time + self.cs.Collection.Configuration.CollapseTime
+        self._lrnQueue = self.cs.QueryLearnQueue(cutoff, self.reportLimit)
+
+        return self._lrnQueue
 
     # Reviews
     ##########################################################################

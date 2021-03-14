@@ -1,3 +1,4 @@
+using LibAnkiCards;
 using LibAnkiCards.Context;
 using LibAnkiScheduler;
 using NUnit.Framework;
@@ -28,6 +29,22 @@ namespace LibAnkiSchedulerTests
             scheduler.Reset();
 
             Assert.Pass();
+        }
+
+        [Test]
+        public void GetCard()
+        {
+            IAnkiContextProvider contextProvider = new SQLiteAnkiContextProvider("samples/collectionBig.anki2", true);
+            PythonScheduler scheduler = new PythonScheduler(contextProvider);
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                scheduler.SetSelectedDeck(context.Collection.Decks[1611747606148]);
+            }
+
+            Card card = scheduler.GetCard();
+
+            Assert.NotNull(card);
         }
     }
 }

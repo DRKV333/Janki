@@ -12,5 +12,7 @@ namespace LibAnkiScheduler
         void SetSelectedDeck(Deck deck);
 
         void Reset();
+
+        Card GetCard();
     }
 }

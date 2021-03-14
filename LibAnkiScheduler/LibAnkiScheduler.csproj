@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PySources Include="schedv2.py" />
+    <PySources Include="lib/heapq.py" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -25,6 +26,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PythonMain>schedv2.py</PythonMain>
     <IronPythonCompilerProj>..\ironpython3\Src\IronPythonCompiler\IronPythonCompiler.csproj</IronPythonCompilerProj>
     <IronPythonCompilerBin>..\ironpython3\bin\Release\net46\ipyc.exe</IronPythonCompilerBin>
     <DLRPrecompFixerProj>..\DLRPrecompFixer\DLRPrecompFixer.csproj</DLRPrecompFixerProj>
@@ -41,7 +43,7 @@
     
   <Target Name="PrecompilePylib" DependsOnTargets="SetPrecompileIntermediatePaths" BeforeTargets="ResolveProjectReferences" Inputs="@(PySources)" Outputs="$(DLRPFOutputPath)">
     <MSBuild Projects="$(IronPythonBinPath)" Targets="Build" Properties="Configuration=Release;" />
-    <Exec Command="$(IronPythonCompilerBin) /out:$(IPCOutputPath) @(PySources, ' ')" />
+    <Exec Command="$(IronPythonCompilerBin) /out:$(IPCOutputPath) /main:$(PythonMain) @(PySources, ' ')" />
     <ItemGroup>
       <FileWrites Include="$(IPCOutputPath)" />
     </ItemGroup>

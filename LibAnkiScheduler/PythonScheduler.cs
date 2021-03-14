@@ -57,5 +57,7 @@ namespace LibAnkiScheduler
         }
 
         public void Reset() => py.reset();
+
+        public Card GetCard() => py.getCard();
     }
 }

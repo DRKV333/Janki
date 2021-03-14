@@ -1,4 +1,5 @@
-﻿using LibAnkiCards;
+﻿using IronPython.Runtime;
+using LibAnkiCards;
 using LibAnkiCards.Context;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace LibAnkiScheduler
 
         public readonly List<long> ActiveDecks = new List<long>();
         public Deck SelectedDeck { get; set; }
+
+        private readonly Dictionary<long, long> cardTimers = new Dictionary<long, long>();
 
         internal PythonSchedulerCs(IAnkiContextProvider contextProvider)
         {
@@ -62,6 +65,20 @@ namespace LibAnkiScheduler
 
         #endregion Daily cutoff
 
+        #region Fetching the next card
+
+        public Card GetCard(long id)
+        {
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                return context.Cards.Single(x => x.Id == id);
+            }
+        }
+        
+        public void CardStartTimer(Card card) => cardTimers[card.Id] = Time;
+
+        #endregion
+
         #region Learning queues
 
         public int LearnCount(int lrnCutoff, int today)
@@ -73,6 +90,27 @@ namespace LibAnkiScheduler
                 count += context.Cards.Count(x => ActiveDecks.Contains(x.DeckId) && x.Queue == CardQueueType.Preview);
                 return count;
             }
+        }
+
+        public PythonList QueryLearnQueue(int cutoff, int limit)
+        {
+            PythonList list = new PythonList();
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                list.__init__(
+                    context.Cards.Where(x => ActiveDecks.Contains(x.DeckId) &&
+                                             (x.Queue == CardQueueType.LearnRelearn || x.Queue == CardQueueType.Preview) &&
+                                             x.Due < cutoff)
+                                 .OrderBy(x => x.Due)
+                                 .Select(x => new { x.Due, x.Id })
+                                 .Take(limit)
+                                 .AsEnumerable()
+                                 .Select(x => new PythonTuple(new object[] { x.Due, x.Id }))
+                );
+            }
+
+            return list;
         }
 
         #endregion Learning queues
