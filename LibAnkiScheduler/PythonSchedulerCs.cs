@@ -81,10 +81,112 @@ namespace LibAnkiScheduler
                 return context.Cards.Single(x => x.Id == id);
             }
         }
-        
+
         public void CardStartTimer(Card card) => cardTimers[card.Id] = Time;
 
-        #endregion
+        public int CardTimeTaken(Card card)
+        {
+            int maxTaken = card.GetDeck(Collection).GetConfiguration(Collection).MaxTimeTaken;
+
+            if (cardTimers.TryGetValue(card.Id, out long startTime))
+            {
+                return Math.Min((int)(Time - startTime) * 1000, maxTaken);
+            }
+
+            return maxTaken;
+        }
+
+        public int LeftToday(Card card, int dayCutoff, int? left = null, long? now = null)
+        {
+            float[] delays = card.GetDeck(Collection).GetConfiguration(Collection).Delays;
+
+            if (now == null)
+                now = Time;
+            if (left == null)
+                left = delays.Length;
+
+            int ok = 0;
+
+            for (int i = Math.Max(0, delays.Length - left.Value); i < delays.Length; i++)
+            {
+                now += (int)(delays[i] * 60);
+                if (now > dayCutoff)
+                    break;
+                ok = i;
+            }
+
+            return ok + 1;
+        }
+
+        public int DelayForRepeatingGrade(Card card, int left)
+        {
+            float[] delays = card.GetDeck(Collection).GetConfiguration(Collection).Delays;
+
+            int delay1 = DelayForGrade(card, left);
+            int delay2 = delays.Length > 1 ? DelayForGrade(card, left - 1) : delay1 * 2;
+
+            return (delay1 + Math.Max(delay1, delay2)) / 2;
+        }
+
+        public int DelayForGrade(Card card, int left)
+        {
+            left %= 1000;
+
+            float[] delays = card.GetDeck(Collection).GetConfiguration(Collection).Delays;
+
+            int idx = delays.Length - left;
+
+            if (idx < 0 || idx >= delays.Length)
+                idx = 0;
+
+            return (int)(delays[idx] * 60);
+        }
+
+        public int StartingLeft(Card card, int dayCutoff)
+        {
+            // TODO
+            //if card.Type == CARD_TYPE_RELEARNING:
+            // conf = self._lapseConf(card)
+            //else:
+            // conf = self._lrnConf(card)
+
+            return card.GetDeck(Collection).GetConfiguration(Collection).Delays.Length * LeftToday(card, dayCutoff) * 1000;
+        }
+
+        public void UpdateStats(Card card, string type, int count = 1)
+        {
+            //TODO: parents should be update as well...
+
+            Deck deck = card.GetDeck(Collection);
+
+            TodayValue target;
+            switch (type)
+            {
+                case "new": target = deck.NewToday; break;
+                case "rev": target = deck.RevToday; break;
+                case "time": target = deck.TimeToday; break;
+                case "lrn": target = deck.LrnToday; break;
+                default: throw new ArgumentException(nameof(type));
+            }
+
+            target.Value += count;
+
+            SaveCollection();
+        }
+
+        public void FlushCard(Card card)
+        {
+            card.LastModified = DateTime.UtcNow;
+            // TODO User
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                context.Cards.Update(card);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion Fetching the next card
 
         #region Learning queues
 
@@ -155,6 +257,30 @@ namespace LibAnkiScheduler
             }
         }
 
+        public void LogLearn(Card card, int ease, bool leaving, CardLearnType type, int lastLeft)
+        {
+            int lastIvl = -DelayForGrade(card, lastLeft);
+            int ivl = leaving ? card.Ivl : -DelayForGrade(card, card.Left);
+
+            Review review = new Review()
+            {
+                Card = card,
+                UserId = -1,
+                Ease = ease,
+                Ivl = ivl,
+                LastIvl = lastIvl,
+                Factor = card.Factor,
+                Time = CardTimeTaken(card),
+                Type = type
+            };
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                context.Reviews.Add(review);
+                context.SaveChanges();
+            }
+        }
+
         #endregion Learning queues
 
         #region Review
@@ -193,6 +319,26 @@ namespace LibAnkiScheduler
             return list;
         }
 
+        public void LogReview(Card card, int ease, int delay, CardLearnType type)
+        {
+            Review review = new Review()
+            {
+                UserId = -1,
+                Ease = ease,
+                Ivl = delay == 0 ? card.Ivl : -delay,
+                LastIvl = card.LastIvl,
+                Factor = card.Factor,
+                Time = CardTimeTaken(card),
+                Type = type
+            };
+
+            using (IAnkiContext context = contextProvider.CreateContext())
+            {
+                context.Reviews.Add(review);
+                context.SaveChanges();
+            }
+        }
+
         #endregion Review
 
         #region New Cards
@@ -204,7 +350,6 @@ namespace LibAnkiScheduler
         {
             using (IAnkiContext context = contextProvider.CreateContext())
             {
-                
                 return Math.Min(DeckNewLimit(SelectedDeck.Id),
                                 context.Cards.Count(x => ActiveDecks.Contains(x.DeckId) && x.Queue == CardQueueType.New));
             }

@@ -14,5 +14,7 @@ namespace LibAnkiScheduler
         void Reset();
 
         Card GetCard();
+
+        void AnswerCard(Card card, int ease);
     }
 }

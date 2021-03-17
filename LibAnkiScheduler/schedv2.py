@@ -6,7 +6,7 @@
 import clr
 clr.AddReference("LibAnkiCards")
 
-from LibAnkiCards import NewCardOrdering
+from LibAnkiCards import NewCardOrdering, CardQueueType, CardLearnType
 
 from heapq import *
 
@@ -111,6 +111,53 @@ class Scheduler:
         # collapse or finish
         return self._getLrnCard(collapse=True)
 
+    def answerCard(self, card, ease):
+        assert 1 <= ease <= 4
+        assert 0 <= int(card.Queue) <= 4
+        
+        # TODO: undo
+        # self.col.markReview(card)
+
+        # TODO
+        # if self._burySiblingsOnAnswer:
+        #    self._burySiblings(card)
+
+        self._answerCard(card, ease)
+
+        self.cs.UpdateStats(card, "time", self.cs.CardTimeTaken(card))
+        self.cs.FlushCard(card)
+
+    def _answerCard(self, card, ease):
+        # TODO
+        # if self._previewingCard(card):
+        #    self._answerCardPreview(card, ease)
+        #    return
+
+        card.Reps += 1
+
+        if card.Queue == CardQueueType.New:
+            # came from the new queue, move to learning
+            card.Queue = CardQueueType.LearnRelearn
+            card.Type = CardLearnType.Learn
+            # init reps to graduation
+            card.Left = self.cs.StartingLeft(card, self.dayCutoff)
+            # update daily limit
+            self.cs.UpdateStats(card, "new")
+
+        if card.Queue == CardQueueType.LearnRelearn or card.Queue == CardQueueType.DayLearnRelearn:
+            self._answerLrnCard(card, ease)
+        elif card.Queue == CardQueueType.Review:
+            self._answerRevCard(card, ease)
+            # update daily limit
+            self.cs.UpdateStats(card, "rev")
+        else:
+            assert 0
+
+        # once a card has been answered once, the original due date
+        # no longer applies
+        if card.OriginalDue:
+            card.OriginalDue = 0
+
     # Learning queues
     ##########################################################################
 
@@ -183,6 +230,136 @@ class Scheduler:
         # shouldn't reach here
         return False
 
+    def _answerLrnCard(self, card, ease):
+        # TODO conf = self._lrnConf(card)
+        if card.Type == CardLearnType.Review or card.Type == CardLearnType.Relearn:
+            type = CardLearnType.Review
+        else:
+            type = CardLearnType.New
+        # lrnCount was decremented once when card was fetched
+        lastLeft = card.Left
+
+        leaving = False
+
+        # immediate graduate?
+        if ease == 4:
+            self._rescheduleAsRev(card, True)
+            leaving = True
+        # next step?
+        elif ease == 3:
+            # graduation time?
+            if (card.Left % 1000) - 1 <= 0:
+                self._rescheduleAsRev(card, False)
+                leaving = True
+            else:
+                self._moveToNextStep(card)
+        elif ease == 2:
+            self._repeatStep(card)
+        else:
+            # back to first step
+            self._moveToFirstStep(card)
+
+        self.cs.LogLearn(card, ease, leaving, type, lastLeft)
+
+    def _rescheduleAsRev(self, card, early):
+        if card.Type == CardLearnType.Review or card.Type == CardLearnType.Relearn:
+            self._rescheduleGraduatingLapse(card, early)
+        else:
+            self._rescheduleNew(card, early)
+        
+        # TODO
+        # if we were dynamic, graduating means moving back to the old deck
+        # if card.odid:
+        #    self._removeFromFiltered(card)
+
+    def _rescheduleGraduatingLapse(self, card, early = False):
+        if early:
+            card.Ivl += 1
+        card.Due = self.today + card.Ivl
+        card.Queue = CardQueueType.Review
+        card.Type = CardLearnType.Review
+
+    def _rescheduleNew(self, card, early):
+        "Reschedule a new card that's graduated for the first time."
+        card.Ivl = self._graduatingIvl(card, early)
+        card.Due = self.today + card.Ivl
+        card.Factor = card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).InintialFactor
+        card.Queue = CardQueueType.Review
+        card.Type = CardLearnType.Review
+
+    def _graduatingIvl(self, card, early, fuzz = True):
+        if card.Type == CardLearnType.Review or card.Type == CardLearnType.Relearn:
+            bonus = early and 1 or 0
+            return card.Ivl + bonus
+        if not early:
+            # graduate
+            ideal = card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).Ints.Graduate
+        else:
+            # early remove
+            ideal = card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).Ints.EarlyRemove
+        # TODO
+        # if fuzz:
+        #    ideal = self._fuzzedIvl(ideal)
+        return ideal
+
+    def _moveToFirstStep(self, card):
+        card.left = self.cs.StartingLeft(card, self.dayCutoff)
+
+        # relearning card?
+        if card.Type == CardLearnType.Relearn:
+            self._updateRevIvlOnFail(card)
+
+        return self._rescheduleLrnCard(card)
+
+    def _updateRevIvlOnFail(self, card):
+        card.LastIvl = card.Ivl
+        card.Ivl = self._lapseIvl(card)
+
+    def _lapseIvl(self, card):
+        return max(1, card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).MinInt, int(card.Ivl * card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).Mult))
+
+    def _moveToNextStep(self, card):
+        # decrement real left count and recalculate left today
+        left = (card.Left % 1000) - 1
+        card.Left = self.cs.LeftToday(card, self.dayCutoff, left) * 1000 + left
+
+        self._rescheduleLrnCard(card)
+
+    def _repeatStep(self, card):
+        delay = self.cs.DelayForRepeatingGrade(card, card.Left)
+        self._rescheduleLrnCard(card, delay=delay)
+
+    def _rescheduleLrnCard(self, card, delay = None):
+        # normal delay for the current step?
+        if delay is None:
+            delay = self.cs.DelayForGrade(card, card.Left)
+
+        card.Due = self.cs.Time + delay
+        # due today?
+        if card.Due < self.dayCutoff:
+            # TODO
+            # add some randomness, up to 5 minutes or 25%
+            # maxExtra = min(300, int(delay * 0.25))
+            # fuzz = random.randrange(0, maxExtra)
+            # card.due = min(self.dayCutoff - 1, card.due + fuzz)
+            card.Queue = CardQueueType.LearnRelearn
+            if card.Due < (self.cs.Time + self.cs.Collection.Configuration.CollapseTime):
+                self.lrnCount += 1
+                # if the queue is not empty and there's nothing else to do, make
+                # sure we don't put it at the head of the queue and end up showing
+                # it twice in a row
+                if self._lrnQueue and not self.revCount and not self.newCount:
+                    smallestDue = self._lrnQueue[0][0]
+                    card.Due = max(card.Due, smallestDue + 1)
+                heappush(self._lrnQueue, (card.Due, card.Id))
+        else:
+            # the card is due in one or more days, so we need to use the
+            # day learn queue
+            ahead = ((card.Due - self.dayCutoff) // 86400) + 1
+            card.Due = self.today + ahead
+            card.Queue = CardQueueType.DayLearnRelearn
+        return delay
+
     # Reviews
     ##########################################################################
 
@@ -222,6 +399,78 @@ class Scheduler:
             # removed from the queue but not buried
             self._resetRev()
             return self._fillRev()
+
+    def _answerRevCard(self, card, ease):
+        delay = 0
+        # TODO
+        # early = card.odid and (card.odue > self.today)
+        # type = early and 3 or 1
+        type = CardLearnType.Learn
+
+        if ease == 1:
+            delay = self._rescheduleLapse(card)
+        else:
+            self._rescheduleRev(card, ease)
+
+        self.cs.LogReview(card, ease, delay, type)
+
+    def _rescheduleLapse(self, card):
+        # conf = self._lapseConf(card)
+
+        card.Lapses += 1
+        card.Factor = max(1300, card.Factor - 200)
+
+        # TODO
+        # suspended = self._checkLeech(card, conf) and card.queue == -1
+
+        card.type = CardLearnType.Relearn
+        delay = self._moveToFirstStep(card)
+
+        return delay
+
+    def _rescheduleRev(self, card, ease):
+        # update interval
+        card.LastIvl = card.Ivl
+
+        self._updateRevIvl(card, ease)
+
+        # then the rest
+        card.Factor = max(1300, card.Factor + [-150, 0, 150][ease - 2])
+        card.Due = self.today + card.Ivl
+
+        # card leaves filtered deck
+        # self._removeFromFiltered(card)
+
+    def _updateRevIvl(self, card, ease):
+        card.Ivl = self._nextRevIvl(card, ease)
+
+    def _nextRevIvl(self, card, ease):
+        "Next review interval for CARD, given EASE."
+        delay = max(0, self.today - card.Due)
+        
+        fct = card.Factor / 1000
+        hardFactor = card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).HardFactor
+        if hardFactor > 1:
+            hardMin = card.Ivl
+        else:
+            hardMin = 0
+        ivl2 = self._constrainedIvl(card.Ivl * hardFactor, hardMin)
+        if ease == 2:
+            return ivl2
+
+        ivl3 = self._constrainedIvl((card.Ivl + delay // 2) * fct, ivl2)
+        if ease == 3:
+            return ivl3
+
+        ivl4 = self._constrainedIvl(
+            (card.Ivl + delay) * fct * card.GetDeck(self.cs.Collection).GetConfiguration(self.cs.Collection).Ease4, ivl3
+        )
+        return ivl4
+
+    def _constrainedIvl(self, ivl, prev):
+        ivl = max(ivl, prev + 1, 1)
+        ivl = min(ivl, 36500) # deckConf -> maxIvl
+        return int(ivl)
 
     # New cards
     ##########################################################################

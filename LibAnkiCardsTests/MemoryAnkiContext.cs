@@ -1,11 +1,10 @@
-﻿using LibAnkiCards;
-using LibAnkiCards.Context;
+﻿using LibAnkiCards.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibAnkiCardsTests
 {
-    internal class MemoryAnkiContext : AnkiContext
+    public class MemoryAnkiContext : AnkiContext
     {
         public MemoryAnkiContext() : base(new DbContextOptionsBuilder().UseSqlite(CreateMemoryConnection()).Options)
         {

@@ -18,6 +18,7 @@ namespace LibAnkiCards
             {
                 builder.Property(x => x.LastModified).HasConversion(UnixDateTimeValueConverter.Instance);
                 builder.Property(x => x.Queue).HasConversion<int>();
+                builder.Property(x => x.Type).HasConversion<int>();
             }
         }
 
@@ -36,7 +37,9 @@ namespace LibAnkiCards
         [Column("did")]
         public long DeckId { get; set; }
 
-        public Deck GetDeck(IAnkiContext context) => context.Collection.Decks[DeckId];
+        public Deck GetDeck(IAnkiContext context) => GetDeck(context.Collection);
+
+        public Deck GetDeck(Collection collection) => collection.Decks[DeckId];
 
         [Required]
         [Column("ord")]
@@ -54,7 +57,7 @@ namespace LibAnkiCards
 
         [Required]
         [Column("type")]
-        public int Type { get; set; }
+        public CardLearnType Type { get; set; }
 
         [Required]
         [Column("queue")]
@@ -67,6 +70,9 @@ namespace LibAnkiCards
         [Required]
         [Column("ivl")]
         public int Ivl { get; set; }
+
+        [NotMapped]
+        public int LastIvl { get; set; }
 
         [Required]
         [Column("factor")]

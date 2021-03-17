@@ -44,7 +44,7 @@ namespace LibAnkiCards.Context
 
             set
             {
-                Collections.Add(value);
+                Collections.Update(value);
                 collection = value;
             }
         }

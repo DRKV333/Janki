@@ -1,8 +1,10 @@
 using LibAnkiCards;
 using LibAnkiCards.Context;
+using LibAnkiCards.Importing;
 using LibAnkiScheduler;
 using NUnit.Framework;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LibAnkiSchedulerTests
 {
@@ -49,6 +51,36 @@ namespace LibAnkiSchedulerTests
                 card = scheduler.GetCard();
                 Assert.NotNull(card);
             }
+        }
+
+        [Test]
+        public async Task AnswerCard()
+        {
+            using MemeoryAnkiContextProvider provider = new MemeoryAnkiContextProvider();
+
+            IAnkiContext context = provider.CreateContext(); // No need to dispose this.
+
+            using (IAnkiContext fromContext = AnkiContext.OpenSQLite("samples/collectionBig.anki2", true))
+            {
+                DatabaseImporter importer = new DatabaseImporter(context);
+                await importer.Import(fromContext);
+            }
+            provider.CreateContext().SaveChanges();
+
+            PythonScheduler scheduler = new PythonScheduler(provider);
+            scheduler.SetSelectedDeck(context.Collection.Decks.Single(x => x.Value.Name == "4000 Essential English Words::1.Book").Value);
+
+            Card card = scheduler.GetCard();
+            int count = 0;
+
+            while (card != null)
+            {
+                scheduler.AnswerCard(card, 3);
+                count++;
+                card = scheduler.GetCard();
+            }
+
+            Assert.Pass($"Count was: {count}");
         }
     }
 }

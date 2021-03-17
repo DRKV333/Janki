@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LibAnkiCards
@@ -6,6 +8,14 @@ namespace LibAnkiCards
     [Table("revlog")]
     public class Review
     {
+        public class Configuration : IEntityTypeConfiguration<Review>
+        {
+            public void Configure(EntityTypeBuilder<Review> builder)
+            {
+                builder.Property(x => x.Type).HasConversion<int>();
+            }
+        }
+
         [Key]
         [Column("id")]
         public long Id { get; set; }
@@ -43,6 +53,6 @@ namespace LibAnkiCards
 
         [Required]
         [Column("type")]
-        public int Type { get; set; }
+        public CardLearnType Type { get; set; }
     }
 }
