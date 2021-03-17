@@ -17,6 +17,8 @@ namespace LibAnkiCards.Importing
         private Dictionary<long, Deck> importedDecks;
         private long deckNextId;
 
+        private readonly DeckConfiguration defaultConfiguration;
+
         public DatabaseImporter(IAnkiContext toContext)
         {
             this.toContext = toContext;
@@ -29,6 +31,17 @@ namespace LibAnkiCards.Importing
 
             cardTypeNextId = GetNextDictKey(toContext.Collection.CardTypes);
             deckNextId = GetNextDictKey(toContext.Collection.Decks);
+
+            defaultConfiguration = toContext.Collection.DeckConfigurations.FirstOrDefault().Value;
+            if (defaultConfiguration == null)
+            {
+                defaultConfiguration = new DeckConfiguration()
+                {
+                    Id = 1,
+                    Name = "Default"
+                };
+                toContext.Collection.DeckConfigurations.Add(defaultConfiguration.Id, defaultConfiguration);
+            }
         }
 
         private long GetNextDictKey<T>(Dictionary<long, T> dict) => dict.Any() ? dict.Max(x => x.Key) + 1 : DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -87,6 +100,7 @@ namespace LibAnkiCards.Importing
             else
             {
                 oldDeck.Id = deckNextId++;
+                oldDeck.ConfigurationId = defaultConfiguration.Id;
                 toContext.Collection.Decks.Add(oldDeck.Id, oldDeck);
                 importedDecks.Add(oldDeck.Id, oldDeck);
                 return oldDeck.Id;
