@@ -39,7 +39,7 @@ namespace LibAnkiCards.Importing
 
         private async Task ImportDatabase(ZipArchiveEntry dbEntry)
         {
-            FileInfo tempFile = new FileInfo(Path.GetTempFileName());
+            FileInfo tempFile = new FileInfo(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
             try
             {
