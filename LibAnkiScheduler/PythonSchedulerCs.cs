@@ -276,6 +276,7 @@ namespace LibAnkiScheduler
 
             using (IAnkiContext context = contextProvider.CreateContext())
             {
+                context.Cards.Attach(card);
                 context.Reviews.Add(review);
                 context.SaveChanges();
             }
@@ -334,6 +335,7 @@ namespace LibAnkiScheduler
 
             using (IAnkiContext context = contextProvider.CreateContext())
             {
+                context.Cards.Attach(card);
                 context.Reviews.Add(review);
                 context.SaveChanges();
             }
