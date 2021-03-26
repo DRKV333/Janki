@@ -28,7 +28,8 @@ namespace LibAnkiCardsTests
         public async Task DatabaseMigrateEntities()
         {
             using AnkiContext fromContext = AnkiContext.OpenSQLite("samples/collectionMerge.anki2", true);
-            using AnkiContext toContext = new MemoryAnkiContext();
+            using MemoryAnkiContextProvider provider = new MemoryAnkiContextProvider();
+            using IAnkiContext toContext = provider.CreateContext();
 
             int oldNoteCount = toContext.Notes.Count();
 
@@ -44,7 +45,8 @@ namespace LibAnkiCardsTests
         public async Task Package()
         {
             using FileStream packageStream = new FileStream("samples/TestDeckSmall.apkg", FileMode.Open, FileAccess.Read);
-            using AnkiContext toContext = new MemoryAnkiContext();
+            using MemoryAnkiContextProvider provider = new MemoryAnkiContextProvider();
+            using IAnkiContext toContext = provider.CreateContext();
 
             MockMediaImporter mediaImporter = new MockMediaImporter();
 
