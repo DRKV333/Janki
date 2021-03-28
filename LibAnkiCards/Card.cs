@@ -46,6 +46,7 @@ namespace LibAnkiCards
         public int VariantId { get; set; }
 
         public CardVariant GetVariant(IAnkiContext context) => Note.GetCardType(context).Variants[VariantId];
+        public CardVariant GetVariant(Collection collection) => Note.GetCardType(collection).Variants[VariantId];
 
         [Required]
         [Column("mod")]

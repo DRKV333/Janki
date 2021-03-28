@@ -17,6 +17,7 @@ namespace LibAnkiCards
             public void Configure(EntityTypeBuilder<Note> builder)
             {
                 builder.Property(x => x.LastModified).HasConversion(UnixDateTimeValueConverter.Instance);
+                builder.Property(x => x.Fields).HasConversion(SplitStringValueConverter.SeparatedBy('\u001F'));
             }
         }
 
@@ -32,7 +33,8 @@ namespace LibAnkiCards
         [Column("mid")]
         public long CardTypeId { get; set; }
 
-        public CardType GetCardType(IAnkiContext context) => context.Collection.CardTypes[CardTypeId];
+        public CardType GetCardType(Collection collection) => collection.CardTypes[CardTypeId];
+        public CardType GetCardType(IAnkiContext context) => GetCardType(context.Collection);
 
         [Required]
         [Column("mod")]
@@ -48,7 +50,7 @@ namespace LibAnkiCards
 
         [Required]
         [Column("flds")]
-        public string Fields { get; set; }
+        public List<string> Fields { get; set; }
 
         [Required]
         [Column("sfld")]

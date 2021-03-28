@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CardRenderer.xaml.cs">
+      <DependentUpon>CardRenderer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CardRenderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +165,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JankiBusiness\JankiBusiness.csproj">
+      <Project>{A1E298B4-3772-4B61-98DA-CFF6FE2BA3C0}</Project>
+      <Name>JankiBusiness</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibAnkiCards\LibAnkiCards.csproj">
       <Project>{ba7dde8e-2aa4-4d39-9888-0a6a5300c449}</Project>
       <Name>LibAnkiCards</Name>
