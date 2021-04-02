@@ -112,9 +112,17 @@ namespace JankiBusiness
 
             builder.Append("<html>");
 
-            builder.Append("<head><style>");
+            builder.Append("<head>");
+
+            //TODO: Include MathJax in app package and serve that instead.
+            builder.Append("<script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>");
+            builder.Append("<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>");
+
+            builder.Append("<style>");
             builder.Append(Note.Type.Css);
-            builder.Append("</style></head>");
+            builder.Append("</style>");
+
+            builder.Append("</head>");
 
             builder.Append("<body class=\"card\">");
             builder.Append(content);
