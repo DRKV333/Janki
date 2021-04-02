@@ -5,7 +5,17 @@
     xmlns:local="using:Janki">
 
     <Application.Resources>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <local:LocalStorageMediaManager x:Key="MediaManager" />
+
+            <Style TargetType="local:CardRenderer">
+                <Setter Property="MediaProvider" Value="{StaticResource MediaManager}" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 
 </Application>
