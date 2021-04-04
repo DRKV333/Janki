@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace JankiBusiness
 {
@@ -36,6 +37,9 @@ namespace JankiBusiness
         public CardType Type { get; }
 
         public IEnumerable<Field> Fields { get; }
+        public string ShortField { get; private set; }
+
+        public IEnumerable<CardViewModel> Cards { get; }
 
         public NoteViewModel(Collection collection, Note note)
         {
@@ -52,6 +56,22 @@ namespace JankiBusiness
             {
                 item.PropertyChanged += (x, y) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fields)));
             }
+
+            ShortField = note.ShortField;
+
+            if (Fields.Any())
+            {
+                Fields.First().PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(Field.Value))
+                    {
+                        ShortField = Regex.Replace(((Field)s).Value, "<.*?>", "");
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShortField)));
+                    }
+                };
+            }
+
+            Cards = note.Cards.Select(x => new CardViewModel(collection, x, this)).ToList();
         }
     }
 }
