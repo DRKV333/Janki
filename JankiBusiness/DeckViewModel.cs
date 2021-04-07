@@ -12,15 +12,45 @@ namespace JankiBusiness
     public class DeckViewModel
     {
         private readonly Deck deck;
+        private readonly IAnkiContextProvider provider;
 
-        public ObservableCollection<NoteViewModel> Cards { get; }
+        private ObservableCollection<NoteViewModel> cards;
+        public ObservableCollection<NoteViewModel> Cards
+        {
+            get
+            {
+                if (cards == null)
+                {
+                    cards = new ObservableCollection<NoteViewModel>();
+                    FetchCards();
+                }
+                return cards;
+            }
+        }
 
         public string Name => deck.Name;
 
-        public DeckViewModel(IAnkiContext context, Deck deck)
+        public DeckViewModel(IAnkiContextProvider provider, Deck deck)
         {
             this.deck = deck;
-            Cards = new ObservableCollection<NoteViewModel>(deck.GetCards(context).Include(x => x.Note).ThenInclude(x => x.Cards).Select(x => x.Note).Distinct().AsEnumerable().Select(x => new NoteViewModel(context.Collection, x)));
+            this.provider = provider;
+        }
+
+        private async void FetchCards()
+        {
+            List<Note> notes;
+            Collection collection;
+
+            using (IAnkiContext context = provider.CreateContext())
+            {
+                notes = await deck.GetCards(context).Include(x => x.Note).ThenInclude(x => x.Cards).Select(x => x.Note).Distinct().ToListAsync();
+                collection = context.Collection;
+            }
+
+            foreach (var item in notes)
+            {
+                Cards.Add(new NoteViewModel(collection, item));
+            }
         }
     }
 }

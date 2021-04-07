@@ -24,10 +24,9 @@ namespace JankiBusiness
 
         private void FetchDecks()
         {
-            //TODO: This has to be async!
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
-                decks = new ObservableCollection<DeckViewModel>(context.Collection.Decks.Select(x => new DeckViewModel(context, x.Value)));
+                decks = new ObservableCollection<DeckViewModel>(context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)));
             }
         }
     }

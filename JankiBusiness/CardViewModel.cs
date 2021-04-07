@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
@@ -99,11 +100,11 @@ namespace JankiBusiness
             Render();
         }
 
-        private void Render()
+        private async void Render()
         {
-            frontContent = RenderContent(Variant.FrontFormat, frontRenderer);
+            frontContent = await RenderContent(Variant.FrontFormat, frontRenderer);
             FrontHtml = RenderSide(frontContent);
-            BackHtml = RenderSide(RenderContent(Variant.BackFormat, backRenderer));
+            BackHtml = RenderSide(await RenderContent(Variant.BackFormat, backRenderer));
         }
 
         private string RenderSide(string content)
@@ -133,15 +134,15 @@ namespace JankiBusiness
             return builder.ToString();
         }
 
-        private string RenderContent(string template, StubbleVisitorRenderer renderer)
+        private ValueTask<string> RenderContent(string template, StubbleVisitorRenderer renderer)
         {
             try
             {
-                return renderer.Render(template, this, SkipHtmlEncodingSettings);
+                return renderer.RenderAsync(template, this, SkipHtmlEncodingSettings);
             }
             catch (Exception e)
             {
-                return $"Failed to render card: {e}";
+                return new ValueTask<string>($"Failed to render card: {e}");
             }
         }
     }
