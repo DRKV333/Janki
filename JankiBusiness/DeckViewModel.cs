@@ -1,20 +1,19 @@
 ﻿using LibAnkiCards;
 using LibAnkiCards.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace JankiBusiness
 {
-    public class DeckViewModel
+    public class DeckViewModel : ViewModel
     {
         private readonly Deck deck;
         private readonly IAnkiContextProvider provider;
 
         private ObservableCollection<NoteViewModel> cards;
+
         public ObservableCollection<NoteViewModel> Cards
         {
             get

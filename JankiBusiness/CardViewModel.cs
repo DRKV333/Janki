@@ -3,14 +3,13 @@ using Stubble.Core;
 using Stubble.Core.Builders;
 using Stubble.Core.Settings;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
-    public class CardViewModel : INotifyPropertyChanged
+    public class CardViewModel : ViewModel
     {
         private static readonly StubbleVisitorRenderer frontRenderer = new StubbleBuilder()
             .Configure(
@@ -55,8 +54,6 @@ namespace JankiBusiness
             SkipHtmlEncoding = true
         };
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public NoteViewModel Note { get; }
         public CardVariant Variant { get; }
 
@@ -67,11 +64,7 @@ namespace JankiBusiness
         public string FrontHtml
         {
             get => frontHtml;
-            private set
-            {
-                frontHtml = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FrontHtml)));
-            }
+            private set => Set(ref frontHtml, value);
         }
 
         private string backHtml;
@@ -79,11 +72,7 @@ namespace JankiBusiness
         public string BackHtml
         {
             get => backHtml;
-            private set
-            {
-                backHtml = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackHtml)));
-            }
+            private set => Set(ref backHtml, value);
         }
 
         public CardViewModel(Collection collection, Card card, NoteViewModel note = null)
@@ -102,9 +91,9 @@ namespace JankiBusiness
 
         private async void Render()
         {
-            frontContent = await RenderContent(Variant.FrontFormat, frontRenderer);
+            frontContent = await RenderContent(Variant.FrontFormat, frontRenderer).ConfigureAwait(false);
             FrontHtml = RenderSide(frontContent);
-            BackHtml = RenderSide(await RenderContent(Variant.BackFormat, backRenderer));
+            BackHtml = RenderSide(await RenderContent(Variant.BackFormat, backRenderer).ConfigureAwait(false));
         }
 
         private string RenderSide(string content)

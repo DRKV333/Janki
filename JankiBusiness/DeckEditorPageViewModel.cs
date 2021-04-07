@@ -7,7 +7,7 @@ using System.Text;
 
 namespace JankiBusiness
 {
-    public class DeckEditorPageViewModel
+    public class DeckEditorPageViewModel : ViewModel
     {
         public IAnkiContextProvider ContextProvider { get; set; }
 
