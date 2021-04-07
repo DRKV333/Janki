@@ -29,10 +29,24 @@ namespace JankiBusiness
 
         public string Name => deck.Name;
 
+        public GenericCommand SaveCard { get; }
+
         public DeckViewModel(IAnkiContextProvider provider, Deck deck)
         {
             this.deck = deck;
             this.provider = provider;
+
+            SaveCard = new GenericDelegateCommand(async (p) =>
+            {
+                if (!(p is NoteViewModel card))
+                    return;
+
+                using (IAnkiContext context = provider.CreateContext())
+                {
+                    card.SaveChanges(context);
+                    await context.SaveChangesAsync();
+                }
+            });
         }
 
         private async void FetchCards()

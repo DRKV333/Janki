@@ -1,4 +1,6 @@
 ﻿using LibAnkiCards;
+using LibAnkiCards.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,6 +27,8 @@ namespace JankiBusiness
             }
         }
 
+        private readonly Note note;
+
         public CardType Type { get; }
 
         public IEnumerable<Field> Fields { get; }
@@ -32,20 +36,29 @@ namespace JankiBusiness
 
         public IEnumerable<CardViewModel> Cards { get; }
 
+        private bool dirty = false;
+
         public NoteViewModel(Collection collection, Note note)
         {
+            this.note = note;
+
             Type = note.GetCardType(collection);
 
             while (note.Fields.Count < Type.Fields.Count)
             {
                 note.Fields.Add("");
+                dirty = true;
             }
 
             Fields = Type.Fields.Zip(note.Fields, (x, y) => new Field(x) { Value = y }).ToArray();
 
             foreach (var item in Fields)
             {
-                item.PropertyChanged += (x, y) => RaisePropertyChanged(nameof(Fields));
+                item.PropertyChanged += (x, y) =>
+                {
+                    dirty = true;
+                    RaisePropertyChanged(nameof(Fields));
+                };
             }
 
             ShortField = note.ShortField;
@@ -63,6 +76,18 @@ namespace JankiBusiness
             }
 
             Cards = note.Cards.Select(x => new CardViewModel(collection, x, this)).ToList();
+        }
+
+        public void SaveChanges(IAnkiContext context)
+        {
+            if (!dirty)
+                return;
+
+            note.Fields = Fields.Select(x => x.Value).ToList();
+            note.ShortField = ShortField;
+            note.LastModified = DateTime.UtcNow;
+
+            context.Notes.Update(note);
         }
     }
 }

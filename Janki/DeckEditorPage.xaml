@@ -8,6 +8,8 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:vm="using:JankiBusiness"
+    xmlns:mxi="using:Microsoft.Xaml.Interactivity"
+    xmlns:mxic="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -20,6 +22,7 @@
             <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
+            <local:UnselectedValueConverter x:Key="UnselectedValueConverter" />
         </ResourceDictionary>
     </Page.Resources>
     
@@ -71,7 +74,14 @@
                        Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"
                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                        ItemsSource="{Binding ElementName=DeckTree, Path=SelectedItem.Cards}"
-                       AutoGenerateColumns="False" IsReadOnly="True">
+                       AutoGenerateColumns="False" IsReadOnly="True"
+                       SelectionMode="Single">
+            <mxi:Interaction.Behaviors>
+                <mxic:EventTriggerBehavior EventName="SelectionChanged">
+                    <mxic:InvokeCommandAction Command="{Binding ElementName=DeckTree, Path=SelectedItem.SaveCard, Converter={StaticResource CommandValueConverter}}"
+                                              InputConverter="{StaticResource UnselectedValueConverter}" />
+                </mxic:EventTriggerBehavior>
+            </mxi:Interaction.Behaviors>
             <mtuc:DataGrid.Columns>
                 <mtuc:DataGridTextColumn Header="Name" Binding="{Binding ShortField}" />
                 <mtuc:DataGridTextColumn Header="Type" Binding="{Binding Type.Name}" />

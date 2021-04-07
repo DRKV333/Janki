@@ -15,6 +15,8 @@
             <Style TargetType="local:CardRenderer">
                 <Setter Property="MediaProvider" Value="{StaticResource MediaManager}" />
             </Style>
+
+            <local:CommandValueConverter x:Key="CommandValueConverter" />
         </ResourceDictionary>
     </Application.Resources>
 
