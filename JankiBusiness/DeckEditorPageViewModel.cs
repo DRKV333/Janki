@@ -1,9 +1,6 @@
 ﻿using LibAnkiCards.Context;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace JankiBusiness
 {
@@ -12,21 +9,51 @@ namespace JankiBusiness
         public IAnkiContextProvider ContextProvider { get; set; }
 
         private ObservableCollection<DeckViewModel> decks;
+
         public ObservableCollection<DeckViewModel> Decks
         {
             get
             {
                 if (decks == null)
-                    FetchDecks();
+                    Init();
                 return decks;
             }
         }
 
-        private void FetchDecks()
+        private CardAdderViewModel cardAdderViewModel;
+
+        public CardAdderViewModel CardAdderViewModel
+        {
+            get
+            {
+                if (cardAdderViewModel == null)
+                    Init();
+                return cardAdderViewModel;
+            }
+        }
+
+        private DeckViewModel selectedDeck;
+
+        public DeckViewModel SelectedDeck
+        {
+            get => selectedDeck;
+            set => Set(ref selectedDeck, value);
+        }
+
+        private NoteViewModel selectedCard;
+
+        public NoteViewModel SelectedCard
+        {
+            get => selectedCard;
+            set => Set(ref selectedCard, value);
+        }
+
+        private void Init()
         {
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
                 decks = new ObservableCollection<DeckViewModel>(context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)));
+                cardAdderViewModel = new CardAdderViewModel(context.Collection, this);
             }
         }
     }

@@ -49,6 +49,8 @@ namespace JankiBusiness
             });
         }
 
+        public long Id => deck.Id;
+
         private async void FetchCards()
         {
             List<Note> notes;

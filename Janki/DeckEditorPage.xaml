@@ -52,7 +52,7 @@
                        Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                        Background="{ThemeResource SystemChromeLowColor}"
-                       ItemsSource="{Binding Decks}">
+                       ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck, Mode=TwoWay}" >
             <muxc:TreeView.ItemTemplate>
                 <DataTemplate>
                     <muxc:TreeViewItem Content="{Binding Name}" />
@@ -73,12 +73,12 @@
         <mtuc:DataGrid x:Name="CardGrid"
                        Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"
                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                       ItemsSource="{Binding ElementName=DeckTree, Path=SelectedItem.Cards}"
+                       ItemsSource="{Binding SelectedDeck.Cards}" SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
                        AutoGenerateColumns="False" IsReadOnly="True"
                        SelectionMode="Single">
             <mxi:Interaction.Behaviors>
                 <mxic:EventTriggerBehavior EventName="SelectionChanged">
-                    <mxic:InvokeCommandAction Command="{Binding ElementName=DeckTree, Path=SelectedItem.SaveCard, Converter={StaticResource CommandValueConverter}}"
+                    <mxic:InvokeCommandAction Command="{Binding SelectedDeck.SaveCard, Converter={StaticResource CommandValueConverter}}"
                                               InputConverter="{StaticResource UnselectedValueConverter}" />
                 </mxic:EventTriggerBehavior>
             </mxi:Interaction.Behaviors>
@@ -92,7 +92,20 @@
                 Background="{ThemeResource SystemChromeMediumLowColor}">
             <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center" HorizontalAlignment="Left">
-                <Button Margin="5">Add Card</Button>
+                <muxc:SplitButton Margin="5" Command="{Binding CardAdderViewModel.AddCard, Converter={StaticResource CommandValueConverter}}">
+                    <TextBlock>
+                        <Run Text="Add &quot;" />
+                        <Run Text="{Binding CardAdderViewModel.SelectedType.Name}" />
+                        <Run Text="&quot; Card" />
+                    </TextBlock>
+                    <muxc:SplitButton.Flyout>
+                        <Flyout Placement="Bottom" x:Name="AddCardFlyout">
+                            <ListView SelectedItem="{Binding CardAdderViewModel.SelectedType, Mode=TwoWay}" ItemsSource="{Binding CardAdderViewModel.AvailableTypes}" 
+                                      DisplayMemberPath="Name" IsItemClickEnabled="True" ItemClick="ListView_ItemClick" />
+                        </Flyout>
+                    </muxc:SplitButton.Flyout>
+                </muxc:SplitButton>
+                
                 <Button Margin="5">Delete</Button>
                 <Button Margin="5">Duplicate</Button>
             </StackPanel>
@@ -100,7 +113,7 @@
         
         <ListView Grid.Column="1" Grid.Row="3" Background="{ThemeResource SystemChromeMediumColor}"
                   HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}"
-                  ItemsSource="{Binding ElementName=CardGrid, Path=SelectedItem.Fields}"
+                  ItemsSource="{Binding SelectedCard.Fields}"
                   SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -113,7 +126,7 @@
         </ListView>
 
         <FlipView Grid.Column="2" Grid.Row="3" Background="{ThemeResource SystemChromeHighColor}"
-                  ItemsSource="{Binding ElementName=CardGrid, Path=SelectedItem.Cards}">
+                  ItemsSource="{Binding SelectedCard.Cards}">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

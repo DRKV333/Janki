@@ -26,5 +26,10 @@ namespace Janki
         {
             this.InitializeComponent();
         }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            AddCardFlyout.Hide();
+        }
     }
 }
