@@ -23,17 +23,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronPythonAnalyzer", "ironp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronPythonCompiler", "ironpython3\Src\IronPythonCompiler\IronPythonCompiler.csproj", "{573403CB-3985-4506-8408-14C7024AFD7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLRPrecompFixer", "DLRPrecompFixer\DLRPrecompFixer.csproj", "{A3BAAAEC-D0ED-4E94-BE78-349F4E3463BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DLRPrecompFixer", "DLRPrecompFixer\DLRPrecompFixer.csproj", "{A3BAAAEC-D0ED-4E94-BE78-349F4E3463BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeClosure", "FakeClosure\FakeClosure.csproj", "{616CBAEB-1D22-4C9A-B7D1-6BC036F3D1CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeClosure", "FakeClosure\FakeClosure.csproj", "{616CBAEB-1D22-4C9A-B7D1-6BC036F3D1CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLRPrecompFixer", "DLRPrecompFixer", "{97EF58DF-9D7D-4623-B8B0-5C23F3E177A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LibAnkiSchedulerStuff", "LibAnkiSchedulerStuff", "{103E5427-6603-42C7-B219-C2FA8D454E5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAnkiScheduler", "LibAnkiScheduler\LibAnkiScheduler.csproj", "{95F88803-85AA-42C6-BEE8-6529EA0C54EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibAnkiScheduler", "LibAnkiScheduler\LibAnkiScheduler.csproj", "{95F88803-85AA-42C6-BEE8-6529EA0C54EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAnkiSchedulerTests", "LibAnkiSchedulerTests\LibAnkiSchedulerTests.csproj", "{EAC8A21C-4D64-4D8D-956E-03C4EE39694F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibAnkiSchedulerTests", "LibAnkiSchedulerTests\LibAnkiSchedulerTests.csproj", "{EAC8A21C-4D64-4D8D-956E-03C4EE39694F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JankiBusiness", "JankiBusiness\JankiBusiness.csproj", "{EBB3DCAA-6245-488A-8C2C-E78204384CED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -315,6 +317,26 @@ Global
 		{EAC8A21C-4D64-4D8D-956E-03C4EE39694F}.Release|x64.Build.0 = Release|Any CPU
 		{EAC8A21C-4D64-4D8D-956E-03C4EE39694F}.Release|x86.ActiveCfg = Release|Any CPU
 		{EAC8A21C-4D64-4D8D-956E-03C4EE39694F}.Release|x86.Build.0 = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|x64.Build.0 = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Debug|x86.Build.0 = Debug|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|ARM.Build.0 = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|ARM64.Build.0 = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|x64.ActiveCfg = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|x64.Build.0 = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBB3DCAA-6245-488A-8C2C-E78204384CED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
