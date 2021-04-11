@@ -1,4 +1,5 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards;
+using LibAnkiCards.Context;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace JankiBusiness
     public class DeckEditorPageViewModel : ViewModel
     {
         public IAnkiContextProvider ContextProvider { get; set; }
-        public IConfirmationDialogService ConfirmationDialogService { get; set; }
+        public IDialogService DialogService { get; set; }
 
         private ObservableCollection<DeckViewModel> decks;
 
@@ -51,6 +52,8 @@ namespace JankiBusiness
 
         public GenericCommand DeleteSelectedCard { get; }
 
+        public GenericCommand AddDeck { get; }
+
         public DeckEditorPageViewModel()
         {
             DeleteSelectedCard = new GenericDelegateCommand(async p =>
@@ -58,7 +61,7 @@ namespace JankiBusiness
                 if (SelectedCard == null)
                     return;
 
-                if (await ConfirmationDialogService.ShowDialog(
+                if (await DialogService.ShowConfirmationDialog(
                     "Delete Card",
                     $"Are you sure you want to delete \"{SelectedCard.ShortField}\"?",
                     "Delete", "Cancel"))
@@ -71,6 +74,37 @@ namespace JankiBusiness
 
                     SelectedDeck.Cards.Remove(SelectedCard);
                     SelectedCard = null;
+                }
+            });
+
+            AddDeck = new GenericDelegateCommand(async p =>
+            {
+                string name = await DialogService.ShowTextPromptDialog("Deck Name", "", true);
+
+                if (name == null)
+                    return;
+
+                using (IAnkiContext context = ContextProvider.CreateContext())
+                {
+                    Collection collection = context.Collection;
+
+                    long id = collection.Decks.Any() ? collection.Decks.Max(x => x.Key + 1) : 0;
+
+                    Deck deck = new Deck()
+                    {
+                        ConfigurationId = collection.DeckConfigurations.First().Key,
+                        Id = id,
+                        Name = name
+                    };
+
+                    collection.Decks.Add(id, deck);
+                    context.Collection = collection;
+
+                    await context.SaveChangesAsync();
+
+                    DeckViewModel deckVM = new DeckViewModel(ContextProvider, deck);
+                    Decks.Add(deckVM);
+                    SelectedDeck = deckVM;
                 }
             });
         }

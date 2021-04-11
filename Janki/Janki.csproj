@@ -123,7 +123,7 @@
       <DependentUpon>CardRenderer.xaml</DependentUpon>
     </Compile>
     <Compile Include="CommandValueConverter.cs" />
-    <Compile Include="ConfirmationDialogService.cs" />
+    <Compile Include="DialogService.cs" />
     <Compile Include="DeckEditorPage.xaml.cs">
       <DependentUpon>DeckEditorPage.xaml</DependentUpon>
     </Compile>
