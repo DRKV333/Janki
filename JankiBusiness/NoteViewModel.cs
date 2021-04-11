@@ -89,5 +89,10 @@ namespace JankiBusiness
 
             context.Notes.Update(note);
         }
+
+        public void Delete(IAnkiContext context)
+        {
+            context.Notes.Remove(note);
+        }
     }
 }

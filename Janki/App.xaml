@@ -17,6 +17,8 @@
             </Style>
 
             <local:CommandValueConverter x:Key="CommandValueConverter" />
+
+            <local:ConfirmationDialogService x:Key="ConfirmationDialogService" />
         </ResourceDictionary>
     </Application.Resources>
 

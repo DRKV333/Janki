@@ -7,6 +7,7 @@ namespace JankiBusiness
     public class DeckEditorPageViewModel : ViewModel
     {
         public IAnkiContextProvider ContextProvider { get; set; }
+        public IConfirmationDialogService ConfirmationDialogService { get; set; }
 
         private ObservableCollection<DeckViewModel> decks;
 
@@ -46,6 +47,32 @@ namespace JankiBusiness
         {
             get => selectedCard;
             set => Set(ref selectedCard, value);
+        }
+
+        public GenericCommand DeleteSelectedCard { get; }
+
+        public DeckEditorPageViewModel()
+        {
+            DeleteSelectedCard = new GenericDelegateCommand(async p =>
+            {
+                if (SelectedCard == null)
+                    return;
+
+                if (await ConfirmationDialogService.ShowDialog(
+                    "Delete Card",
+                    $"Are you sure you want to delete \"{SelectedCard.ShortField}\"?",
+                    "Delete", "Cancel"))
+                {
+                    using (IAnkiContext context = ContextProvider.CreateContext())
+                    {
+                        SelectedCard.Delete(context);
+                        await context.SaveChangesAsync();
+                    }
+
+                    SelectedDeck.Cards.Remove(SelectedCard);
+                    SelectedCard = null;
+                }
+            });
         }
 
         private void Init()

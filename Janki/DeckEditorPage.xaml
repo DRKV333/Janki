@@ -14,7 +14,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.DataContext>
-        <vm:DeckEditorPageViewModel ContextProvider="{StaticResource MediaManager}" />
+        <vm:DeckEditorPageViewModel ContextProvider="{StaticResource MediaManager}"
+                                    ConfirmationDialogService="{StaticResource ConfirmationDialogService}" />
     </Page.DataContext>
 
     <Page.Resources>
@@ -106,7 +107,7 @@
                     </muxc:SplitButton.Flyout>
                 </muxc:SplitButton>
                 
-                <Button Margin="5">Delete</Button>
+                <Button Margin="5" Command="{Binding DeleteSelectedCard, Converter={StaticResource CommandValueConverter}}">Delete</Button>
                 <Button Margin="5">Duplicate</Button>
             </StackPanel>
         </Border>
