@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
@@ -65,6 +66,20 @@ namespace JankiBusiness
             foreach (var item in notes)
             {
                 Cards.Add(new NoteViewModel(collection, item));
+            }
+        }
+
+        public async Task Delete()
+        {
+            using (IAnkiContext context = provider.CreateContext())
+            {
+                context.Cards.RemoveRange(deck.GetCards(context));
+
+                Collection collection = context.Collection;
+                collection.Decks.Remove(deck.Id);
+                context.Collection = collection;
+
+                await context.SaveChangesAsync();
             }
         }
     }

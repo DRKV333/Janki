@@ -54,6 +54,8 @@ namespace JankiBusiness
 
         public GenericCommand AddDeck { get; }
 
+        public GenericCommand DeleteSelectedDeck { get; }
+
         public DeckEditorPageViewModel()
         {
             DeleteSelectedCard = new GenericDelegateCommand(async p =>
@@ -105,6 +107,23 @@ namespace JankiBusiness
                     DeckViewModel deckVM = new DeckViewModel(ContextProvider, deck);
                     Decks.Add(deckVM);
                     SelectedDeck = deckVM;
+                }
+            });
+
+            DeleteSelectedDeck = new GenericDelegateCommand(async p =>
+            {
+                if (SelectedDeck == null)
+                    return;
+
+                if (await DialogService.ShowConfirmationDialog(
+                    "Delete Deck",
+                    $"Are you sure you want to delete \"{SelectedDeck.Name}\" and all {SelectedDeck.Cards.Count} cards in it?",
+                    "Delete", "Cancel"))
+                {
+                    await SelectedDeck.Delete();
+
+                    Decks.Remove(SelectedDeck);
+                    SelectedDeck = null;
                 }
             });
         }
