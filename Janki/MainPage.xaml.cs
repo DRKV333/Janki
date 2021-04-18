@@ -18,6 +18,8 @@ namespace Janki
 
             if (args.InvokedItemContainer == DeckEditorItem)
                 ContentFrame.NavigateToType(typeof(DeckEditorPage), null, options);
+            else if (args.InvokedItemContainer == CardTypeEditorItem)
+                ContentFrame.NavigateToType(typeof(CardTypeEditorPage), null, options);
         }
     }
 }

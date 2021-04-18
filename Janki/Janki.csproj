@@ -122,6 +122,10 @@
     <Compile Include="CardRenderer.xaml.cs">
       <DependentUpon>CardRenderer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CardTypeDataTemplateSelector.cs" />
+    <Compile Include="CardTypeEditorPage.xaml.cs">
+      <DependentUpon>CardTypeEditorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommandValueConverter.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="DeckEditorPage.xaml.cs">
@@ -156,6 +160,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="CardRenderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CardTypeEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

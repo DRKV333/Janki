@@ -50,7 +50,7 @@ namespace JankiBusiness
                 dirty = true;
             }
 
-            Fields = Type.Fields.Zip(note.Fields, (x, y) => new Field(x) { Value = y }).ToArray();
+            Fields = Type.Fields.OrderBy(x => x.Id).Zip(note.Fields, (x, y) => new Field(x) { Value = y }).ToArray();
 
             foreach (var item in Fields)
             {

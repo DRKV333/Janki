@@ -16,6 +16,12 @@ namespace JankiBusiness
                 x => x.AddValueGetter(typeof(CardViewModel), NoteFieldValueGetter)
             )
             .Build();
+        
+        private static readonly StubbleVisitorRenderer frontRendererPreview = new StubbleBuilder()
+            .Configure(
+                x => x.AddValueGetter(typeof(CardViewModel), PreviewValueGetter)
+            )
+            .Build();
 
         private static readonly StubbleVisitorRenderer backRenderer = new StubbleBuilder()
             .Configure(
@@ -25,6 +31,17 @@ namespace JankiBusiness
                      ))
             )
             .Build();
+        
+        private static readonly StubbleVisitorRenderer backRendererPreview = new StubbleBuilder()
+            .Configure(
+                x => x.AddValueGetter(typeof(CardViewModel), ComposeValueGetter(
+                        FrontSideValueGetter,
+                        PreviewValueGetter
+                     ))
+            )
+            .Build();
+
+        private static object PreviewValueGetter(object value, string key, bool ignoreCase) => key;
 
         private static object NoteFieldValueGetter(object value, string key, bool ignoreCase) =>
             ((CardViewModel)value).Note.Fields.FirstOrDefault(
@@ -55,6 +72,7 @@ namespace JankiBusiness
         };
 
         public NoteViewModel Note { get; }
+        public CardType Type { get; }
         public CardVariant Variant { get; }
 
         private string frontContent;
@@ -75,25 +93,37 @@ namespace JankiBusiness
             private set => Set(ref backHtml, value);
         }
 
-        public CardViewModel(Collection collection, Card card, NoteViewModel note = null)
+        private CardViewModel(CardType Type, CardVariant Variant, NoteViewModel Note)
         {
-            if (note == null)
-                Note = new NoteViewModel(collection, card.Note);
-            else
-                Note = note;
-
-            Variant = card.GetVariant(collection);
-
-            Note.PropertyChanged += (x, y) => Render();
-
+            this.Type = Type;
+            this.Variant = Variant;
+            this.Note = Note;
             Render();
         }
-
-        private async void Render()
+        
+        private CardViewModel(CardVariant Variant, NoteViewModel Note)
+            : this(Note.Type, Variant, Note)
         {
-            frontContent = await RenderContent(Variant.FrontFormat, frontRenderer).ConfigureAwait(false);
+        }
+
+        public CardViewModel(Collection collection, Card card, NoteViewModel note = null) :
+            this(card.GetVariant(collection),
+                 note == null ? new NoteViewModel(collection, card.Note) : note)
+        {
+            Note.PropertyChanged += (x, y) => Render();
+        }
+
+        public static CardViewModel CreatePreview(CardType type, CardVariant variant) => new CardViewModel(type, variant, null);
+
+        private StubbleVisitorRenderer FrontRenderer => Note == null ? frontRendererPreview : frontRenderer;
+
+        private StubbleVisitorRenderer BackRenderer => Note == null ? backRendererPreview : backRenderer;
+
+        public async Task Render()
+        {
+            frontContent = await RenderContent(Variant.FrontFormat, FrontRenderer).ConfigureAwait(false);
             FrontHtml = RenderSide(frontContent);
-            BackHtml = RenderSide(await RenderContent(Variant.BackFormat, backRenderer).ConfigureAwait(false));
+            BackHtml = RenderSide(await RenderContent(Variant.BackFormat, BackRenderer).ConfigureAwait(false));
         }
 
         private string RenderSide(string content)
@@ -103,7 +133,7 @@ namespace JankiBusiness
             builder.Append("<html>");
 
             builder.Append("<head><style>");
-            builder.Append(Note.Type.Css);
+            builder.Append(Type.Css);
             builder.Append("</style></head>");
 
             builder.Append("<body class=\"card\">");
@@ -115,15 +145,15 @@ namespace JankiBusiness
             return builder.ToString();
         }
 
-        private ValueTask<string> RenderContent(string template, StubbleVisitorRenderer renderer)
+        private async ValueTask<string> RenderContent(string template, StubbleVisitorRenderer renderer)
         {
             try
             {
-                return renderer.RenderAsync(template, this, SkipHtmlEncodingSettings);
+                return await renderer.RenderAsync(template, this, SkipHtmlEncodingSettings);
             }
             catch (Exception e)
             {
-                return new ValueTask<string>($"Failed to render card: {e}");
+                return $"Failed to render card: {e}";
             }
         }
     }
