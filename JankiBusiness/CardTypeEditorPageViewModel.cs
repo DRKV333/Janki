@@ -1,4 +1,6 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards;
+using LibAnkiCards.Context;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,15 +43,23 @@ namespace JankiBusiness
             {
                 Set(ref selectedItem, value);
 
-                CardTypeViewModel type = selectedItem.GetCardType();
-                if (type != null)
-                    SelectedType = type;
-
-                ISelectionRedirector redirected = selectedItem.Redirect();
-                if (redirected != null)
-                    SelectedItem = redirected;
+                if (selectedItem == null)
+                {
+                    SelectedType = null;
+                    SelectedVariant = null;
+                }
                 else
-                    SelectedVariant = selectedItem.GetCardVariant();
+                {
+                    CardTypeViewModel type = selectedItem.GetCardType();
+                    if (type != null)
+                        SelectedType = type;
+
+                    ISelectionRedirector redirected = selectedItem.Redirect();
+                    if (redirected != null)
+                        SelectedItem = redirected;
+                    else
+                        SelectedVariant = selectedItem.GetCardVariant();
+                }
             }
         }
 
@@ -81,6 +91,14 @@ namespace JankiBusiness
 
         public GenericCommand RemoveField { get; }
 
+        public GenericCommand AddCardType { get; }
+
+        public GenericCommand RemoveCardType { get; }
+
+        public GenericCommand AddVariant { get; }
+
+        public GenericCommand RemoveVariant { get; }
+
         public CardTypeEditorPageViewModel()
         {
             AddField = new GenericDelegateCommand(async p =>
@@ -104,7 +122,134 @@ namespace JankiBusiness
                 }
                 return Task.CompletedTask;
             });
+
+            AddCardType = new GenericDelegateCommand(async p =>
+            {
+                string name = await DialogService.ShowTextPromptDialog("Card Type Name", "", true);
+
+                if (name == null)
+                    return;
+
+                using (IAnkiContext context = Provider.CreateContext())
+                {
+                    Collection collection = context.Collection;
+
+                    long id = collection.CardTypes.Any() ? collection.CardTypes.Max(x => x.Key) + 1 : 0;
+
+                    CardType type = new CardType()
+                    {
+                        Css = @"
+.card {
+    font-family: arial;
+    font-size:150%;
+    text-align: center;
+    color: Black;
+    background-color:black;
+}
+
+#rubric {
+    text-align: left;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    background: #1d6695;
+    color: white;
+    font-weight: 500;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    width: 300px;
+    border-radius: 20px;
+}
+",
+                        LatexPre = @"
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsmath}
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\begin{document}
+",
+                        LatexPost = @"
+\end{document}
+",
+                        Id = id,
+                        Name = name,
+                        Tags = new List<string>(),
+                        Fields = new List<CardField>() { new CardField() { Id = 0, Name = "Front" }, new CardField() { Id = 1, Name = "Back" } },
+                        Variants = new List<CardVariant>() { MakeVariant("Card 1") }
+                    };
+
+                    collection.CardTypes.Add(id, type);
+                    context.Collection = collection;
+
+                    await context.SaveChangesAsync();
+
+                    CardTypeViewModel typeVM = new CardTypeViewModel(Provider, type);
+                    CardTypes.Add(typeVM);
+                    SelectedItem = typeVM;
+                }
+            });
+
+            RemoveCardType = new GenericDelegateCommand(async p =>
+            {
+                if (SelectedType == null)
+                    return;
+
+                if (await DialogService.ShowConfirmationDialog(
+                    "Delete Card Type",
+                    $"Are you sure you want to delete the \"{SelectedType.Name}\" card type and all {await SelectedType.CountNotes()} cards that use it?",
+                    "Delete", "Cancel"))
+                {
+                    await SelectedType.Delete();
+
+                    CardTypes.Remove(SelectedType);
+                    SelectedItem = null;
+                }
+            });
+
+            AddVariant = new GenericDelegateCommand(async p =>
+            {
+                if (SelectedType == null)
+                    return;
+
+                string name = await DialogService.ShowTextPromptDialog("Variant Name", "", true);
+
+                if (name == null)
+                    return;
+
+                CardVariant variant = MakeVariant(name);
+
+                SelectedItem = await SelectedType.AddVariant(variant);
+            });
+
+            RemoveVariant = new GenericDelegateCommand(async p =>
+            {
+                if (selectedType == null || SelectedVariant == null || !SelectedType.Variants.Any())
+                    return;
+
+                if (await DialogService.ShowConfirmationDialog(
+                    "Delete Card Variant",
+                    $"Are you sure you want to delete the \"{SelectedType.Name}\" variant?",
+                    "Delete", "Cancel"))
+                {
+                    await SelectedType.DeleteVariant(SelectedVariant);
+
+                    SelectedItem = SelectedType;
+                }
+            });
         }
+
+        private CardVariant MakeVariant(string name) => new CardVariant()
+        {
+            FrontFormat = "{{Front}}",
+            BackFormat = "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}",
+            Name = name
+        };
 
         private void Init()
         {

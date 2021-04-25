@@ -30,8 +30,10 @@
         <Border Grid.Column="0" Grid.Row="0" Background="{ThemeResource SystemChromeMediumColor}">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Margin="5">Add</Button>
-                <Button Margin="5">Delete</Button>
+                <Button Margin="5" Command="{Binding AddCardType, Converter={StaticResource CommandValueConverter}}">Add Type</Button>
+                <Button Margin="5" Command="{Binding RemoveCardType, Converter={StaticResource CommandValueConverter}}">Delete Type</Button>
+                <Button Margin="5" Command="{Binding AddVariant, Converter={StaticResource CommandValueConverter}}">Add Variant</Button>
+                <Button Margin="5" Command="{Binding RemoveVariant, Converter={StaticResource CommandValueConverter}}">Delete Variant</Button>
             </StackPanel>
         </Border>
 

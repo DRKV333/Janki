@@ -1,8 +1,10 @@
 ﻿using LibAnkiCards;
 using LibAnkiCards.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
@@ -69,6 +71,77 @@ namespace JankiBusiness
             foreach (var item in Variants)
             {
                 item.Preview.Render();
+            }
+        }
+
+        public async Task<int> CountNotes()
+        {
+            using (IAnkiContext context = provider.CreateContext())
+            {
+                return await context.Notes.CountAsync(x => x.CardTypeId == type.Id);
+            }
+        }
+
+        public async Task Delete()
+        {
+            using (IAnkiContext context = provider.CreateContext())
+            {
+                context.Notes.RemoveRange(context.Notes.Where(x => x.CardTypeId == type.Id));
+
+                Collection collection = context.Collection;
+                collection.CardTypes.Remove(type.Id);
+                context.Collection = collection;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CardVariantViewModel> AddVariant(CardVariant variant)
+        {
+            long id = type.Variants.Max(x => x.Id) + 1;
+            variant.Id = id;
+
+            type.Variants.Add(variant);
+
+            await SaveChanges();
+
+            if (singleVariant != null)
+            {
+                Variants.Add(singleVariant);
+                singleVariant = null;
+            }
+
+            CardVariantViewModel variantVM = new CardVariantViewModel(type, variant);
+            Variants.Add(variantVM);
+            return variantVM;
+        }
+
+        public async Task DeleteVariant(CardVariantViewModel variant)
+        {
+            if (!type.Variants.Remove(variant.Variant))
+                return;
+
+            await SaveChanges();
+
+            Variants.Remove(variant);
+            if (Variants.Count == 1)
+            {
+                singleVariant = Variants.First();
+                Variants.Clear();
+            }
+        }
+
+        public async Task SaveChanges()
+        {
+            using (IAnkiContext context = provider.CreateContext())
+            {
+                Collection collection = context.Collection;
+
+                collection.CardTypes[type.Id] = type;
+
+                context.Collection = collection;
+
+                await context.SaveChangesAsync();
             }
         }
     }
