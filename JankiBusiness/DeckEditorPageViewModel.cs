@@ -90,7 +90,7 @@ namespace JankiBusiness
                 {
                     Collection collection = context.Collection;
 
-                    long id = collection.Decks.Any() ? collection.Decks.Max(x => x.Key + 1) : 0;
+                    long id = collection.Decks.Any() ? collection.Decks.Max(x => x.Key) + 1 : 0;
 
                     Deck deck = new Deck()
                     {
