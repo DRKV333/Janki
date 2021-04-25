@@ -15,7 +15,8 @@
 
     <Page.DataContext>
         <vm:DeckEditorPageViewModel ContextProvider="{StaticResource MediaManager}"
-                                    DialogService="{StaticResource DialogService}" />
+                                    DialogService="{StaticResource DialogService}"
+                                    MediaImporter="{StaticResource MediaManager}"/>
     </Page.DataContext>
 
     <Page.Resources>
@@ -45,7 +46,7 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button Margin="5" Command="{Binding AddDeck, Converter={StaticResource CommandValueConverter}}">Add</Button>
                 <Button Margin="5" Command="{Binding DeleteSelectedDeck, Converter={StaticResource CommandValueConverter}}">Delete</Button>
-                <Button Margin="5">Import</Button>
+                <Button Margin="5" Command="{Binding Import, Converter={StaticResource CommandValueConverter}}">Import</Button>
             </StackPanel>
         </Border>
 

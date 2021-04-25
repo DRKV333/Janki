@@ -1,6 +1,8 @@
 ﻿using LibAnkiCards;
 using LibAnkiCards.Context;
+using LibAnkiCards.Importing;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace JankiBusiness
@@ -9,6 +11,7 @@ namespace JankiBusiness
     {
         public IAnkiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
+        public IMediaImporter MediaImporter { get; set; }
 
         private ObservableCollection<DeckViewModel> decks;
 
@@ -55,6 +58,8 @@ namespace JankiBusiness
         public GenericCommand AddDeck { get; }
 
         public GenericCommand DeleteSelectedDeck { get; }
+
+        public GenericCommand Import { get; }
 
         public DeckEditorPageViewModel()
         {
@@ -126,6 +131,25 @@ namespace JankiBusiness
                     SelectedDeck = null;
                 }
             });
+
+            Import = new GenericDelegateCommand(async p =>
+            {
+                using (Stream sourceFile = await DialogService.OpenFile(".apkg", ".colpkg"))
+                {
+                    if (sourceFile == null)
+                        return;
+
+                    using (IAnkiContext context = ContextProvider.CreateContext())
+                    {
+                        PackageImporter importer = new PackageImporter(context, MediaImporter);
+                        await importer.Import(sourceFile);
+                        context.Collection = context.Collection; //TODO: Fix this, this is stupid!
+                        await context.SaveChangesAsync();
+                    }
+                }
+
+                Init();
+            });
         }
 
         private void Init()
@@ -133,7 +157,9 @@ namespace JankiBusiness
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
                 decks = new ObservableCollection<DeckViewModel>(context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)));
+                RaisePropertyChanged(nameof(Decks));
                 cardAdderViewModel = new CardAdderViewModel(context.Collection, this);
+                RaisePropertyChanged(nameof(CardAdderViewModel));
             }
         }
     }

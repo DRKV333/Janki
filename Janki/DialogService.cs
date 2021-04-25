@@ -1,6 +1,9 @@
 ﻿using JankiBusiness;
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Controls;
 
 namespace Janki
@@ -47,6 +50,23 @@ namespace Janki
                 return textBox.Text;
             else
                 return null;
+        }
+
+        public async Task<Stream> OpenFile(params string[] filters)
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+
+            foreach (var item in filters)
+            {
+                picker.FileTypeFilter.Add(item);
+            }
+
+            StorageFile file = await picker.PickSingleFileAsync();
+
+            if (file == null)
+                return null;
+
+            return (await file.OpenReadAsync()).AsStreamForRead();
         }
     }
 }
