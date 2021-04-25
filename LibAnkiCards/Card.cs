@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace LibAnkiCards
 {
@@ -45,8 +46,8 @@ namespace LibAnkiCards
         [Column("ord")]
         public int VariantId { get; set; }
 
-        public CardVariant GetVariant(IAnkiContext context) => Note.GetCardType(context).Variants[VariantId];
-        public CardVariant GetVariant(Collection collection) => Note.GetCardType(collection).Variants[VariantId];
+        public CardVariant GetVariant(IAnkiContext context) => Note.GetCardType(context).Variants.FirstOrDefault(x => x.Id == VariantId);
+        public CardVariant GetVariant(Collection collection) => Note.GetCardType(collection).Variants.FirstOrDefault(x => x.Id == VariantId);
 
         [Required]
         [Column("mod")]
