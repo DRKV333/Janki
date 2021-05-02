@@ -138,7 +138,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalStorageMediaManager.cs" />
+    <Compile Include="StorageFolderMediaProvider.cs" />
     <Compile Include="UnselectedValueConverter.cs" />
+    <Compile Include="WebEditBox.cs" />
+    <Compile Include="WebEditBoxToolbarCoordinator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -146,6 +149,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\web\FieldEditor\FieldEditor.html" />
+    <Content Include="Assets\web\FieldEditor\Squire\squire.js" />
+    <Content Include="Assets\web\mathjax\tex-mml-chtml.js" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -200,6 +206,12 @@
       <Project>{ba7dde8e-2aa4-4d39-9888-0a6a5300c449}</Project>
       <Name>LibAnkiCards</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\web\mathjax\LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\web\FieldEditor\Squire\LICENSE" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

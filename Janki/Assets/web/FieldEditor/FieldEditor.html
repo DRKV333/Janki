@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style type="text/css" media="screen">
+body {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+#editor {
+	min-height: 30px;
+	word-wrap: break-word;
+	padding: 0;
+	background: transparent;
+	cursor: text;
+}
+	</style>
+</head>
+
+<body>
+	<script type="text/javascript" src="Squire/squire.js"></script>
+	<div id="editor"></div>
+	
+	<span id="testing"></span>
+	
+	<script type="text/javascript" charset="utf-8">
+var div = document.getElementById('editor');
+var editor = new Squire(div);
+
+function notifyApp(message) {
+	//document.getElementById("testing").innerHTML += String(message) + " ";
+	window.external.notify(message);
+}
+
+var suppressFormatNotify = false;
+
+function notifyFormat(format) {
+	if (editor.hasFormat(format))
+		notifyApp(`format ${format} true`);
+	else
+		notifyApp(`format ${format} false`);
+}
+
+function notifyAllFormats() {
+	if (suppressFormatNotify)
+		return;
+
+	notifyFormat("b");
+	notifyFormat("i");
+	notifyFormat("u");
+}
+
+function notifyText() {
+	notifyApp(`text ${editor.getHTML()}`);
+}
+
+function notifyHeight() {
+	notifyApp(`height ${document.body.scrollHeight.toString()}`);
+}
+
+editor.addEventListener("pathChange", notifyAllFormats);
+editor.addEventListener("input", notifyHeight);
+editor.addEventListener("blur", notifyText);
+
+function setEditorHtml(value) {
+	editor.setHTML(value);
+}
+
+function setUnsetFormat(set, unset, value) {
+	suppressFormatNotify = true;
+	if (value == "true")
+		set();
+	else
+		unset();
+	suppressFormatNotify = false;
+}
+
+function bold(value) {
+	setUnsetFormat(editor.bold.bind(editor), editor.removeBold.bind(editor), value);
+}
+
+function italic(value) {
+	setUnsetFormat(editor.italic.bind(editor), editor.removeItalic.bind(editor), value);
+}
+
+function underline(value) {
+	setUnsetFormat(editor.underline.bind(editor), editor.removeUnderline.bind(editor), value);
+}
+
+notifyApp("hello");
+notifyHeight();
+	</script>
+</body>
+
+</html>

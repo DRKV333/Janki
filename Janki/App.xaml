@@ -16,6 +16,10 @@
                 <Setter Property="MediaProvider" Value="{Binding Source={StaticResource MediaManager}, Path=CardMediaProvider}" />
             </Style>
 
+            <Style TargetType="local:WebEditBox">
+                <Setter Property="MediaProvider" Value="{Binding Source={StaticResource MediaManager}, Path=FieldEditorMediaProvider}" />
+            </Style>
+
             <local:CommandValueConverter x:Key="CommandValueConverter" />
 
             <local:DialogService x:Key="DialogService" />

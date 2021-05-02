@@ -25,6 +25,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
             <local:UnselectedValueConverter x:Key="UnselectedValueConverter" />
+            <local:WebEditBoxToolbarCoordinator x:Key="EditCoordinator" />
         </ResourceDictionary>
     </Page.Resources>
     
@@ -110,6 +111,12 @@
                 
                 <Button Margin="5" Command="{Binding DeleteSelectedCard, Converter={StaticResource CommandValueConverter}}">Delete</Button>
                 <Button Margin="5">Duplicate</Button>
+
+                <CommandBar DataContext="{StaticResource EditCoordinator}" OverflowButtonVisibility="Collapsed">
+                    <AppBarToggleButton IsChecked="{Binding Bold, Mode=TwoWay}" Icon="Bold" AllowFocusOnInteraction="False" />
+                    <AppBarToggleButton IsChecked="{Binding Italic, Mode=TwoWay}" Icon="Italic" AllowFocusOnInteraction="False" />
+                    <AppBarToggleButton IsChecked="{Binding Underline, Mode=TwoWay}" Icon="Underline" AllowFocusOnInteraction="False" />
+                </CommandBar>
             </StackPanel>
         </Border>
         
@@ -120,8 +127,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                        <TextBlock Text="{Binding Definition.Name}" />
-                        <TextBox AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay}" />
+                        <TextBlock Margin="0,10,0,3" Text="{Binding Definition.Name}" />
+                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3" Background="White">
+                            <local:WebEditBox Coordinator="{StaticResource EditCoordinator}" Margin="5" Text="{Binding Value, Mode=TwoWay}" />
+                        </Border>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

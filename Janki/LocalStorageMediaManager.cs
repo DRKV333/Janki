@@ -12,12 +12,16 @@ namespace Janki
     {
         private readonly StorageFolderMediaProvider media = new StorageFolderMediaProvider(ApplicationData.Current.LocalFolder, "media", true);
         private readonly StorageFolderMediaProvider mathjax = new StorageFolderMediaProvider(Package.Current.InstalledLocation, @"Assets\web\mathjax", false);
+        private readonly StorageFolderMediaProvider fieldEditor = new StorageFolderMediaProvider(Package.Current.InstalledLocation, @"Assets\web\FieldEditor", false);
 
         public IMediaProvider CardMediaProvider { get; }
+
+        public IMediaProvider FieldEditorMediaProvider { get; }
 
         public LocalStorageMediaManager()
         {
             CardMediaProvider = new CompositeMediaProvider(mathjax, media);
+            FieldEditorMediaProvider = new CompositeMediaProvider(fieldEditor, media);
         }
 
         public async Task ImportMedia(string name, Stream content)
