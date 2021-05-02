@@ -40,7 +40,7 @@ namespace Janki
 
         protected void SetIndexUri(string uri)
         {
-            IndexUri = web.BuildLocalStreamUri("local", uri);
+            IndexUri = web.BuildLocalStreamUri(Guid.NewGuid().ToString(), uri);
             NavigateToIndex();
         }
 
