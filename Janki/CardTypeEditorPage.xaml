@@ -76,8 +76,8 @@
                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                          AcceptsReturn="True"
                          Text="{Binding SelectedVariant.FrontFormat, Mode=TwoWay}" />
-                <local:CardRenderer Margin="5" Grid.Column="1" Grid.Row="1"
-                                    Html="{Binding SelectedVariant.Preview.FrontHtml}" />
+                <local:HtmlWebView Margin="5" Grid.Column="1" Grid.Row="1"
+                                   Html="{Binding SelectedVariant.Preview.FrontHtml}" />
             </Grid>
         </Border>
 
@@ -99,8 +99,8 @@
                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                          AcceptsReturn="True"
                          Text="{Binding SelectedVariant.BackFormat}" />
-                <local:CardRenderer Margin="5" Grid.Column="1" Grid.Row="1"
-                                    Html="{Binding SelectedVariant.Preview.BackHtml}" />
+                <local:HtmlWebView Margin="5" Grid.Column="1" Grid.Row="1"
+                                   Html="{Binding SelectedVariant.Preview.BackHtml}" />
             </Grid>
         </Border>
 

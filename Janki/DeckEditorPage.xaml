@@ -142,8 +142,8 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <local:CardRenderer Margin="10" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding FrontHtml}" />
-                        <local:CardRenderer Margin="10" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding BackHtml}" />
+                        <local:HtmlWebView Margin="10" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding FrontHtml}" />
+                        <local:HtmlWebView Margin="10" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding BackHtml}" />
                     </Grid>
                 </DataTemplate>
             </FlipView.ItemTemplate>
