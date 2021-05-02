@@ -13,7 +13,7 @@
             <local:LocalStorageMediaManager x:Key="MediaManager" />
 
             <Style TargetType="local:HtmlWebView">
-                <Setter Property="MediaProvider" Value="{StaticResource MediaManager}" />
+                <Setter Property="MediaProvider" Value="{Binding Source={StaticResource MediaManager}, Path=CardMediaProvider}" />
             </Style>
 
             <local:CommandValueConverter x:Key="CommandValueConverter" />

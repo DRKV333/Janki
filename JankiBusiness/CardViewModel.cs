@@ -3,6 +3,7 @@ using Stubble.Core;
 using Stubble.Core.Builders;
 using Stubble.Core.Settings;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,9 +133,16 @@ namespace JankiBusiness
 
             builder.Append("<html>");
 
-            builder.Append("<head><style>");
+            builder.Append("<head>");
+
+            if (!Debugger.IsAttached)
+                builder.Append("<script id=\"MathJax-script\" async src=\"tex-mml-chtml.js\"></script>");
+
+            builder.Append("<style>");
             builder.Append(Type.Css);
-            builder.Append("</style></head>");
+            builder.Append("</style>");
+
+            builder.Append("</head>");
 
             builder.Append("<body class=\"card\">");
             builder.Append(content);

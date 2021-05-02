@@ -3,17 +3,26 @@ using LibAnkiCards.Importing;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 
 namespace Janki
 {
-    internal class LocalStorageMediaManager : IMediaImporter, IAnkiContextProvider, IMediaProvider
+    internal class LocalStorageMediaManager : IMediaImporter, IAnkiContextProvider
     {
-        private StorageFolder mediaFolder;
+        private readonly StorageFolderMediaProvider media = new StorageFolderMediaProvider(ApplicationData.Current.LocalFolder, "media", true);
+        private readonly StorageFolderMediaProvider mathjax = new StorageFolderMediaProvider(Package.Current.InstalledLocation, @"Assets\web\mathjax", false);
+
+        public IMediaProvider CardMediaProvider { get; }
+
+        public LocalStorageMediaManager()
+        {
+            CardMediaProvider = new CompositeMediaProvider(mathjax, media);
+        }
 
         public async Task ImportMedia(string name, Stream content)
         {
-            StorageFile file = await (await GetMediaFolder()).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+            StorageFile file = await (await media.GetMediaFolder()).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
 
             using (Stream fileStream = await file.OpenStreamForWriteAsync())
             {
@@ -33,16 +42,6 @@ namespace Janki
                 context.Database.EnsureCreated();
 
             return context;
-        }
-
-        public async Task<Stream> GetMediaStream(string name) => await (await (await GetMediaFolder()).GetFileAsync(name)).OpenStreamForReadAsync();
-
-        private async ValueTask<StorageFolder> GetMediaFolder()
-        {
-            if (mediaFolder == null)
-                mediaFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("media", CreationCollisionOption.OpenIfExists);
-
-            return mediaFolder;
         }
     }
 }
