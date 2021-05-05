@@ -260,6 +260,6 @@ img {
             }
         }
 
-        public override Task OnNavigatedFrom() => SelectedType.SaveChanges() ?? Task.CompletedTask;
+        public override Task OnNavigatedFrom() => SelectedType?.SaveChanges() ?? Task.CompletedTask;
     }
 }
