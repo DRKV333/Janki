@@ -140,6 +140,9 @@
     <Compile Include="MediaWebView.xaml.cs">
       <DependentUpon>MediaWebView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NoteFieldsEditor.xaml.cs">
+      <DependentUpon>NoteFieldsEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalStorageMediaManager.cs" />
     <Compile Include="StorageFolderMediaProvider.cs" />
@@ -187,6 +190,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MediaWebView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NoteFieldsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

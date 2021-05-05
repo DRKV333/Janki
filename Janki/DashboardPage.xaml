@@ -13,14 +13,6 @@
         <vm:DashboardPageViewModel ContextProvider="{StaticResource MediaManager}" />
     </Page.DataContext>
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            </Style>
-        </ResourceDictionary>
-    </Page.Resources>
-
     <ListView Margin="5" ItemsSource="{Binding Decks}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}">
         <ListView.ItemTemplate>
             <DataTemplate>

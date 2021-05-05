@@ -20,6 +20,10 @@
                 <Setter Property="MediaProvider" Value="{Binding Source={StaticResource MediaManager}, Path=FieldEditorMediaProvider}" />
             </Style>
 
+            <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+
             <local:CommandValueConverter x:Key="CommandValueConverter" />
 
             <local:DialogService x:Key="DialogService" />
