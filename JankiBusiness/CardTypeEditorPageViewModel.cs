@@ -66,7 +66,12 @@ namespace JankiBusiness
         public CardTypeViewModel SelectedType
         {
             get => selectedType;
-            set => Set(ref selectedType, value);
+            set
+            {
+                if (value != selectedType)
+                    selectedType?.SaveChanges();
+                Set(ref selectedType, value);
+            }
         }
 
         private string selectedField;
@@ -254,5 +259,7 @@ img {
                 }
             }
         }
+
+        public override Task OnNavigatedFrom() => SelectedType.SaveChanges() ?? Task.CompletedTask;
     }
 }
