@@ -25,7 +25,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
             <local:UnselectedValueConverter x:Key="UnselectedValueConverter" />
-            <local:WebEditBoxToolbarCoordinator x:Key="EditCoordinator" />
+            <local:WebEditBoxToolbarCoordinator x:Key="EditCoordinator" DialogService="{StaticResource DialogService}" Importer="{StaticResource MediaManager}" />
         </ResourceDictionary>
     </Page.Resources>
     
@@ -116,6 +116,7 @@
                     <AppBarToggleButton IsChecked="{Binding Bold, Mode=TwoWay}" Icon="Bold" AllowFocusOnInteraction="False" />
                     <AppBarToggleButton IsChecked="{Binding Italic, Mode=TwoWay}" Icon="Italic" AllowFocusOnInteraction="False" />
                     <AppBarToggleButton IsChecked="{Binding Underline, Mode=TwoWay}" Icon="Underline" AllowFocusOnInteraction="False" />
+                    <AppBarButton Icon="Pictures" Command="{Binding InsertImage, Converter={StaticResource CommandValueConverter}}" AllowFocusOnInteraction="False" />
                 </CommandBar>
             </StackPanel>
         </Border>

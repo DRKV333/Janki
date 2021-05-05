@@ -66,6 +66,7 @@ editor.addEventListener("blur", notifyText);
 
 function setEditorHtml(value) {
 	editor.setHTML(value);
+	notifyHeight();
 }
 
 function setUnsetFormat(set, unset, value) {
@@ -87,6 +88,11 @@ function italic(value) {
 
 function underline(value) {
 	setUnsetFormat(editor.underline.bind(editor), editor.removeUnderline.bind(editor), value);
+}
+
+function insertImage(src) {
+	editor.insertImage(src);
+	notifyHeight();
 }
 
 notifyApp("hello");

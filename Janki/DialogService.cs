@@ -52,7 +52,9 @@ namespace Janki
                 return null;
         }
 
-        public async Task<Stream> OpenFile(params string[] filters)
+        public async Task<Stream> OpenFile(params string[] filters) => (await OpenFileWithName(filters)).file;
+
+        public async Task<(Stream file, string name)> OpenFileWithName(params string[] filters)
         {
             FileOpenPicker picker = new FileOpenPicker();
 
@@ -64,9 +66,9 @@ namespace Janki
             StorageFile file = await picker.PickSingleFileAsync();
 
             if (file == null)
-                return null;
+                return (null, null);
 
-            return (await file.OpenReadAsync()).AsStreamForRead();
+            return ((await file.OpenReadAsync()).AsStreamForRead(), file.Name);
         }
     }
 }

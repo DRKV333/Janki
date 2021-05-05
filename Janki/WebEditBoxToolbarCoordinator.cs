@@ -1,5 +1,6 @@
 ﻿using JankiBusiness;
-using System.Threading.Tasks;
+using LibAnkiCards.Importing;
+using System.IO;
 
 namespace Janki
 {
@@ -8,6 +9,11 @@ namespace Janki
         // Fun Fact: One way data binding to a toggle button's IsChecked does not work...
 
         public WebEditBox ActiveBox { get; set; }
+
+        public IMediaImporter Importer { get; set; }
+        public IDialogService DialogService { get; set; }
+
+        public GenericCommand InsertImage { get; }
 
         private bool bold;
 
@@ -49,6 +55,23 @@ namespace Janki
         {
             underline = value;
             RaisePropertyChanged(nameof(Underline));
+        }
+
+        public WebEditBoxToolbarCoordinator()
+        {
+            InsertImage = new GenericDelegateCommand(async p =>
+            {
+                if (ActiveBox == null)
+                    return;
+
+                (Stream file, string name) = await DialogService.OpenFileWithName(".gif", ".jpg", ".jpeg", ".png", ".svg");
+                if (file == null)
+                    return;
+
+                await Importer.ImportMedia(name, file);
+
+                ActiveBox.InsertImage(name);
+            });
         }
     }
 }

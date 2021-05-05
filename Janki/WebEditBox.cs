@@ -45,6 +45,8 @@ namespace Janki
 
         public void Underline(bool value) => SetUnsetFormat("underline", value);
 
+        public void InsertImage(string src) => Web.InvokeScriptAsync("insertImage", new[] { src });
+
         private void SetUnsetFormat(string format, bool value)
         {
             Web.InvokeScriptAsync(format, new[] { BoolString(value) });
@@ -99,6 +101,7 @@ namespace Janki
         {
             Coordinator.ActiveBox = this;
             Web.InvokeScriptAsync("notifyAllFormats", null);
+            Web.InvokeScriptAsync("notifyHeight", null);
         }
     }
 }
