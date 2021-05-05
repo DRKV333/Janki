@@ -88,6 +88,8 @@ namespace JankiBusiness
             note.LastModified = DateTime.UtcNow;
 
             context.Notes.Update(note);
+
+            dirty = false;
         }
 
         public void Delete(IAnkiContext context)
