@@ -108,9 +108,8 @@
                         </Flyout>
                     </muxc:SplitButton.Flyout>
                 </muxc:SplitButton>
-                
+
                 <Button Margin="5" Command="{Binding DeleteSelectedCard, Converter={StaticResource CommandValueConverter}}">Delete</Button>
-                <Button Margin="5">Duplicate</Button>
 
                 <CommandBar DataContext="{StaticResource EditCoordinator}" OverflowButtonVisibility="Collapsed">
                     <AppBarToggleButton IsChecked="{Binding Bold, Mode=TwoWay}" Icon="Bold" AllowFocusOnInteraction="False" />
