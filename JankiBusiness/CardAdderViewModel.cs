@@ -8,11 +8,10 @@ namespace JankiBusiness
 {
     public class CardAdderViewModel : ViewModel
     {
-        private readonly DeckEditorPageViewModel page;
-
-        public IEnumerable<CardType> AvailableTypes { get; }
+        public IEnumerable<CardType> AvailableTypes { get; private set; } = new CardType[0];
 
         private CardType selectedType;
+
         public CardType SelectedType
         {
             get => selectedType;
@@ -21,12 +20,8 @@ namespace JankiBusiness
 
         public GenericCommand AddCard { get; }
 
-        public CardAdderViewModel(Collection collection, DeckEditorPageViewModel page)
+        public CardAdderViewModel(DeckEditorPageViewModel page)
         {
-            this.page = page;
-            AvailableTypes = collection.CardTypes.Select(x => x.Value).ToList();
-            selectedType = AvailableTypes.FirstOrDefault();
-
             AddCard = new GenericDelegateCommand(async (p) =>
             {
                 if (page.SelectedDeck == null)
@@ -69,6 +64,14 @@ namespace JankiBusiness
                     page.SelectedCard = noteVm;
                 }
             });
+        }
+
+        public void LoadTypes(Collection collection)
+        {
+            AvailableTypes = collection.CardTypes.Select(x => x.Value).ToList();
+            RaisePropertyChanged(nameof(AvailableTypes));
+
+            SelectedType = AvailableTypes.FirstOrDefault();
         }
     }
 }

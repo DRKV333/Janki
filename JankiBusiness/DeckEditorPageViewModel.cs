@@ -1,41 +1,23 @@
 ﻿using LibAnkiCards;
 using LibAnkiCards.Context;
 using LibAnkiCards.Importing;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
-    public class DeckEditorPageViewModel : ViewModel
+    public class DeckEditorPageViewModel : PageViewModel
     {
         public IAnkiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
 
-        private ObservableCollection<DeckViewModel> decks;
+        public ObservableCollection<DeckViewModel> Decks { get; } = new ObservableCollection<DeckViewModel>();
 
-        public ObservableCollection<DeckViewModel> Decks
-        {
-            get
-            {
-                if (decks == null)
-                    Init();
-                return decks;
-            }
-        }
-
-        private CardAdderViewModel cardAdderViewModel;
-
-        public CardAdderViewModel CardAdderViewModel
-        {
-            get
-            {
-                if (cardAdderViewModel == null)
-                    Init();
-                return cardAdderViewModel;
-            }
-        }
+        public CardAdderViewModel CardAdderViewModel { get; }
 
         private DeckViewModel selectedDeck;
 
@@ -63,6 +45,8 @@ namespace JankiBusiness
 
         public DeckEditorPageViewModel()
         {
+            CardAdderViewModel = new CardAdderViewModel(this);
+
             DeleteSelectedCard = new GenericDelegateCommand(async p =>
             {
                 if (SelectedCard == null)
@@ -147,20 +131,25 @@ namespace JankiBusiness
                         await context.SaveChangesAsync();
                     }
                 }
-
-                Init();
             });
         }
 
-        private void Init()
+        public override async Task OnNavigatedTo(object param)
         {
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
-                decks = new ObservableCollection<DeckViewModel>(context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)));
-                RaisePropertyChanged(nameof(Decks));
-                cardAdderViewModel = new CardAdderViewModel(context.Collection, this);
-                RaisePropertyChanged(nameof(CardAdderViewModel));
+                List<DeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)).ToList());
+                
+                Decks.Clear();
+                foreach (var item in decks)
+                {
+                    Decks.Add(item);
+                }
+
+                CardAdderViewModel.LoadTypes(context.Collection);
             }
         }
+
+        public override Task OnNavigatedFrom() => SelectedDeck?.SaveCard.ExecuteAsync(SelectedCard) ?? Task.CompletedTask;
     }
 }

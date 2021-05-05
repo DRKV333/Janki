@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JankiBusiness
 {
-    public class CardTypeEditorPageViewModel : ViewModel
+    public class CardTypeEditorPageViewModel : PageViewModel
     {
         public interface ISelectionRedirector
         {
@@ -22,17 +22,7 @@ namespace JankiBusiness
 
         public IDialogService DialogService { get; set; }
 
-        private ObservableCollection<CardTypeViewModel> cardTypes;
-
-        public ObservableCollection<CardTypeViewModel> CardTypes
-        {
-            get
-            {
-                if (cardTypes == null)
-                    Init();
-                return cardTypes;
-            }
-        }
+        public ObservableCollection<CardTypeViewModel> CardTypes { get; } = new ObservableCollection<CardTypeViewModel>();
 
         private ISelectionRedirector selectedItem;
 
@@ -251,11 +241,17 @@ img {
             Name = name
         };
 
-        private void Init()
+        public override async Task OnNavigatedTo(object param)
         {
             using (IAnkiContext context = Provider.CreateContext())
             {
-                cardTypes = new ObservableCollection<CardTypeViewModel>(context.Collection.CardTypes.Select(x => new CardTypeViewModel(Provider, x.Value)));
+                List<CardTypeViewModel> cardTypes = await Task.Run(() => context.Collection.CardTypes.Select(x => new CardTypeViewModel(Provider, x.Value)).ToList());
+
+                CardTypes.Clear();
+                foreach (var item in cardTypes)
+                {
+                    CardTypes.Add(item);
+                }
             }
         }
     }
