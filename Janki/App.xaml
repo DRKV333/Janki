@@ -23,6 +23,8 @@
             <local:CommandValueConverter x:Key="CommandValueConverter" />
 
             <local:DialogService x:Key="DialogService" />
+
+            <local:GoneIfZeroValueConverter x:Key="GoneIfZero" />
         </ResourceDictionary>
     </Application.Resources>
 

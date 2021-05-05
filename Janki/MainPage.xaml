@@ -11,6 +11,7 @@
 
     <muxc:NavigationView IsBackButtonVisible="Collapsed" ItemInvoked="NavigationView_ItemInvoked">
         <muxc:NavigationView.MenuItems>
+            <muxc:NavigationViewItem Content="Dashboard" Name="DashboardItem" />
             <muxc:NavigationViewItem Content="Deck Editor" x:Name="DeckEditorItem" />
             <muxc:NavigationViewItem Content="Card Type Editor" x:Name="CardTypeEditorItem" />
         </muxc:NavigationView.MenuItems>

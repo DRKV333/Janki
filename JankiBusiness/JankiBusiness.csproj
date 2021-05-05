@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LibAnkiCards\LibAnkiCards.csproj" />
+    <ProjectReference Include="..\LibAnkiScheduler\LibAnkiScheduler.csproj" />
   </ItemGroup>
 
 </Project>

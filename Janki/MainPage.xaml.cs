@@ -16,7 +16,9 @@ namespace Janki
             options.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
             options.IsNavigationStackEnabled = false;
 
-            if (args.InvokedItemContainer == DeckEditorItem)
+            if (args.InvokedItemContainer == DashboardItem)
+                ContentFrame.NavigateToType(typeof(DashboardPage), null, options);
+            else if (args.InvokedItemContainer == DeckEditorItem)
                 ContentFrame.NavigateToType(typeof(DeckEditorPage), null, options);
             else if (args.InvokedItemContainer == CardTypeEditorItem)
                 ContentFrame.NavigateToType(typeof(CardTypeEditorPage), null, options);

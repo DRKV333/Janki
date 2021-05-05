@@ -124,10 +124,14 @@
       <DependentUpon>CardTypeEditorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="CommandValueConverter.cs" />
+    <Compile Include="DashboardPage.xaml.cs">
+      <DependentUpon>DashboardPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogService.cs" />
     <Compile Include="DeckEditorPage.xaml.cs">
       <DependentUpon>DeckEditorPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GoneIfZeroValueConverter.cs" />
     <Compile Include="HtmlWebView.cs" />
     <Compile Include="IMediaProvider.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -167,6 +171,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="CardTypeEditorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

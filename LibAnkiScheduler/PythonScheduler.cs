@@ -41,6 +41,12 @@ namespace LibAnkiScheduler
 
         public string Name => py.name;
 
+        public int NewCount => py.newCount;
+
+        public int DueCount => py.lrnCount;
+
+        public int ReviewCount => py.revCount;
+
         public void SetActiveDecks(IEnumerable<Deck> decks)
         {
             cs.ActiveDecks.Clear();

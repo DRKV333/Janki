@@ -16,5 +16,11 @@ namespace LibAnkiScheduler
         Card GetCard();
 
         void AnswerCard(Card card, int ease);
+
+        int NewCount { get; }
+
+        int DueCount { get; }
+
+        int ReviewCount { get; }
     }
 }
