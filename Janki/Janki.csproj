@@ -131,21 +131,27 @@
     <Compile Include="DeckEditorPage.xaml.cs">
       <DependentUpon>DeckEditorPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GoneIfNotValueConverter.cs" />
     <Compile Include="GoneIfZeroValueConverter.cs" />
     <Compile Include="HtmlWebView.cs" />
     <Compile Include="IMediaProvider.cs" />
+    <Compile Include="ItemClickedInputConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MediaWebView.xaml.cs">
       <DependentUpon>MediaWebView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NavigationService.cs" />
     <Compile Include="NoteFieldsEditor.xaml.cs">
       <DependentUpon>NoteFieldsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalStorageMediaManager.cs" />
     <Compile Include="StorageFolderMediaProvider.cs" />
+    <Compile Include="StudyPage.xaml.cs">
+      <DependentUpon>StudyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UnselectedValueConverter.cs" />
     <Compile Include="WebEditBox.cs" />
     <Compile Include="WebEditBoxToolbarCoordinator.cs" />
@@ -194,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NoteFieldsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

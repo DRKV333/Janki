@@ -26,9 +26,15 @@
 
             <local:CommandValueConverter x:Key="CommandValueConverter" />
 
+            <local:ItemClickedInputConverter x:Key="ItemClickedInputConverter" />
+
             <local:DialogService x:Key="DialogService" />
 
             <local:GoneIfZeroValueConverter x:Key="GoneIfZero" />
+
+            <local:GoneIfNotValueConverter x:Key="GoneOfNot" />
+
+            <local:NavigationService x:Key="NavigationService" />
         </ResourceDictionary>
     </Application.Resources>
 

@@ -10,23 +10,33 @@ namespace JankiBusiness
     public class DashboardPageViewModel : PageViewModel
     {
         public IAnkiContextProvider ContextProvider { get; set; }
+        public INavigationService NavigationService { get; set; }
 
         public ObservableCollection<StudiableDeckViewModel> Decks { get; } = new ObservableCollection<StudiableDeckViewModel>();
+
+        public GenericCommand Study { get; }
+
+        public DashboardPageViewModel()
+        {
+            Study = new GenericDelegateCommand(p =>
+            {
+                ((StudiableDeckViewModel)p).NavigateTo(NavigationService);
+                return Task.CompletedTask;
+            });
+        }
 
         public override async Task OnNavigatedTo(object param)
         {
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
-                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new StudiableDeckViewModel(ContextProvider, x.Value)).ToList());
-
                 IScheduler scheduler = await Task.Run(() => new PythonScheduler(ContextProvider));
+
+                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new StudiableDeckViewModel(scheduler, x.Value)).ToList());
 
                 Decks.Clear();
                 foreach (var item in decks)
                 {
-                    item.ResetCounts(scheduler);
-
-                    if (item.DueCount > 0 || item.NewCount > 0 || item.ReviewCount > 0)
+                    if (item.Counts.DueCount > 0 || item.Counts.NewCount > 0 || item.Counts.ReviewCount > 0)
                         Decks.Add(item);
                 }
             }

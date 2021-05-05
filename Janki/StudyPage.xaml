@@ -1,0 +1,97 @@
+﻿<Page
+    x:Class="Janki.StudyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Janki"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:JankiBusiness"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <vm:StudyPageViewModel ContextProvider="{StaticResource MediaManager}" NavigationService="{StaticResource NavigationService}" />
+    </Page.DataContext>
+
+    <SplitView IsPaneOpen="{Binding EditorVisible, Mode=TwoWay}" PanePlacement="Right" DisplayMode="Inline">
+        <SplitView.Pane>
+            <StackPanel>
+                <local:NoteFieldsEditor DataContext="{Binding CurrentNote}" />
+            </StackPanel>
+        </SplitView.Pane>
+        
+        <Grid Background="{ThemeResource SystemChromeMediumColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{ThemeResource SystemChromeLowColor}">
+                <Grid>
+                    <Button HorizontalAlignment="Left" Margin="3" Background="Transparent" Command="{Binding Back, Converter={StaticResource CommandValueConverter}}">
+                        <SymbolIcon Symbol="Back" />
+                    </Button>
+
+                    <ToggleButton IsChecked="{Binding EditorVisible, Mode=TwoWay}" HorizontalAlignment="Right" Margin="3" Background="Transparent">
+                        <SymbolIcon Symbol="Edit" />
+                    </ToggleButton>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <local:HtmlWebView Grid.Row="1" Grid.Column="1" Html="{Binding Html}" />
+            </Grid>
+
+            <Border Grid.Row="2" Height="100" Background="{ThemeResource SystemChromeLowColor}">
+                <Grid>
+                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Command="{Binding Flip, Converter={StaticResource CommandValueConverter}}">Flip</Button>
+
+                    <Grid VerticalAlignment="Bottom" Margin="20" Visibility="{Binding AnswersVisible, Converter={StaticResource GoneOfNot}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer, Converter={StaticResource CommandValueConverter}}" CommandParameter="1">😟</Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer, Converter={StaticResource CommandValueConverter}}" CommandParameter="2">😐</Button>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer, Converter={StaticResource CommandValueConverter}}" CommandParameter="3">🙂</Button>
+                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer, Converter={StaticResource CommandValueConverter}}" CommandParameter="4">😄</Button>
+                    </Grid>
+
+                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Right">
+                            <Run Text="Cards Left:" />
+                            <Run Text="{Binding Counts.Total}" />
+                        </TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Foreground="Blue" >
+                            <Run Text="New:" />
+                            <Run Text="{Binding Counts.NewCount}" />
+                        </TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Foreground="Green">
+                            <Run Text="Due:" />
+                            <Run Text="{Binding Counts.DueCount}" />
+                        </TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Foreground="Red">
+                            <Run Text="Review:" />
+                            <Run Text="{Binding Counts.ReviewCount}" />
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </SplitView>
+</Page>

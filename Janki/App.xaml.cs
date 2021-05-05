@@ -40,7 +40,7 @@ namespace Janki
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-
+            
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -71,6 +71,8 @@ namespace Janki
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            ((NavigationService)Resources["NavigationService"]).Frame = rootFrame;
         }
 
         /// <summary>
