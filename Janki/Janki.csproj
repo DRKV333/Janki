@@ -119,42 +119,42 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CardTypeDataTemplateSelector.cs" />
-    <Compile Include="CardTypeEditorPage.xaml.cs">
+    <Compile Include="Pages\CardTypeDataTemplateSelector.cs" />
+    <Compile Include="Pages\CardTypeEditorPage.xaml.cs">
       <DependentUpon>CardTypeEditorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommandValueConverter.cs" />
-    <Compile Include="DashboardPage.xaml.cs">
+    <Compile Include="Converters\CommandValueConverter.cs" />
+    <Compile Include="Pages\DashboardPage.xaml.cs">
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DialogService.cs" />
-    <Compile Include="DeckEditorPage.xaml.cs">
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Pages\DeckEditorPage.xaml.cs">
       <DependentUpon>DeckEditorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GoneIfNotValueConverter.cs" />
-    <Compile Include="GoneIfZeroValueConverter.cs" />
-    <Compile Include="HtmlWebView.cs" />
-    <Compile Include="IMediaProvider.cs" />
-    <Compile Include="ItemClickedInputConverter.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Converters\GoneIfNotValueConverter.cs" />
+    <Compile Include="Converters\GoneIfZeroValueConverter.cs" />
+    <Compile Include="Views\HtmlWebView.cs" />
+    <Compile Include="Services\IMediaProvider.cs" />
+    <Compile Include="Converters\ItemClickedInputConverter.cs" />
+    <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MediaWebView.xaml.cs">
+    <Compile Include="Views\MediaWebView.xaml.cs">
       <DependentUpon>MediaWebView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigationService.cs" />
-    <Compile Include="NoteFieldsEditor.xaml.cs">
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Views\NoteFieldsEditor.xaml.cs">
       <DependentUpon>NoteFieldsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LocalStorageMediaManager.cs" />
-    <Compile Include="StorageFolderMediaProvider.cs" />
-    <Compile Include="StudyPage.xaml.cs">
+    <Compile Include="Services\LocalStorageMediaManager.cs" />
+    <Compile Include="Services\StorageFolderMediaProvider.cs" />
+    <Compile Include="Pages\StudyPage.xaml.cs">
       <DependentUpon>StudyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UnselectedValueConverter.cs" />
-    <Compile Include="WebEditBox.cs" />
-    <Compile Include="WebEditBoxToolbarCoordinator.cs" />
+    <Compile Include="Converters\UnselectedValueConverter.cs" />
+    <Compile Include="Views\WebEditBox.cs" />
+    <Compile Include="Views\WebEditBoxToolbarCoordinator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -179,31 +179,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CardTypeEditorPage.xaml">
+    <Page Include="Pages\CardTypeEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DashboardPage.xaml">
+    <Page Include="Pages\DashboardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeckEditorPage.xaml">
+    <Page Include="Pages\DeckEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MediaWebView.xaml">
+    <Page Include="Views\MediaWebView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NoteFieldsEditor.xaml">
+    <Page Include="Views\NoteFieldsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StudyPage.xaml">
+    <Page Include="Pages\StudyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
