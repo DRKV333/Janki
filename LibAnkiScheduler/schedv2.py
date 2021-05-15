@@ -303,7 +303,7 @@ class Scheduler:
         return ideal
 
     def _moveToFirstStep(self, card):
-        card.left = self.cs.StartingLeft(card, self.dayCutoff)
+        card.Left = self.cs.StartingLeft(card, self.dayCutoff)
 
         # relearning card?
         if card.Type == CardLearnType.Relearn:
@@ -423,7 +423,7 @@ class Scheduler:
         # TODO
         # suspended = self._checkLeech(card, conf) and card.queue == -1
 
-        card.type = CardLearnType.Relearn
+        card.Type = CardLearnType.Relearn
         delay = self._moveToFirstStep(card)
 
         return delay

@@ -324,6 +324,7 @@ namespace LibAnkiScheduler
         {
             Review review = new Review()
             {
+                Card = card,
                 UserId = -1,
                 Ease = ease,
                 Ivl = delay == 0 ? card.Ivl : -delay,
