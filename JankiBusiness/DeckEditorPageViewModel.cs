@@ -24,7 +24,7 @@ namespace JankiBusiness
         public DeckViewModel SelectedDeck
         {
             get => selectedDeck;
-            set => Set(ref selectedDeck, value);
+            set { selectedDeck?.SetSearchTerm(""); Set(ref selectedDeck, value); }
         }
 
         private NoteViewModel selectedCard;
@@ -35,6 +35,14 @@ namespace JankiBusiness
             set => Set(ref selectedCard, value);
         }
 
+        private string searchTerm = "";
+
+        public string SearchTerm
+        {
+            get => searchTerm;
+            set => Set(ref searchTerm, value);
+        }
+
         public GenericCommand DeleteSelectedCard { get; }
 
         public GenericCommand AddDeck { get; }
@@ -42,6 +50,8 @@ namespace JankiBusiness
         public GenericCommand DeleteSelectedDeck { get; }
 
         public GenericCommand Import { get; }
+
+        public GenericCommand Search { get; }
 
         public DeckEditorPageViewModel()
         {
@@ -132,10 +142,14 @@ namespace JankiBusiness
                     }
                 }
             });
+
+            Search = new GenericDelegateCommand(p => SelectedDeck.SetSearchTerm(SearchTerm));
         }
 
         public override async Task OnNavigatedTo(object param)
         {
+            searchTerm = "";
+
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
                 List<DeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)).ToList());

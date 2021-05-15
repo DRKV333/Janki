@@ -52,7 +52,26 @@ namespace JankiBusiness
 
         public long Id => deck.Id;
 
-        private async void FetchCards()
+        private string currentTerm = "";
+
+        public async Task SetSearchTerm(string term)
+        {
+            if (currentTerm != "")
+            {
+                cards.Clear();
+                await FetchCards();
+            }
+
+            currentTerm = term;
+
+            if (currentTerm != "")
+            {
+                cards = new ObservableCollection<NoteViewModel>(cards.Where(x => x.ShortField.ToLower().Contains(term.ToLower())));
+                RaisePropertyChanged(nameof(Cards));
+            }
+        }
+
+        private async Task FetchCards()
         {
             List<Note> notes;
             Collection collection;
