@@ -115,7 +115,10 @@ namespace JankiBusiness
             currentCard = scheduler.GetCard();
 
             if (currentCard == null)
+            {
                 NavigationService.NavigateToVM(typeof(DashboardPageViewModel), null);
+                return;
+            }
 
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
