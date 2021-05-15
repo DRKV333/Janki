@@ -16,6 +16,14 @@ namespace JankiBusiness
 
         public GenericCommand Study { get; }
 
+        private bool loading = true;
+
+        public bool Loading
+        {
+            get => loading;
+            set => Set(ref loading, value);
+        }
+
         public DashboardPageViewModel()
         {
             Study = new GenericDelegateCommand(p =>
@@ -27,6 +35,8 @@ namespace JankiBusiness
 
         public override async Task OnNavigatedTo(object param)
         {
+            Loading = true;
+
             using (IAnkiContext context = ContextProvider.CreateContext())
             {
                 IScheduler scheduler = await Task.Run(() => new PythonScheduler(ContextProvider));
@@ -40,6 +50,8 @@ namespace JankiBusiness
                         Decks.Add(item);
                 }
             }
+
+            Loading = false;
         }
     }
 }
