@@ -10,11 +10,19 @@ namespace Janki
             InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            DashboardItem.IsSelected = true;
+            DeckEditorItem.IsSelected = false;
+            CardTypeEditorItem.IsSelected = false;
+
+            ContentFrame.NavigateToType(typeof(DashboardPage), null, FrameNavOptions());
+        }
+
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
-            FrameNavigationOptions options = new FrameNavigationOptions();
+            FrameNavigationOptions options = FrameNavOptions();
             options.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-            options.IsNavigationStackEnabled = false;
 
             if (args.InvokedItemContainer == DashboardItem)
                 ContentFrame.NavigateToType(typeof(DashboardPage), null, options);
@@ -23,5 +31,10 @@ namespace Janki
             else if (args.InvokedItemContainer == CardTypeEditorItem)
                 ContentFrame.NavigateToType(typeof(CardTypeEditorPage), null, options);
         }
+
+        private FrameNavigationOptions FrameNavOptions() => new FrameNavigationOptions()
+        { 
+            IsNavigationStackEnabled = false
+        };
     }
 }
