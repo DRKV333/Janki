@@ -142,7 +142,7 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
     font-size:150%;
     text-align: center;
     color: Black;
-    background-color:black;
+    background-color: White;
 }
 
 #rubric {
