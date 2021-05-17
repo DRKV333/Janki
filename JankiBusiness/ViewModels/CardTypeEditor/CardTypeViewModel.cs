@@ -134,6 +134,13 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
 
         public async Task SaveChanges()
         {
+            int fieldNum = 0;
+            type.Fields.Clear();
+            foreach (var item in Fields)
+            {
+                type.Fields.Add(new CardField() { Id = fieldNum++, Name = item });
+            }
+
             using (IAnkiContext context = provider.CreateContext())
             {
                 Collection collection = context.Collection;
