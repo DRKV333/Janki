@@ -203,10 +203,14 @@ img {
                     $"Are you sure you want to delete the \"{SelectedType.Name}\" card type and all {await SelectedType.CountNotes()} cards that use it?",
                     "Delete", "Cancel"))
                 {
-                    await SelectedType.Delete();
+                    CardTypeViewModel toDelete = SelectedType;
 
-                    CardTypes.Remove(SelectedType);
+                    selectedType = null;
                     SelectedItem = null;
+
+                    CardTypes.Remove(toDelete);
+
+                    await toDelete.Delete();
                 }
             });
 
@@ -235,9 +239,13 @@ img {
                     $"Are you sure you want to delete the \"{SelectedType.Name}\" variant?",
                     "Delete", "Cancel"))
                 {
-                    await SelectedType.DeleteVariant(SelectedVariant);
+                    CardTypeViewModel toDeleteType = SelectedType;
+                    CardVariantViewModel toDeleteVariant = SelectedVariant;
 
+                    selectedVariant = null;
                     SelectedItem = SelectedType;
+
+                    await toDeleteType.DeleteVariant(toDeleteVariant);
                 }
             });
         }
