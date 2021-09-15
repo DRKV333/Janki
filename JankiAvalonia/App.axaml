@@ -1,0 +1,8 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fas="using:FluentAvalonia.Styling"
+             x:Class="JankiAvalonia.App">
+    <Application.Styles>
+        <fas:FluentAvaloniaTheme DefaultToUserTheme="False" RequestedTheme="Light" />
+    </Application.Styles>
+</Application>

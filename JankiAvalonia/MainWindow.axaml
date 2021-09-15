@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fauic="using:FluentAvalonia.UI.Controls"
+        xmlns:jap="using:JankiAvalonia.Pages"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="JankiAvalonia.MainWindow"
+        Title="JankiAvalonia">
+    <fauic:NavigationView ItemInvoked="NavigationView_ItemInvoked" PaneDisplayMode="LeftCompact" IsSettingsVisible="False">
+        <fauic:NavigationView.MenuItems>
+            <fauic:NavigationViewItem Content="Dashboard" Icon="Home" Tag="{x:Type jap:DashboardPage}" />
+            <fauic:NavigationViewItem Content="Deck Editor" Icon="CalendarDay" Tag="{x:Type jap:DeckEditorPage}" />
+            <fauic:NavigationViewItem Content="Card Type Editor" Icon="PreviewLink" Tag="{x:Type jap:CardTypeEditorPage}" />
+        </fauic:NavigationView.MenuItems>
+        <fauic:Frame IsNavigationStackEnabled="False" Name="ContentFrame" />
+    </fauic:NavigationView>
+</Window>
