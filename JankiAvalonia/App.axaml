@@ -4,5 +4,6 @@
              x:Class="JankiAvalonia.App">
     <Application.Styles>
         <fas:FluentAvaloniaTheme DefaultToUserTheme="False" RequestedTheme="Light" />
+        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
     </Application.Styles>
 </Application>
