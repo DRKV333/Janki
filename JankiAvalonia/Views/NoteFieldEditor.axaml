@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fauic="using:FluentAvalonia.UI.Controls"
+             xmlns:ja="using:JankiAvalonia"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
+             x:Class="JankiAvalonia.Views.NoteFieldEditor">
+    <Grid RowDefinitions="auto *">
+        <fauic:CommandBar Grid.Row="0" HorizontalAlignment="Stretch">
+            <fauic:CommandBar.PrimaryCommands>
+                <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" />
+                <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" />
+                <fauic:CommandBarToggleButton Icon="Underline" Label="Underline" ToolTip.Tip="Underline" />
+                <fauic:CommandBarToggleButton Icon="Image" Label="Insert Image" ToolTip.Tip="Insert Image" />
+            </fauic:CommandBar.PrimaryCommands>
+        </fauic:CommandBar>
+
+        <ScrollViewer Grid.Row="1">
+            <ItemsRepeater Margin="3" Items="{x:Static ja:SampleData.ListOfStrings}">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Margin="5,10,0,3" Text="{Binding}" />
+                            <TextBox Margin="5" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

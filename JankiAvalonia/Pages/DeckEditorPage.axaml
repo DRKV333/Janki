@@ -2,7 +2,75 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fauic="using:FluentAvalonia.UI.Controls"
+        xmlns:ja="using:JankiAvalonia"
+        xmlns:jav="using:JankiAvalonia.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.Pages.DeckEditorPage">
-  Welcome to the Deck Editor!
+    <Grid RowDefinitions="auto 2* auto 3*" ColumnDefinitions="auto auto * auto *">
+        <fauic:CommandBar Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" IsDynamicOverflowEnabled="false">
+            <fauic:CommandBar.PrimaryCommands>
+                <fauic:CommandBarButton Icon="Add" Label="Add Deck" ToolTip.Tip="Add Deck" />
+                <fauic:CommandBarButton Icon="Delete" Label="Delete Deck" ToolTip.Tip="Delete Deck" />
+                <fauic:CommandBarButton Icon="Download" Label="Import Deck" ToolTip.Tip="Import Deck" />
+            </fauic:CommandBar.PrimaryCommands>
+        </fauic:CommandBar>
+
+        <TreeView x:Name="DeckTree"
+                  Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Items="{x:Static ja:SampleData.ListOfTreeItems}">
+            <TreeView.DataTemplates>
+                <TreeDataTemplate DataType="ja:TreeLevel1"
+                                  ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Text}" />
+                </TreeDataTemplate>
+                <TreeDataTemplate DataType="ja:TreeLevel2">
+                    <TextBlock Text="{Binding Name}" />
+                </TreeDataTemplate>
+            </TreeView.DataTemplates>
+        </TreeView>
+        
+        <GridSplitter Grid.Column="1" Grid.RowSpan="5" />
+        
+        <Border Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0">
+            <Grid ColumnDefinitions="* 2* *">
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                         Watermark="Search..." />
+            </Grid>
+        </Border>
+
+        <ListBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1"
+                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                 Items="{x:Static ja:SampleData.ListOfStrings}" />
+        
+        <fauic:CommandBar Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2">
+            <fauic:CommandBar.PrimaryCommands>
+                <fauic:CommandBarElementContainer>
+                    <fauic:SplitButton Content="Add Something Card">
+                        <fauic:SplitButton.Flyout>
+                            <Flyout>
+                                <ListBox Items="{x:Static ja:SampleData.ListOfStrings}" />
+                            </Flyout>
+                        </fauic:SplitButton.Flyout>
+                    </fauic:SplitButton>
+                </fauic:CommandBarElementContainer>
+                <fauic:CommandBarButton Label="Delete Card" Icon="Delete" ToolTip.Tip="Delete Card" />
+            </fauic:CommandBar.PrimaryCommands>
+        </fauic:CommandBar>
+
+        <GridSplitter ResizeBehavior="PreviousAndNext" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Bottom" />
+        
+        <jav:NoteFieldEditor Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        
+        <GridSplitter Grid.Column="3" Grid.Row="3" />
+        
+        <Grid Grid.Column="4" Grid.Row="3"
+              ColumnDefinitions="auto * 2* * auto" RowDefinitions="* *">
+            <Border Margin="10" Grid.Column="2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Red" />
+            <Border Margin="10" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Red" />
+            <fauic:Button Grid.Column="0" Grid.RowSpan="2"><fauic:SymbolIcon Symbol="ChevronLeft" /></fauic:Button>
+            <fauic:Button Grid.Column="4" Grid.RowSpan="2"><fauic:SymbolIcon Symbol="ChevronRight" /></fauic:Button>
+        </Grid>
+    </Grid>
 </UserControl>

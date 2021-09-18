@@ -5,15 +5,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Views\NoteFieldEdtior.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.7" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia\FluentAvalonia.csproj" />
+    <Page Include="Views\NoteFieldEdtior.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
 </Project>
