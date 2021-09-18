@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace JankiAvalonia.Converters
 {
-    internal class DynamicBoxShadowProvider : AvaloniaObject
+    public class DynamicBoxShadowProvider : AvaloniaObject
     {
         public static readonly StyledProperty<bool> IsInsetProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, bool>(nameof(IsInset));

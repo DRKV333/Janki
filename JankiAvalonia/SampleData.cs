@@ -2,7 +2,7 @@
 
 namespace JankiAvalonia
 {
-    internal static class SampleData
+    public static class SampleData
     {
         public static readonly List<string> ListOfStrings = new List<string>()
         {
