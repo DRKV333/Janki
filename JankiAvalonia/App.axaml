@@ -5,5 +5,9 @@
     <Application.Styles>
         <fas:FluentAvaloniaTheme DefaultToUserTheme="False" RequestedTheme="Light" />
         <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+    
+        <Style Selector="Border.BorderToolbarDarker">
+            <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
+        </Style>
     </Application.Styles>
 </Application>

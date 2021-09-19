@@ -7,14 +7,16 @@
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
              x:Class="JankiAvalonia.Views.NoteFieldEditor">
     <Grid RowDefinitions="auto *">
-        <fauic:CommandBar Grid.Row="0" HorizontalAlignment="Stretch">
-            <fauic:CommandBar.PrimaryCommands>
-                <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" />
-                <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" />
-                <fauic:CommandBarToggleButton Icon="Underline" Label="Underline" ToolTip.Tip="Underline" />
-                <fauic:CommandBarToggleButton Icon="Image" Label="Insert Image" ToolTip.Tip="Insert Image" />
-            </fauic:CommandBar.PrimaryCommands>
-        </fauic:CommandBar>
+        <Border Grid.Row="0" Classes="BorderToolbarDarker">
+            <fauic:CommandBar HorizontalAlignment="Stretch">
+                <fauic:CommandBar.PrimaryCommands>
+                    <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" />
+                    <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" />
+                    <fauic:CommandBarToggleButton Icon="Underline" Label="Underline" ToolTip.Tip="Underline" />
+                    <fauic:CommandBarToggleButton Icon="Image" Label="Insert Image" ToolTip.Tip="Insert Image" />
+                </fauic:CommandBar.PrimaryCommands>
+            </fauic:CommandBar>
+        </Border>
 
         <ScrollViewer Grid.Row="1">
             <ItemsRepeater Margin="3" Items="{x:Static ja:SampleData.ListOfStrings}">
