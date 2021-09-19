@@ -11,6 +11,9 @@
         <jac:DynamicBoxShadowProvider x:Key="CardShadow"
                                       OffsetX="5" OffsetY="5" Blur="5"
                                       Color="{DynamicResource ControlStrongStrokeColorDefault}" />
+        <jac:DynamicBoxShadowProvider x:Key="TagShadow"
+                                      OffsetX="2" OffsetY="2" Blur="3" IsInset="True"
+                                      Color="{DynamicResource ControlStrongStrokeColorDefault}" />
     </UserControl.Resources>
     
     <UserControl.Styles>
@@ -50,6 +53,7 @@
             <Setter Property="CornerRadius" Value="15" />
             <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
             <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+            <Setter Property="BoxShadow" Value="{Binding Source={StaticResource TagShadow}, Path=Shadow}" />
         </Style>
     </UserControl.Styles>
     
