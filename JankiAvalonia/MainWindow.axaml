@@ -12,6 +12,7 @@
             <fauic:NavigationViewItem Content="Dashboard" Icon="Home" Tag="{x:Type jap:DashboardPage}" IsSelected="True" />
             <fauic:NavigationViewItem Content="Deck Editor" Icon="CalendarDay" Tag="{x:Type jap:DeckEditorPage}" />
             <fauic:NavigationViewItem Content="Card Type Editor" Icon="PreviewLink" Tag="{x:Type jap:CardTypeEditorPage}" />
+            <fauic:NavigationViewItem Content="Study Page" Icon="New" Tag="{x:Type jap:StudyPage}" />
         </fauic:NavigationView.MenuItems>
         <fauic:Frame IsNavigationStackEnabled="False" Name="ContentFrame" />
     </fauic:NavigationView>

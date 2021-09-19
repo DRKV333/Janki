@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fauic="using:FluentAvalonia.UI.Controls"
+             xmlns:jav="using:JankiAvalonia.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JankiAvalonia.Pages.StudyPage">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TextColorNew" Color="Blue" />
+        <SolidColorBrush x:Key="TextColorDue" Color="Green" />
+        <SolidColorBrush x:Key="TextColorReview" Color="Red" />
+    </UserControl.Resources>
+    
+    <SplitView PanePlacement="Right" DisplayMode="Inline" IsPaneOpen="{Binding #OpenTheEditor.IsChecked}">
+        <SplitView.Pane>
+            <Border Classes="BorderToolbarDarker">
+                <jav:NoteFieldEditor IsDynamicOverflowEnabled="False" />
+            </Border>
+        </SplitView.Pane>
+
+        <Grid RowDefinitions="auto * auto">
+            <Border Grid.Row="0" Classes="BorderToolbarDarker">
+                <Grid>
+                    <Button HorizontalAlignment="Left" Margin="3" Background="Transparent">
+                        <fauic:SymbolIcon Symbol="Back" />
+                    </Button>
+
+                    <ToggleButton x:Name="OpenTheEditor" HorizontalAlignment="Right" Margin="3" Background="Transparent">
+                        <fauic:SymbolIcon Symbol="Edit" />
+                    </ToggleButton>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" RowDefinitions="* 4* *" ColumnDefinitions="* 4* *">
+                <Border Grid.Row="1" Grid.Column="1" Background="Red" />
+            </Grid>
+
+            <Border Grid.Row="2" Height="100" Classes="BorderToolbarDarker">
+                <Grid>
+                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5">Flip</Button>
+
+                    <Grid VerticalAlignment="Bottom" Margin="20" ColumnDefinitions="* * * *">
+
+                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">😟</Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">😐</Button>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">🙂</Button>
+                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">😄</Button>
+                    </Grid>
+
+                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
+                            <TextBlock Text="Cards Left:" />
+                            <TextBlock Text="10" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
+                            <TextBlock Foreground="{StaticResource TextColorNew}" Text="New:" />
+                            <TextBlock Foreground="{StaticResource TextColorNew}" Text="10" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
+                            <TextBlock Foreground="{StaticResource TextColorDue}" Text="Due:" />
+                            <TextBlock Foreground="{StaticResource TextColorDue}" Text="10" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
+                            <TextBlock Foreground="{StaticResource TextColorReview}" Text="Review:" />
+                            <TextBlock Foreground="{StaticResource TextColorReview}" Text="10" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </SplitView>
+</UserControl>

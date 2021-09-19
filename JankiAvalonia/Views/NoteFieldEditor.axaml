@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fauic="using:FluentAvalonia.UI.Controls"
              xmlns:ja="using:JankiAvalonia"
+             xmlns:jav="clr-namespace:JankiAvalonia.Views"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
              x:Class="JankiAvalonia.Views.NoteFieldEditor">
     <Grid RowDefinitions="auto *">
         <Border Grid.Row="0" Classes="BorderToolbarDarker">
-            <fauic:CommandBar HorizontalAlignment="Stretch">
+            <fauic:CommandBar HorizontalAlignment="Stretch" IsDynamicOverflowEnabled="{Binding $parent[jav:NoteFieldEditor].IsDynamicOverflowEnabled}">
                 <fauic:CommandBar.PrimaryCommands>
                     <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" />
                     <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" />
