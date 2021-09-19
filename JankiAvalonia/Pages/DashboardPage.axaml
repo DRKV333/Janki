@@ -2,7 +2,95 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ja="using:JankiAvalonia"
+        xmlns:jac="using:JankiAvalonia.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.Pages.DashboardPage">
-    Welcome to the Dashboard!
+    
+    <UserControl.Resources>
+        <jac:DynamicBoxShadowProvider x:Key="CardShadow"
+                                      OffsetX="5" OffsetY="5" Blur="5"
+                                      Color="{DynamicResource ControlStrongStrokeColorDefault}" />
+    </UserControl.Resources>
+    
+    <UserControl.Styles>
+        <Style Selector="Button.Card">
+            <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <!-- Some properties here have to be specified with TemplateBinding, -->
+                    <!-- otherwise they are set with a priority too high, and they will -->
+                    <!-- not be overwritten by the :ponterover style below. (Avalonia#2789) -->
+                    <ContentPresenter 
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="2"
+                                      BoxShadow="{Binding Source={StaticResource CardShadow}, Path=Shadow}"
+                                      Margin="0,0,7,7"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Button.Card:pointerover /template/ ContentPresenter">
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+        </Style>
+        
+        <Style Selector="Button.Card:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ControlAltFillColorTertiaryBrush}" />
+        </Style>
+
+        <Style Selector="Border.Tag">
+            <Setter Property="Padding" Value="6" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+            <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+    </UserControl.Styles>
+    
+    <ScrollViewer>
+        <ItemsRepeater Margin="5" HorizontalAlignment="Center" Items="{x:Static ja:SampleData.ListOfStrings}">
+            <ItemsRepeater.Layout>
+                <UniformGridLayout />
+            </ItemsRepeater.Layout>
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                    <Button Margin="5" Classes="Card">
+                        <Grid Height="150" VerticalAlignment="Stretch">
+                            <TextBlock TextWrapping="Wrap" MaxLines="3" Margin="10" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding}" />
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Border Margin="10" Classes="Tag">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="15" Text="New: " />
+                                        <TextBlock FontSize="15" Text="10" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Margin="10" Classes="Tag">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="15" Text="Due: " />
+                                        <TextBlock FontSize="15" Text="10" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Margin="10" Classes="Tag">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="15" Text="Review: " />
+                                        <TextBlock FontSize="15" Text="10" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+    </ScrollViewer>
 </UserControl>

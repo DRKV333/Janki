@@ -18,6 +18,7 @@ namespace JankiAvalonia
         public static readonly IReadOnlyList<string> ListOfStrings = new List<string>()
         {
             "Item1",
+            "This is long item, to test how well the ui can deal with those.",
             "Item2",
             "Item3",
             "Item4",
