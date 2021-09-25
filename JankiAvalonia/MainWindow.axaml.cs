@@ -20,15 +20,6 @@ namespace JankiAvalonia
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            this.FindControl<Frame>("ContentFrame").Navigate(typeof(DashboardPage), null);
-        }
-
-        private void NavigationView_ItemInvoked(object sender, NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.InvokedItemContainer.Tag is Type page)
-            {
-                this.FindControl<Frame>("ContentFrame").Navigate(page, null, args.RecommendedNavigationTransitionInfo);
-            }
         }
     }
 }

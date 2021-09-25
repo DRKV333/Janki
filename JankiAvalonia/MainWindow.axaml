@@ -3,17 +3,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fauic="using:FluentAvalonia.UI.Controls"
-        xmlns:jap="using:JankiAvalonia.Pages"
+        xmlns:jas="using:JankiAvalonia.Services"
+        xmlns:jbvmn="using:JankiBusiness.ViewModels.Navigation"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.MainWindow"
-        Title="JankiAvalonia">
-    <fauic:NavigationView ItemInvoked="NavigationView_ItemInvoked" PaneDisplayMode="LeftCompact" IsSettingsVisible="False">
-        <fauic:NavigationView.MenuItems>
-            <fauic:NavigationViewItem Content="Dashboard" Icon="Home" Tag="{x:Type jap:DashboardPage}" IsSelected="True" />
-            <fauic:NavigationViewItem Content="Deck Editor" Icon="CalendarDay" Tag="{x:Type jap:DeckEditorPage}" />
-            <fauic:NavigationViewItem Content="Card Type Editor" Icon="PreviewLink" Tag="{x:Type jap:CardTypeEditorPage}" />
-            <fauic:NavigationViewItem Content="Study Page" Icon="New" Tag="{x:Type jap:StudyPage}" />
-        </fauic:NavigationView.MenuItems>
-        <fauic:Frame IsNavigationStackEnabled="False" Name="ContentFrame" />
-    </fauic:NavigationView>
+        Title="JankiAvalonia"
+        Content="{Binding Content}">
+    <Window.Resources>
+        <jas:DialogService x:Key="DialogService" ParentWindow="{Binding $parent[Window]}" />
+    </Window.Resources>
+
+    <Window.DataContext>
+        <jbvmn:MainWindowViewModel ContextProvider="{StaticResource MediaManager}"
+                                   DialogService="{StaticResource DialogService}" />
+    </Window.DataContext>
 </Window>

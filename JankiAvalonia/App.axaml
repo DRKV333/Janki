@@ -1,7 +1,18 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fas="using:FluentAvalonia.Styling"
+             xmlns:jas="using:JankiAvalonia.Services"
+             xmlns:jac="using:JankiAvalonia.Converters"
              x:Class="JankiAvalonia.App">
+    <Application.DataTemplates>
+        <jas:PageViewLocator />
+    </Application.DataTemplates>
+    
+    <Application.Resources>
+        <jas:MediaManager x:Key="MediaManager" />
+        <jac:NavigationViewItemInvokedEventArgsConverter x:Key="NavigationViewItemInvokedEventArgsConverter" />
+    </Application.Resources>
+    
     <Application.Styles>
         <fas:FluentAvaloniaTheme DefaultToUserTheme="False" RequestedTheme="Light" />
         <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />

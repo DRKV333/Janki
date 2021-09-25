@@ -1,14 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using JankiAvalonia.Services;
-using JankiBusiness.ViewModels.Study;
+using JankiBusiness.ViewModels.Navigation;
 
 namespace JankiAvalonia.Pages
 {
-    [ViewForPage(typeof(DashboardPageViewModel))]
-    public partial class DashboardPage : UserControl
+    [ViewForPage(typeof(NavigationViewModel))]
+    public partial class NavigationPage : UserControl
     {
-        public DashboardPage()
+        public NavigationPage()
         {
             InitializeComponent();
         }

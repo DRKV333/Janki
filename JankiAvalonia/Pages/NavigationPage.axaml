@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fauic="using:FluentAvalonia.UI.Controls"
+             xmlns:jbvmn="using:JankiBusiness.ViewModels.Navigation"
+             xmlns:axi="using:Avalonia.Xaml.Interactivity"
+             xmlns:axic="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JankiAvalonia.Pages.NavigationPage">
+    <fauic:NavigationView PaneDisplayMode="LeftCompact" IsSettingsVisible="False"
+                          MenuItems="{Binding NavigationItems}" SelectedItem="{Binding SelectedItem}"
+                          Content="{Binding Content}">
+        <axi:Interaction.Behaviors>
+            <axic:EventTriggerBehavior EventName="ItemInvoked">
+                <axic:InvokeCommandAction Command="{Binding NavigateToItem}" InputConverter="{StaticResource NavigationViewItemInvokedEventArgsConverter}" />
+            </axic:EventTriggerBehavior>
+        </axi:Interaction.Behaviors>
+        <fauic:NavigationView.MenuItemTemplate>
+            <DataTemplate DataType="{x:Type jbvmn:NavigationItem}">
+                <fauic:NavigationViewItem Content="{Binding Name}" ToolTip.Tip="{Binding Name}" Icon="{Binding Icon}" />
+            </DataTemplate>
+        </fauic:NavigationView.MenuItemTemplate>
+    </fauic:NavigationView>
+</UserControl>
