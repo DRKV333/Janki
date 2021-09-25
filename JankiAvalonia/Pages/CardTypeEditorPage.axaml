@@ -4,11 +4,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fauic="using:FluentAvalonia.UI.Controls"
         xmlns:ae="using:AvaloniaEdit"
-        xmlns:jac="using:JankiAvalonia.Converters"
         xmlns:ja="using:JankiAvalonia"
+        xmlns:jac="using:JankiAvalonia.Converters"
+        xmlns:jab="using:JankiAvalonia.Behaviours"
+        xmlns:jbvmcte="using:JankiBusiness.ViewModels.CardTypeEditor"
+        xmlns:jbvmde="using:JankiBusiness.ViewModels.DeckEditor"
+        xmlns:axi="using:Avalonia.Xaml.Interactivity"
+        xmlns:axic="using:Avalonia.Xaml.Interactions.Core"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="JankiAvalonia.Pages.CardTypeEditorPage">
-
+    
     <UserControl.Resources>
         <ae:TextEditorOptions x:Key="HtmlOptions" ConvertTabsToSpaces="True" IndentationSize="2" />
         <jac:DynamicBoxShadowProvider x:Key="ShadowProvider"
@@ -40,6 +45,10 @@
             <Setter Property="Background" Value="{DynamicResource ControlFillColorInputActiveBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
         </Style>
+
+        <Style Selector="TreeView.ClickToExpand TreeViewItem">
+            <Setter Property="jab:TreeViewItemExpandOnClick.Active" Value="true" />
+        </Style>
     </UserControl.Styles>
         
     
@@ -49,21 +58,22 @@
             <Border Grid.Row="0" HorizontalAlignment="Stretch" Classes="BorderToolbarDarker">
                 <fauic:CommandBar IsDynamicOverflowEnabled="False" HorizontalAlignment="Center">
                     <fauic:CommandBar.PrimaryCommands>
-                        <fauic:CommandBarButton Icon="Add" Label="Add Type" ToolTip.Tip="Add Type" />
-                        <fauic:CommandBarButton Icon="SaveAsCopy" Label="Add Variant" ToolTip.Tip="Add Variant" />
-                        <fauic:CommandBarButton Icon="Delete" Label="Delete" ToolTip.Tip="Delete" />
+                        <fauic:CommandBarButton Command="{Binding AddCardType}" Icon="Add" Label="Add Type" ToolTip.Tip="Add Type" />
+                        <fauic:CommandBarButton Command="{Binding AddVariant}" Icon="SaveAsCopy" Label="Add Variant" ToolTip.Tip="Add Variant" />
+                        <fauic:CommandBarButton Command="{Binding RemoveVariant}" Icon="Dismiss" Label="Remove Variant" ToolTip.Tip="Remove Variant" />
+                        <fauic:CommandBarButton Command="{Binding RemoveCardType}" Icon="Delete" Label="Remove Card Type" ToolTip.Tip="Remove Card Type" />
                     </fauic:CommandBar.PrimaryCommands>
                 </fauic:CommandBar>
             </Border>
-            <TreeView Grid.Column="0" Grid.Row="1"
+            <TreeView Grid.Column="0" Grid.Row="1" Classes="ClickToExpand"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Items="{x:Static ja:SampleData.ListOfTreeItems}">
+                  Items="{Binding CardTypes}" SelectedItem="{Binding SelectedItem}">
                 <TreeView.DataTemplates>
-                    <TreeDataTemplate DataType="ja:TreeLevel1"
-                                      ItemsSource="{Binding Children}">
-                        <TextBlock Text="{Binding Text}" />
+                    <TreeDataTemplate DataType="jbvmcte:CardTypeViewModel"
+                                      ItemsSource="{Binding Variants}">
+                        <TextBlock Text="{Binding Name}" />
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="ja:TreeLevel2">
+                    <TreeDataTemplate DataType="jbvmde:CardVariantViewModel">
                         <TextBlock Text="{Binding Name}" />
                     </TreeDataTemplate>
                 </TreeView.DataTemplates>
@@ -77,8 +87,11 @@
                 <Grid ColumnDefinitions="* *" RowDefinitions="auto *">
                     <TextBlock Margin="5" Grid.Column="0" Grid.Row="0" Text="Front" />
                     <Border Classes="EditorText" Grid.Column="0" Grid.Row="1">
-                        <ae:TextEditor SyntaxHighlighting="HTML" Options="{StaticResource HtmlOptions}"
-                                       Text="FrontFormat" />
+                        <ae:TextEditor SyntaxHighlighting="HTML" Options="{StaticResource HtmlOptions}">
+                            <axi:Interaction.Behaviors>
+                                <jab:TextEditorBindingBehaviour Text="{Binding SelectedVariant.FrontFormat}" />
+                            </axi:Interaction.Behaviors>
+                        </ae:TextEditor>
                     </Border>
                     <Border Margin="5" Grid.Column="1" Grid.Row="1" Background="Red" />
                 </Grid>
@@ -88,8 +101,11 @@
                 <Grid ColumnDefinitions="* *" RowDefinitions="auto *">
                     <TextBlock Margin="5" Grid.Column="0" Grid.Row="0" Text="Back" />
                     <Border Classes="EditorText" Grid.Column="0" Grid.Row="1">
-                        <ae:TextEditor SyntaxHighlighting="HTML" Options="{StaticResource HtmlOptions}"
-                                       Text="BackFormat" />
+                        <ae:TextEditor SyntaxHighlighting="HTML" Options="{StaticResource HtmlOptions}">
+                            <axi:Interaction.Behaviors>
+                                <jab:TextEditorBindingBehaviour Text="{Binding SelectedVariant.BackFormat}" />
+                            </axi:Interaction.Behaviors>
+                        </ae:TextEditor>
                     </Border>
                     <Border Margin="5" Grid.Column="1" Grid.Row="1" Background="Red" />
                 </Grid>
@@ -103,11 +119,11 @@
                     <ListBox Margin="5" Grid.Row="1"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5"
-                              Items="{x:Static ja:SampleData.ListOfStrings}" />
+                              Items="{Binding SelectedType.Fields}" SelectedItem="{Binding SelectedField}" />
                     <fauic:CommandBar Grid.Row="2" HorizontalAlignment="Center" IsDynamicOverflowEnabled="False">
                         <fauic:CommandBar.PrimaryCommands>
-                            <fauic:CommandBarButton Icon="Add" Tag="Add" ToolTip.Tip="Add" />
-                            <fauic:CommandBarButton Icon="Delete" Tag="Delete" ToolTip.Tip="Delete" />
+                            <fauic:CommandBarButton Command="{Binding AddField}" Icon="Add" Tag="Add" ToolTip.Tip="Add" />
+                            <fauic:CommandBarButton Command="{Binding RemoveField}" Icon="Delete" Tag="Delete" ToolTip.Tip="Delete" />
                         </fauic:CommandBar.PrimaryCommands>
                     </fauic:CommandBar>
                 </Grid>
@@ -117,8 +133,11 @@
                 <Grid RowDefinitions="auto *">
                     <TextBlock Margin="5" Grid.Row="0" Text="CSS" />
                     <Border Classes="EditorText" Grid.Row="1">
-                        <ae:TextEditor SyntaxHighlighting="CSS" Options="{StaticResource HtmlOptions}"
-                                       Text="CSS" />
+                        <ae:TextEditor SyntaxHighlighting="CSS" Options="{StaticResource HtmlOptions}">
+                            <axi:Interaction.Behaviors>
+                                <jab:TextEditorBindingBehaviour Text="{Binding SelectedType.Css}" />
+                            </axi:Interaction.Behaviors>
+                        </ae:TextEditor>
                     </Border>
                 </Grid>
             </Border>
