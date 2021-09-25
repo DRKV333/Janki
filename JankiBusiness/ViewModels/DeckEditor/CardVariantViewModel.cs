@@ -42,8 +42,11 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public CardViewModel Preview { get; }
 
-        public CardVariantViewModel(CardType type, CardVariant Variant)
+        public CardTypeViewModel TypeVM { get; }
+
+        public CardVariantViewModel(CardTypeViewModel TypeVM, CardType type, CardVariant Variant)
         {
+            this.TypeVM = TypeVM;
             this.Variant = Variant;
             Preview = CardViewModel.CreatePreview(type, Variant);
         }
@@ -52,6 +55,6 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public CardVariantViewModel GetCardVariant() => this;
 
-        public CardTypeViewModel GetCardType() => null;
+        public CardTypeViewModel GetCardType() => TypeVM;
     }
 }

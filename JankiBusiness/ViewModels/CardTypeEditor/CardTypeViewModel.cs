@@ -47,7 +47,7 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             name = type.Name;
             Fields = new ObservableCollection<string>(type.Fields.OrderBy(x => x.Id).Select(x => x.Name));
 
-            List<CardVariantViewModel> variants = type.Variants.Select(x => new CardVariantViewModel(type, x)).ToList();
+            List<CardVariantViewModel> variants = type.Variants.Select(x => new CardVariantViewModel(this, type, x)).ToList();
             if (variants.Count > 1)
             {
                 singleVariant = null;
@@ -112,7 +112,7 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
                 singleVariant = null;
             }
 
-            CardVariantViewModel variantVM = new CardVariantViewModel(type, variant);
+            CardVariantViewModel variantVM = new CardVariantViewModel(this, type, variant);
             Variants.Add(variantVM);
             return variantVM;
         }
