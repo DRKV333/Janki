@@ -55,6 +55,7 @@ namespace JankiAvalonia.Services
         public async Task<string?> ShowTextPromptDialog(string title, string initialContent, bool canCancel)
         {
             TextBox textBox = new TextBox() { Text = initialContent };
+            textBox.AttachedToVisualTree += (_, _) => textBox.Focus();
 
             ContentDialog dialog = new ContentDialog()
             {
