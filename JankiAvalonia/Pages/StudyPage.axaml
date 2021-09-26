@@ -12,21 +12,21 @@
         <SolidColorBrush x:Key="TextColorReview" Color="Red" />
     </UserControl.Resources>
     
-    <SplitView PanePlacement="Right" DisplayMode="Inline" IsPaneOpen="{Binding #OpenTheEditor.IsChecked}">
+    <SplitView PanePlacement="Right" DisplayMode="Inline" IsPaneOpen="{Binding EditorVisible}">
         <SplitView.Pane>
             <Border Classes="BorderToolbarDarker">
-                <jav:NoteFieldEditor IsDynamicOverflowEnabled="False" />
+                <jav:NoteFieldEditor DataContext="{Binding CurrentNote}" IsDynamicOverflowEnabled="False" />
             </Border>
         </SplitView.Pane>
 
         <Grid RowDefinitions="auto * auto">
             <Border Grid.Row="0" Classes="BorderToolbarDarker">
                 <Grid>
-                    <Button HorizontalAlignment="Left" Margin="3" Background="Transparent">
+                    <Button HorizontalAlignment="Left" Margin="3" Command="{Binding Back}">
                         <fauic:SymbolIcon Symbol="Back" />
                     </Button>
 
-                    <ToggleButton x:Name="OpenTheEditor" HorizontalAlignment="Right" Margin="3" Background="Transparent">
+                    <ToggleButton x:Name="OpenTheEditor" HorizontalAlignment="Right" Margin="3" IsChecked="{Binding EditorVisible}">
                         <fauic:SymbolIcon Symbol="Edit" />
                     </ToggleButton>
                 </Grid>
@@ -38,32 +38,31 @@
 
             <Border Grid.Row="2" Height="100" Classes="BorderToolbarDarker">
                 <Grid>
-                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5">Flip</Button>
+                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Command="{Binding Flip}">Flip</Button>
 
-                    <Grid VerticalAlignment="Bottom" Margin="20" ColumnDefinitions="* * * *">
-
-                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">😟</Button>
-                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">😐</Button>
-                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">🙂</Button>
-                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">😄</Button>
+                    <Grid VerticalAlignment="Bottom" Margin="20" ColumnDefinitions="* * * *" IsVisible="{Binding AnswersVisible}">
+                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="1">😟</Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="2">😐</Button>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="3">🙂</Button>
+                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="4">😄</Button>
                     </Grid>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
                             <TextBlock Text="Cards Left:" />
-                            <TextBlock Text="10" />
+                            <TextBlock Text="{Binding Counts.Total}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
                             <TextBlock Foreground="{StaticResource TextColorNew}" Text="New:" />
-                            <TextBlock Foreground="{StaticResource TextColorNew}" Text="10" />
+                            <TextBlock Foreground="{StaticResource TextColorNew}" Text="{Binding Counts.NewCount}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
                             <TextBlock Foreground="{StaticResource TextColorDue}" Text="Due:" />
-                            <TextBlock Foreground="{StaticResource TextColorDue}" Text="10" />
+                            <TextBlock Foreground="{StaticResource TextColorDue}" Text="{Binding Counts.DueCount}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,3,0">
                             <TextBlock Foreground="{StaticResource TextColorReview}" Text="Review:" />
-                            <TextBlock Foreground="{StaticResource TextColorReview}" Text="10" />
+                            <TextBlock Foreground="{StaticResource TextColorReview}" Text="{Binding Counts.ReviewCount}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
