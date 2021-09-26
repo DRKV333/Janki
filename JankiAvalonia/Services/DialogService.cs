@@ -30,7 +30,7 @@ namespace JankiAvalonia.Services
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 AllowMultiple = false,
-                Filters = { new FileDialogFilter() { Extensions = filters.ToList() } },
+                Filters = { new FileDialogFilter() { Name = "Compatible File Formats", Extensions = filters.Select(x => x.TrimStart('.')).ToList() } },
             };
 
             string[] files = await dialog.ShowAsync(ParentWindow);

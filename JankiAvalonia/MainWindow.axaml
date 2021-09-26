@@ -8,9 +8,10 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.MainWindow"
         Title="JankiAvalonia"
-        Content="{Binding Content}">
+        Content="{Binding Content}"
+        x:Name="TheMainWindow">
     <Window.Resources>
-        <jas:DialogService x:Key="DialogService" ParentWindow="{Binding $parent[Window]}" />
+        <jas:DialogService x:Key="DialogService" ParentWindow="{Binding #TheMainWindow}" />
     </Window.Resources>
 
     <Window.DataContext>
