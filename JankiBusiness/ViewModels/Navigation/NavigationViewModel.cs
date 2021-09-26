@@ -4,6 +4,7 @@ using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.ViewModels.Study;
 using LibAnkiCards.Context;
+using LibAnkiCards.Importing;
 using System;
 using System.Collections.Generic;
 
@@ -14,6 +15,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public IAnkiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public INavigationService NavigationService { get; set; }
+        public IMediaImporter MediaImporter { get; set; }
 
         private readonly Lazy<List<NavigationItem>> navigationItems;
         public IReadOnlyList<NavigationItem> NavigationItems => navigationItems.Value;
@@ -49,7 +51,8 @@ namespace JankiBusiness.ViewModels.Navigation
                     new NavigationItem("Deck Editor", "CalendarDay", new DeckEditorPageViewModel()
                     {
                         ContextProvider = ContextProvider,
-                        DialogService = DialogService
+                        DialogService = DialogService,
+                        MediaImporter = MediaImporter
                     }),
                     new NavigationItem("Card Type Editor", "PreviewLink", new CardTypeEditorPageViewModel()
                     {

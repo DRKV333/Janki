@@ -5,15 +5,37 @@
         xmlns:fauic="using:FluentAvalonia.UI.Controls"
         xmlns:ja="using:JankiAvalonia"
         xmlns:jav="using:JankiAvalonia.Views"
+        xmlns:jbvmde="using:JankiBusiness.ViewModels.DeckEditor"
+        xmlns:axi="using:Avalonia.Xaml.Interactivity"
+        xmlns:axic="using:Avalonia.Xaml.Interactions.Core"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.Pages.DeckEditorPage">
+    <UserControl.Resources>
+        <Flyout x:Key="AddButtonFlyout" ShowMode="TransientWithDismissOnPointerMoveAway">
+            <ListBox MaxHeight="300"
+                     Items="{Binding CardAdderViewModel.AvailableTypes}"
+                     SelectedItem="{Binding CardAdderViewModel.SelectedType}">
+                <axi:Interaction.Behaviors>
+                    <axic:EventTriggerBehavior EventName="SelectionChanged">
+                        <axic:CallMethodAction MethodName="Hide" TargetObject="{DynamicResource AddButtonFlyout}" />
+                    </axic:EventTriggerBehavior>
+                </axi:Interaction.Behaviors>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Flyout>
+    </UserControl.Resources>
+    
     <Grid RowDefinitions="auto 2* auto 3*" ColumnDefinitions="auto auto * auto *">
         <Border Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Classes="BorderToolbarDarker">
             <fauic:CommandBar  HorizontalAlignment="Center" IsDynamicOverflowEnabled="false">
                 <fauic:CommandBar.PrimaryCommands>
-                    <fauic:CommandBarButton Icon="Add" Label="Add Deck" ToolTip.Tip="Add Deck" />
-                    <fauic:CommandBarButton Icon="Delete" Label="Delete Deck" ToolTip.Tip="Delete Deck" />
-                    <fauic:CommandBarButton Icon="Download" Label="Import Deck" ToolTip.Tip="Import Deck" />
+                    <fauic:CommandBarButton Command="{Binding AddDeck}" Icon="Add" Label="Add Deck" ToolTip.Tip="Add Deck" />
+                    <fauic:CommandBarButton Command="{Binding DeleteSelectedDeck}" Icon="Delete" Label="Delete Deck" ToolTip.Tip="Delete Deck" />
+                    <fauic:CommandBarButton Command="{Binding Import}" Icon="Download" Label="Import Deck" ToolTip.Tip="Import Deck" />
                 </fauic:CommandBar.PrimaryCommands>
             </fauic:CommandBar>
         </Border>
@@ -21,13 +43,9 @@
         <TreeView x:Name="DeckTree"
                   Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Items="{x:Static ja:SampleData.ListOfTreeItems}">
+                  Items="{Binding Decks}" SelectedItem="{Binding SelectedDeck}">
             <TreeView.DataTemplates>
-                <TreeDataTemplate DataType="ja:TreeLevel1"
-                                  ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Text}" />
-                </TreeDataTemplate>
-                <TreeDataTemplate DataType="ja:TreeLevel2">
+                <TreeDataTemplate DataType="jbvmde:DeckViewModel">
                     <TextBlock Text="{Binding Name}" />
                 </TreeDataTemplate>
             </TreeView.DataTemplates>
@@ -44,28 +62,35 @@
 
         <ListBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1"
                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                 Items="{x:Static ja:SampleData.ListOfStrings}" />
-
+                 Items="{Binding SelectedDeck.Cards}" SelectedItem="{Binding SelectedCard}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ShortField}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+            
         <Border Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Classes="BorderToolbarDarker">
             <fauic:CommandBar>
                 <fauic:CommandBar.PrimaryCommands>
                     <fauic:CommandBarElementContainer>
-                        <fauic:SplitButton Content="Add Something Card">
-                            <fauic:SplitButton.Flyout>
-                                <Flyout>
-                                    <ListBox Items="{x:Static ja:SampleData.ListOfStrings}" />
-                                </Flyout>
-                            </fauic:SplitButton.Flyout>
+                        <fauic:SplitButton Command="{Binding CardAdderViewModel.AddCard}"
+                                           Flyout="{StaticResource AddButtonFlyout}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Add &quot;" />	
+                                <TextBlock Text="{Binding CardAdderViewModel.SelectedType.Name}" />	
+                                <TextBlock Text="&quot; Card" />	
+                            </StackPanel>
                         </fauic:SplitButton>
                     </fauic:CommandBarElementContainer>
-                    <fauic:CommandBarButton Label="Delete Card" Icon="Delete" ToolTip.Tip="Delete Card" />
+                    <fauic:CommandBarButton Command="{Binding DeleteSelectedCard}" Label="Delete Card" Icon="Delete" ToolTip.Tip="Delete Card" />
                 </fauic:CommandBar.PrimaryCommands>
             </fauic:CommandBar>
         </Border>
 
         <GridSplitter ResizeBehavior="PreviousAndNext" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Bottom" />
         
-        <jav:NoteFieldEditor Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <jav:NoteFieldEditor Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DataContext="{Binding SelectedCard}" />
         
         <GridSplitter Grid.Column="3" Grid.Row="3" />
 

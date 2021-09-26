@@ -1,6 +1,7 @@
 ﻿using JankiBusiness.Services;
 using JankiBusiness.ViewModels.Study;
 using LibAnkiCards.Context;
+using LibAnkiCards.Importing;
 using System;
 
 namespace JankiBusiness.ViewModels.Navigation
@@ -28,6 +29,7 @@ namespace JankiBusiness.ViewModels.Navigation
 
         public IAnkiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
+        public IMediaImporter MediaImporter { get; set; }
 
         private readonly INavigationService navigationService;
 
@@ -44,7 +46,9 @@ namespace JankiBusiness.ViewModels.Navigation
                 () => new NavigationViewModel()
                 {
                     ContextProvider = ContextProvider,
-                    DialogService = DialogService
+                    DialogService = DialogService,
+                    NavigationService = navigationService,
+                    MediaImporter = MediaImporter
                 });
 
             studyPageViewModel = new Lazy<StudyPageViewModel>(
