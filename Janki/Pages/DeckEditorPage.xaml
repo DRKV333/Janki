@@ -69,19 +69,13 @@
                 <Button Margin="5,0,0,0" Command="{Binding Search, Converter={StaticResource CommandValueConverter}}">Search</Button>
             </StackPanel>
         </Border>
-        
+
         <mtuc:DataGrid x:Name="CardGrid"
                        Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"
                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                        ItemsSource="{Binding SelectedDeck.Cards}" SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
                        AutoGenerateColumns="False" IsReadOnly="True"
                        SelectionMode="Single">
-            <mxi:Interaction.Behaviors>
-                <mxic:EventTriggerBehavior EventName="SelectionChanged">
-                    <mxic:InvokeCommandAction Command="{Binding SelectedDeck.SaveCard, Converter={StaticResource CommandValueConverter}}"
-                                              InputConverter="{StaticResource UnselectedValueConverter}" />
-                </mxic:EventTriggerBehavior>
-            </mxi:Interaction.Behaviors>
             <mtuc:DataGrid.Columns>
                 <mtuc:DataGridTextColumn Header="Name" Binding="{Binding ShortField}" />
                 <mtuc:DataGridTextColumn Header="Type" Binding="{Binding Type.Name}" />

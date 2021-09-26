@@ -60,15 +60,16 @@
             </Grid>
         </Border>
 
-        <ListBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1"
-                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                 Items="{Binding SelectedDeck.Cards}" SelectedItem="{Binding SelectedCard}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding ShortField}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                  Items="{Binding SelectedDeck.Cards}" SelectedItem="{Binding SelectedCard}"
+                  AutoGenerateColumns="False" SelectionMode="Single" CanUserResizeColumns="True"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding ShortField}" />
+                <DataGridTextColumn Header="Type" Binding="{Binding Type.Name}" />
+            </DataGrid.Columns>
+        </DataGrid>
             
         <Border Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Classes="BorderToolbarDarker">
             <fauic:CommandBar>
