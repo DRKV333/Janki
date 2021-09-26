@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ja="using:JankiAvalonia"
         xmlns:jac="using:JankiAvalonia.Converters"
+        xmlns:jap="clr-namespace:JankiAvalonia.Pages"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="JankiAvalonia.Pages.DashboardPage">
     
@@ -56,45 +57,49 @@
             <Setter Property="BoxShadow" Value="{Binding Source={StaticResource TagShadow}, Path=Shadow}" />
         </Style>
     </UserControl.Styles>
-    
-    <ScrollViewer>
-        <ItemsRepeater Margin="5" HorizontalAlignment="Center" Items="{x:Static ja:SampleData.ListOfStrings}">
-            <ItemsRepeater.Layout>
-                <UniformGridLayout />
-            </ItemsRepeater.Layout>
-            <ItemsRepeater.ItemTemplate>
-                <DataTemplate>
-                    <Button Margin="5" Classes="Card">
-                        <Grid Height="150" VerticalAlignment="Stretch">
-                            <TextBlock TextWrapping="Wrap" MaxLines="3" Margin="10" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding}" />
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                                <Border Margin="10" Classes="Tag">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="15" Text="New: " />
-                                        <TextBlock FontSize="15" Text="10" />
-                                    </StackPanel>
-                                </Border>
+    <Grid ColumnDefinitions="* * *">
+        <ScrollViewer Grid.ColumnSpan="3">
+            <ItemsRepeater Margin="5" HorizontalAlignment="Center" Items="{Binding Decks}">
+                <ItemsRepeater.Layout>
+                    <UniformGridLayout />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="5" Classes="Card" Command="{Binding $parent[jap:DashboardPage].DataContext.Study}" CommandParameter="{Binding}">
+                            <Grid Height="150" Width="275" VerticalAlignment="Stretch">
+                                <TextBlock TextWrapping="Wrap" MaxLines="3" Margin="10" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Name}" />
 
-                                <Border Margin="10" Classes="Tag">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="15" Text="Due: " />
-                                        <TextBlock FontSize="15" Text="10" />
-                                    </StackPanel>
-                                </Border>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                    <Border Margin="10" Classes="Tag" IsVisible="{Binding !!Counts.NewCount}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="15" Text="New: " />
+                                            <TextBlock FontSize="15" Text="{Binding Counts.NewCount}" />
+                                        </StackPanel>
+                                    </Border>
 
-                                <Border Margin="10" Classes="Tag">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="15" Text="Review: " />
-                                        <TextBlock FontSize="15" Text="10" />
-                                    </StackPanel>
-                                </Border>
-                            </StackPanel>
+                                    <Border Margin="10" Classes="Tag" IsVisible="{Binding !!Counts.DueCount}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="15" Text="Due: " />
+                                            <TextBlock FontSize="15" Text="{Binding Counts.DueCount}" />
+                                        </StackPanel>
+                                    </Border>
 
-                        </Grid>
-                    </Button>
-                </DataTemplate>
-            </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
-    </ScrollViewer>
+                                    <Border Margin="10" Classes="Tag" IsVisible="{Binding !!Counts.ReviewCount}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="15" Text="Review: " />
+                                            <TextBlock FontSize="15" Text="{Binding Counts.ReviewCount}" />
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+        <ProgressBar Grid.Column="1" IsIndeterminate="True" IsVisible="{Binding Loading}" />
+    </Grid>
 </UserControl>
