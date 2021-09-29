@@ -26,8 +26,6 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
 
-            <jcnv:CommandValueConverter x:Key="CommandValueConverter" />
-
             <jcnv:ItemClickedInputConverter x:Key="ItemClickedInputConverter" />
 
             <jsrv:DialogService x:Key="DialogService" />

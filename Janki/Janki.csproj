@@ -123,7 +123,6 @@
     <Compile Include="Pages\CardTypeEditorPage.xaml.cs">
       <DependentUpon>CardTypeEditorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\CommandValueConverter.cs" />
     <Compile Include="Pages\DashboardPage.xaml.cs">
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>

@@ -31,10 +31,10 @@
         <Border Grid.Column="0" Grid.Row="0" Background="{ThemeResource SystemChromeMediumColor}">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Margin="5" Command="{Binding AddCardType, Converter={StaticResource CommandValueConverter}}">Add Type</Button>
-                <Button Margin="5" Command="{Binding RemoveCardType, Converter={StaticResource CommandValueConverter}}">Delete Type</Button>
-                <Button Margin="5" Command="{Binding AddVariant, Converter={StaticResource CommandValueConverter}}">Add Variant</Button>
-                <Button Margin="5" Command="{Binding RemoveVariant, Converter={StaticResource CommandValueConverter}}">Delete Variant</Button>
+                <Button Margin="5" Command="{Binding AddCardType}">Add Type</Button>
+                <Button Margin="5" Command="{Binding RemoveCardType}">Delete Type</Button>
+                <Button Margin="5" Command="{Binding AddVariant}">Add Variant</Button>
+                <Button Margin="5" Command="{Binding RemoveVariant}">Delete Variant</Button>
             </StackPanel>
         </Border>
 
@@ -121,8 +121,8 @@
             <Border Margin="5,5,5,10" Grid.Row="2"
                     Background="{ThemeResource SystemChromeMediumColor}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Margin="5" Command="{Binding AddField, Converter={StaticResource CommandValueConverter}}">Add</Button>
-                    <Button Margin="5" Command="{Binding RemoveField, Converter={StaticResource CommandValueConverter}}">Remove</Button>
+                    <Button Margin="5" Command="{Binding AddField}">Add</Button>
+                    <Button Margin="5" Command="{Binding RemoveFiel}">Remove</Button>
                 </StackPanel>
             </Border>
         </Grid>

@@ -42,9 +42,9 @@
         <Border Grid.Column="0" Grid.Row="0" Background="{ThemeResource SystemChromeMediumColor}">
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Margin="5" Command="{Binding AddDeck, Converter={StaticResource CommandValueConverter}}">Add</Button>
-                <Button Margin="5" Command="{Binding DeleteSelectedDeck, Converter={StaticResource CommandValueConverter}}">Delete</Button>
-                <Button Margin="5" Command="{Binding Import, Converter={StaticResource CommandValueConverter}}">Import</Button>
+                <Button Margin="5" Command="{Binding AddDeck}">Add</Button>
+                <Button Margin="5" Command="{Binding DeleteSelectedDeck}">Delete</Button>
+                <Button Margin="5" Command="{Binding Import}">Import</Button>
             </StackPanel>
         </Border>
 
@@ -66,7 +66,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBox Width="500" Text="{Binding SearchTerm, Mode=TwoWay}" />
-                <Button Margin="5,0,0,0" Command="{Binding Search, Converter={StaticResource CommandValueConverter}}">Search</Button>
+                <Button Margin="5,0,0,0" Command="{Binding Search}">Search</Button>
             </StackPanel>
         </Border>
 
@@ -86,7 +86,7 @@
                 Background="{ThemeResource SystemChromeMediumLowColor}">
             <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center" HorizontalAlignment="Left">
-                <muxc:SplitButton Margin="5" Command="{Binding CardAdderViewModel.AddCard, Converter={StaticResource CommandValueConverter}}">
+                <muxc:SplitButton Margin="5" Command="{Binding CardAdderViewModel.AddCard}">
                     <TextBlock>
                         <Run Text="Add &quot;" />
                         <Run Text="{Binding CardAdderViewModel.SelectedType.Name}" />
@@ -100,7 +100,7 @@
                     </muxc:SplitButton.Flyout>
                 </muxc:SplitButton>
 
-                <Button Margin="5" Command="{Binding DeleteSelectedCard, Converter={StaticResource CommandValueConverter}}">Delete</Button>
+                <Button Margin="5" Command="{Binding DeleteSelectedCard}">Delete</Button>
             </StackPanel>
         </Border>
 

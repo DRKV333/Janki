@@ -20,7 +20,7 @@
         <ListView Margin="5" ItemsSource="{Binding Decks}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" IsItemClickEnabled="True">
             <mxi:Interaction.Behaviors>
                 <mxic:EventTriggerBehavior EventName="ItemClick">
-                    <mxic:InvokeCommandAction Command="{Binding Study, Converter={StaticResource CommandValueConverter}}" InputConverter="{StaticResource ItemClickedInputConverter}" />
+                    <mxic:InvokeCommandAction Command="{Binding Study}" InputConverter="{StaticResource ItemClickedInputConverter}" />
                 </mxic:EventTriggerBehavior>
             </mxi:Interaction.Behaviors>
             <ListView.ItemTemplate>

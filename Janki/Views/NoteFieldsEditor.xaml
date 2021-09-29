@@ -25,7 +25,7 @@
             <AppBarToggleButton IsChecked="{Binding Bold, Mode=TwoWay}" Icon="Bold" AllowFocusOnInteraction="False" />
             <AppBarToggleButton IsChecked="{Binding Italic, Mode=TwoWay}" Icon="Italic" AllowFocusOnInteraction="False" />
             <AppBarToggleButton IsChecked="{Binding Underline, Mode=TwoWay}" Icon="Underline" AllowFocusOnInteraction="False" />
-            <AppBarButton Icon="Pictures" Command="{Binding InsertImage, Converter={StaticResource CommandValueConverter}}" AllowFocusOnInteraction="False" />
+            <AppBarButton Icon="Pictures" Command="{Binding InsertImage}" AllowFocusOnInteraction="False" />
         </CommandBar>
 
         <ListView Grid.Row="1" Background="{ThemeResource SystemChromeMediumColor}"
