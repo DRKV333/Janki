@@ -1,9 +1,9 @@
-﻿using LibAnkiCards.Context;
+﻿using JankiBusiness.Web;
+using LibAnkiCards.Context;
 using LibAnkiCards.Importing;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
 
 namespace Janki.Services
@@ -11,8 +11,6 @@ namespace Janki.Services
     internal class LocalStorageMediaManager : IMediaImporter, IAnkiContextProvider
     {
         private readonly StorageFolderMediaProvider media = new StorageFolderMediaProvider(ApplicationData.Current.LocalFolder, "media", true);
-        private readonly StorageFolderMediaProvider mathjax = new StorageFolderMediaProvider(Package.Current.InstalledLocation, @"Assets\web\mathjax", false);
-        private readonly StorageFolderMediaProvider fieldEditor = new StorageFolderMediaProvider(Package.Current.InstalledLocation, @"Assets\web\FieldEditor", false);
 
         public IMediaProvider CardMediaProvider { get; }
 
@@ -20,8 +18,8 @@ namespace Janki.Services
 
         public LocalStorageMediaManager()
         {
-            CardMediaProvider = new CompositeMediaProvider(mathjax, media);
-            FieldEditorMediaProvider = new CompositeMediaProvider(fieldEditor, media);
+            CardMediaProvider = new CompositeMediaProvider(ManifestResourceMedaiProvider.MathJax, media);
+            FieldEditorMediaProvider = new CompositeMediaProvider(ManifestResourceMedaiProvider.FieldEditor, media);
         }
 
         public async Task ImportMedia(string name, Stream content)

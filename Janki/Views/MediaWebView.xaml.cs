@@ -1,4 +1,4 @@
-﻿using Janki.Services;
+﻿using JankiBusiness.Web;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -75,7 +75,18 @@ namespace Janki.Views
                 if (localStream != null)
                     return localStream;
 
-                return (await Provider.GetMediaStream(path.TrimStart('/'))).AsInputStream();
+                Stream stream = await Provider.GetMediaStream(path.TrimStart('/'));
+
+                InMemoryRandomAccessStream memoryStream = new InMemoryRandomAccessStream();
+                if (stream == null)
+                    return memoryStream;
+
+                Stream writeStream = memoryStream.AsStreamForWrite();
+                await stream.CopyToAsync(writeStream);
+                await writeStream.FlushAsync();
+                memoryStream.Seek(0);
+
+                return memoryStream;
             }
         }
     }

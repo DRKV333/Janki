@@ -1,13 +1,8 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace Janki.Services
+namespace JankiBusiness.Web
 {
-    public interface IMediaProvider
-    {
-        Task<Stream> GetMediaStream(string name);
-    }
-
     public class CompositeMediaProvider : IMediaProvider
     {
         private readonly IMediaProvider[] providers;

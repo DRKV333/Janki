@@ -13,4 +13,8 @@
     <ProjectReference Include="..\LibAnkiScheduler\LibAnkiScheduler.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Web/Assets/**" />
+  </ItemGroup>
+
 </Project>
