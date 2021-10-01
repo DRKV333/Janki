@@ -55,7 +55,8 @@ namespace JankiBusiness.ViewModels.Navigation
                 () => new StudyPageViewModel()
                 {
                     ContextProvider = ContextProvider,
-                    NavigationService = navigationService
+                    NavigationService = navigationService,
+                    DialogService = DialogService
                 });
         }
     }

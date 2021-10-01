@@ -5,16 +5,21 @@
              xmlns:fauic="using:FluentAvalonia.UI.Controls"
              xmlns:ja="using:JankiAvalonia"
              xmlns:jav="clr-namespace:JankiAvalonia.Views"
+             xmlns:jbw="using:JankiBusiness.Web"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
              x:Class="JankiAvalonia.Views.NoteFieldEditor">
     <Grid RowDefinitions="auto *">
         <Border Grid.Row="0" Classes="BorderToolbarDarker">
             <fauic:CommandBar HorizontalAlignment="Stretch" IsDynamicOverflowEnabled="{Binding $parent[jav:NoteFieldEditor].IsDynamicOverflowEnabled}">
                 <fauic:CommandBar.PrimaryCommands>
-                    <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" />
-                    <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" />
-                    <fauic:CommandBarToggleButton Icon="Underline" Label="Underline" ToolTip.Tip="Underline" />
-                    <fauic:CommandBarButton Icon="Image" Label="Insert Image" ToolTip.Tip="Insert Image" />
+                    <fauic:CommandBarToggleButton Icon="Bold" Label="Bold" ToolTip.Tip="Bold" Focusable="false"
+                                                  IsChecked="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator.Bold}" />
+                    <fauic:CommandBarToggleButton Icon="Italic" Label="Italic" ToolTip.Tip="Italic" Focusable="false"
+                                                  IsChecked="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator.Italic}" />
+                    <fauic:CommandBarToggleButton Icon="Underline" Label="Underline" ToolTip.Tip="Underline" Focusable="false"
+                                                  IsChecked="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator.Underline}" />
+                    <fauic:CommandBarButton Icon="Image" Label="Insert Image" ToolTip.Tip="Insert Image" Focusable="false"
+                                            Command="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator.InsertImage}"/>
                 </fauic:CommandBar.PrimaryCommands>
             </fauic:CommandBar>
         </Border>
@@ -23,10 +28,15 @@
             <ItemsRepeater Margin="3" Items="{Binding Fields}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Margin="5,10,0,3" Text="{Binding Definition.Name}" />
-                            <TextBox Margin="5" Text="{Binding Value}" />
-                        </StackPanel>
+                        <Border Classes="EditorPanel">
+                            <StackPanel>
+                                <TextBlock Margin="5,10,0,3" Text="{Binding Definition.Name}" />
+                                <Border Classes="EditorText">
+                                    <jav:WebEditBox Margin="3" Classes="NoAdorner" Coordinator="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator}"
+                                                    Text="{Binding Value}" Provider="{x:Static jbw:ManifestResourceMedaiProvider.FieldEditor}" />
+                                </Border>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>

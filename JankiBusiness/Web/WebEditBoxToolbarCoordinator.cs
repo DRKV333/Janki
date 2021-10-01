@@ -4,13 +4,13 @@ using JankiBusiness.ViewModels;
 using LibAnkiCards.Importing;
 using System.IO;
 
-namespace Janki.Views
+namespace JankiBusiness.Web
 {
     public class WebEditBoxToolbarCoordinator : ViewModel
     {
-        // Fun Fact: One way data binding to a toggle button's IsChecked does not work...
+        // Fun Fact: In UWP, one way data binding to a toggle button's IsChecked does not work...
 
-        public WebEditBox ActiveBox { get; set; }
+        public WebEditBoxAdapter ActiveBox { get; set; }
 
         public IMediaImporter Importer { get; set; }
         public IDialogService DialogService { get; set; }

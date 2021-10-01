@@ -1,8 +1,10 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
+using JankiBusiness.Web;
 using LibAnkiCards;
 using LibAnkiCards.Context;
 using LibAnkiCards.Importing;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -16,6 +18,9 @@ namespace JankiBusiness.ViewModels.DeckEditor
         public IAnkiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
+
+        private Lazy<WebEditBoxToolbarCoordinator> coordinator;
+        public WebEditBoxToolbarCoordinator Coordinator => coordinator.Value;
 
         public ObservableCollection<DeckViewModel> Decks { get; } = new ObservableCollection<DeckViewModel>();
 
@@ -150,6 +155,8 @@ namespace JankiBusiness.ViewModels.DeckEditor
             });
 
             Search = new GenericDelegateCommand(p => SelectedDeck.SetSearchTerm(SearchTerm));
+
+            coordinator = new Lazy<WebEditBoxToolbarCoordinator>(() => new WebEditBoxToolbarCoordinator() { DialogService = DialogService });
         }
 
         public override async Task OnNavigatedTo(object param)

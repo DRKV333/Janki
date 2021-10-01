@@ -152,7 +152,6 @@
     </Compile>
     <Compile Include="Converters\UnselectedValueConverter.cs" />
     <Compile Include="Views\WebEditBox.cs" />
-    <Compile Include="Views\WebEditBoxToolbarCoordinator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

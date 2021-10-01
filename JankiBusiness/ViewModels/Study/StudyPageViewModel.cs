@@ -1,9 +1,11 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
+using JankiBusiness.Web;
 using LibAnkiCards;
 using LibAnkiCards.Context;
 using LibAnkiScheduler;
+using System;
 using System.Threading.Tasks;
 
 namespace JankiBusiness.ViewModels.Study
@@ -12,6 +14,10 @@ namespace JankiBusiness.ViewModels.Study
     {
         public IAnkiContextProvider ContextProvider { get; set; }
         public INavigationService NavigationService { get; set; }
+        public IDialogService DialogService { get; set; }
+
+        private Lazy<WebEditBoxToolbarCoordinator> coordinator;
+        public WebEditBoxToolbarCoordinator Coordinator => coordinator.Value;
 
         private Deck deck;
         private IScheduler scheduler;
@@ -71,6 +77,8 @@ namespace JankiBusiness.ViewModels.Study
                 NavigationService.NavigateToVM(typeof(DashboardPageViewModel), null);
                 return Task.CompletedTask;
             });
+
+            coordinator = new Lazy<WebEditBoxToolbarCoordinator>(() => new WebEditBoxToolbarCoordinator() { DialogService = DialogService });
         }
 
         public override async Task OnNavigatedTo(object param)

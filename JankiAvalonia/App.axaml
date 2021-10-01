@@ -3,6 +3,7 @@
              xmlns:fas="using:FluentAvalonia.Styling"
              xmlns:jas="using:JankiAvalonia.Services"
              xmlns:jac="using:JankiAvalonia.Converters"
+             xmlns:wvc="using:WebViewControl"
              x:Class="JankiAvalonia.App">
     <Application.DataTemplates>
         <jas:PageViewLocator />
@@ -11,6 +12,10 @@
     <Application.Resources>
         <jas:MediaManager x:Key="MediaManager" />
         <jac:NavigationViewItemInvokedEventArgsConverter x:Key="NavigationViewItemInvokedEventArgsConverter" />
+
+        <jac:DynamicBoxShadowProvider x:Key="ShadowProvider"
+                                      OffsetX="3" OffsetY="3" Blur="5"
+                                      Color="{DynamicResource ControlStrongStrokeColorDefault}" />
     </Application.Resources>
     
     <Application.Styles>
@@ -20,5 +25,30 @@
         <Style Selector="Border.BorderToolbarDarker">
             <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
         </Style>
+
+        <Style Selector="Border.EditorPanel">
+            <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BoxShadow" Value="{Binding Source={StaticResource ShadowProvider}, Path=Shadow}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+
+        <Style Selector="Border.EditorText">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="3" />
+
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+        </Style>
+
+        <Style Selector="Border.EditorText:focus-within">
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorInputActiveBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+
     </Application.Styles>
 </Application>

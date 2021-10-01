@@ -1,11 +1,11 @@
-﻿using Windows.Foundation;
+﻿using JankiBusiness.Web;
 using Windows.UI.Xaml;
 
 namespace Janki.Views
 {
     public class WebEditBox : MediaWebView
     {
-        private bool htmlReady = false;
+        private readonly WebEditBoxAdapter adapter = new WebEditBoxAdapter();
 
         public string Text
         {
@@ -18,8 +18,7 @@ namespace Janki.Views
                 (d, e) =>
                 {
                     WebEditBox sender = (WebEditBox)d;
-                    if (sender.htmlReady)
-                        sender.SetEditorHtml((string)e.NewValue);
+                    sender.adapter.SetText((string)e.NewValue);
                 }));
 
         public WebEditBoxToolbarCoordinator Coordinator
@@ -29,79 +28,35 @@ namespace Janki.Views
         }
 
         public static readonly DependencyProperty CoordinatorProperty =
-            DependencyProperty.Register(nameof(Coordinator), typeof(WebEditBoxToolbarCoordinator), typeof(WebEditBox), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Coordinator), typeof(WebEditBoxToolbarCoordinator), typeof(WebEditBox), new PropertyMetadata(null,
+                (d, e) =>
+                {
+                    WebEditBox sender = (WebEditBox)d;
+                    sender.adapter.Coordinator = (WebEditBoxToolbarCoordinator)e.NewValue;
+                }));
 
         public WebEditBox()
         {
-            Web.ScriptNotify += Web_ScriptNotify;
+            Web.ScriptNotify += (s, e) => adapter.OnScriptNotify(e.Value);
+
+            adapter.ScriptInvoked += (s, e) =>
+            Web.InvokeScriptAsync(e.Script, e.Arguments.Length == 0 ? null : e.Arguments);
+            adapter.MinHeightChanged += (s, e) => MinHeight = e.MinHeight;
+            adapter.TextChanged += (s, e) => Text = e.Text;
+
             SetIndexUri("FieldEditor.html");
-        }
-
-        public string BoolString(bool b) => b ? "true" : "false";
-
-        public void Bold(bool value) => SetUnsetFormat("bold", value);
-
-        public void Italic(bool value) => SetUnsetFormat("italic", value);
-
-        public void Underline(bool value) => SetUnsetFormat("underline", value);
-
-        public void InsertImage(string src) => Web.InvokeScriptAsync("insertImage", new[] { src });
-
-        private void SetUnsetFormat(string format, bool value)
-        {
-            Web.InvokeScriptAsync(format, new[] { BoolString(value) });
-            FetchText();
-        }
-
-        private void Web_ScriptNotify(object sender, Windows.UI.Xaml.Controls.NotifyEventArgs e)
-        {
-            if (e.Value == "hello")
-            {
-                SetEditorHtml(Text);
-                htmlReady = true;
-            }
-            else if (e.Value.StartsWith("text "))
-            {
-                Text = e.Value.Substring("text ".Length);
-            }
-            else
-            {
-                string[] split = e.Value.Split(' ');
-
-                if (split[0] == "height")
-                {
-                    MinHeight = int.Parse(split[1]);
-                }
-                else if (split[0] == "format")
-                {
-                    bool value = bool.Parse(split[2]);
-                    switch (split[1])
-                    {
-                        case "b": Coordinator.SetActualBold(value); break;
-                        case "i": Coordinator.SetActualItalic(value); break;
-                        case "u": Coordinator.SetActualUnderline(value); break;
-                    }
-                }
-            }
-        }
-
-        private void FetchText() => Web.InvokeScriptAsync("notifyText", null);
-
-        private void SetEditorHtml(string text)
-        {
-            Web.InvokeScriptAsync("setEditorHtml", new[] { text });
-        }
-
-        protected override void OnLostFocus(RoutedEventArgs e)
-        {
-            FetchText();
         }
 
         protected override void OnGotFocus(RoutedEventArgs e)
         {
-            Coordinator.ActiveBox = this;
-            Web.InvokeScriptAsync("notifyAllFormats", null);
-            Web.InvokeScriptAsync("notifyHeight", null);
+            adapter.Activate();
+            base.OnGotFocus(e);
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            adapter.FetchText();
+            base.OnLostFocus(e);
         }
     }
 }
