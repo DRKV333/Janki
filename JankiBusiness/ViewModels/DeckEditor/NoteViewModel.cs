@@ -37,6 +37,8 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public IEnumerable<CardViewModel> Cards { get; }
 
+        public CardCarouselViewModel CardCarousel { get; }
+
         private bool dirty = false;
 
         public NoteViewModel(Collection collection, Note note)
@@ -76,7 +78,10 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 };
             }
 
-            Cards = note.Cards.Select(x => new CardViewModel(collection, x, this)).ToList();
+            IList<CardViewModel> cards = note.Cards.Select(x => new CardViewModel(collection, x, this)).ToList();
+            Cards = cards;
+
+            CardCarousel = new CardCarouselViewModel(cards);
         }
 
         public void SaveChanges(IAnkiContext context)

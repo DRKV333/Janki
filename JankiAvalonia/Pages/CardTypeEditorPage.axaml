@@ -7,6 +7,7 @@
         xmlns:ja="using:JankiAvalonia"
         xmlns:jac="using:JankiAvalonia.Converters"
         xmlns:jab="using:JankiAvalonia.Behaviours"
+        xmlns:jav="using:JankiAvalonia.Views"
         xmlns:jbvmcte="using:JankiBusiness.ViewModels.CardTypeEditor"
         xmlns:jbvmde="using:JankiBusiness.ViewModels.DeckEditor"
         xmlns:axi="using:Avalonia.Xaml.Interactivity"
@@ -66,7 +67,7 @@
                             </axi:Interaction.Behaviors>
                         </ae:TextEditor>
                     </Border>
-                    <Border Margin="5" Grid.Column="1" Grid.Row="1" Background="Red" />
+                    <jav:HtmlWebView Margin="5" Grid.Column="1" Grid.Row="1" Html="{Binding SelectedVariant.Preview.FrontHtml}" />
                 </Grid>
             </Border>
 
@@ -80,7 +81,7 @@
                             </axi:Interaction.Behaviors>
                         </ae:TextEditor>
                     </Border>
-                    <Border Margin="5" Grid.Column="1" Grid.Row="1" Background="Red" />
+                    <jav:HtmlWebView Margin="5" Grid.Column="1" Grid.Row="1" Html="{Binding SelectedVariant.Preview.BackHtml}" />
                 </Grid>
             </Border>	
         

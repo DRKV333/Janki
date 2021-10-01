@@ -97,10 +97,10 @@
 
         <Border Grid.Column="4" Grid.Row="3" Background="{DynamicResource ControlAltFillColorQuarternaryBrush}">
             <Grid ColumnDefinitions="auto * 2* * auto" RowDefinitions="* *">
-                <Border Margin="10" Grid.Column="2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Red" />
-                <Border Margin="10" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Red" />
-                <fauic:Button Grid.Column="0" Grid.RowSpan="2"><fauic:SymbolIcon Symbol="ChevronLeft" /></fauic:Button>
-                <fauic:Button Grid.Column="4" Grid.RowSpan="2"><fauic:SymbolIcon Symbol="ChevronRight" /></fauic:Button>
+                <jav:HtmlWebView Margin="10" Grid.Column="2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding SelectedCard.CardCarousel.SelectedCard.FrontHtml}" />
+                <jav:HtmlWebView Margin="10" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Html="{Binding SelectedCard.CardCarousel.SelectedCard.BackHtml}" />
+                <fauic:Button Grid.Column="0" Grid.RowSpan="2" Command="{Binding SelectedCard.CardCarousel.Previous}"><fauic:SymbolIcon Symbol="ChevronLeft" /></fauic:Button>
+                <fauic:Button Grid.Column="4" Grid.RowSpan="2" Command="{Binding SelectedCard.CardCarousel.Next}"><fauic:SymbolIcon Symbol="ChevronRight" /></fauic:Button>
             </Grid>
         </Border>
     </Grid>

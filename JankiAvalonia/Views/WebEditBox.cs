@@ -7,7 +7,7 @@ using JankiBusiness.Web;
 
 namespace JankiAvalonia.Views
 {
-    internal class WebEditBox : MediaWebView
+    public class WebEditBox : MediaWebView
     {
         public static readonly DirectProperty<WebEditBox, WebEditBoxToolbarCoordinator?> CoordinatorProperty =
             AvaloniaProperty.RegisterDirect<WebEditBox, WebEditBoxToolbarCoordinator?>(nameof(Coordinator),
@@ -52,6 +52,15 @@ namespace JankiAvalonia.Views
             RegisterJavascriptObject("external", new ExternalNotifier(adapter));
 
             NavigateToLocal("fieldeditor.html");
+        }
+
+        protected override IMediaProvider? ApplyMediaOverrides(IMediaProvider? provider)
+        {
+            IMediaProvider mine = ManifestResourceMedaiProvider.FieldEditor;
+            if (provider == null)
+                return mine;
+            else
+                return new CompositeMediaProvider(mine, provider);
         }
 
         protected override void OnGotFocus(GotFocusEventArgs e)

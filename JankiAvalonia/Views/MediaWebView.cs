@@ -5,7 +5,7 @@ using WebViewControl;
 
 namespace JankiAvalonia.Views
 {
-    internal class MediaWebView : WebView
+    public class MediaWebView : WebView
     {
         public static readonly DirectProperty<MediaWebView, IMediaProvider?> ProviderProperty =
             AvaloniaProperty.RegisterDirect<MediaWebView, IMediaProvider?>(nameof(Provider),
@@ -15,16 +15,20 @@ namespace JankiAvalonia.Views
         private const string LocalPrefix = "http://local.local/";
 
         private IMediaProvider? provider;
-
         public IMediaProvider? Provider
         {
             get => provider;
-            set => SetAndRaise(ProviderProperty, ref provider, value);
+            set { if (SetAndRaise(ProviderProperty, ref provider, value)) actualProvider = ApplyMediaOverrides(value); }
         }
+
+        private IMediaProvider? actualProvider;
+
+        protected virtual IMediaProvider? ApplyMediaOverrides(IMediaProvider? provider) => provider;
 
         public MediaWebView()
         {
             BeforeResourceLoad += MediaWebView_BeforeResourceLoad;
+            actualProvider = ApplyMediaOverrides(null);
             NavigateToLocal("index");
         }
 
@@ -35,7 +39,7 @@ namespace JankiAvalonia.Views
 
         private void MediaWebView_BeforeResourceLoad(ResourceHandler resourceHandler)
         {
-            Stream? stream = Provider?.GetMediaStream(resourceHandler.Url.Replace(LocalPrefix, "").TrimStart('/').TrimEnd('/')).Result;
+            Stream? stream = actualProvider?.GetMediaStream(resourceHandler.Url.Replace(LocalPrefix, "").TrimStart('/').TrimEnd('/')).Result;
 
             if (stream != null)
             {

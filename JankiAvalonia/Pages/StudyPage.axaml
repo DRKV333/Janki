@@ -33,7 +33,7 @@
             </Border>
 
             <Grid Grid.Row="1" RowDefinitions="* 4* *" ColumnDefinitions="* 4* *">
-                <Border Grid.Row="1" Grid.Column="1" Background="Red" />
+                <jav:HtmlWebView Grid.Row="1" Grid.Column="1" Html="{Binding Html}" />
             </Grid>
 
             <Border Grid.Row="2" Height="100" Classes="BorderToolbarDarker">
