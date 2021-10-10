@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     [Table("revlog")]
     public class Review

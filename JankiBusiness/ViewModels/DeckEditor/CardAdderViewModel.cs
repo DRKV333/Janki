@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.Abstraction;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using System;
 using System.Collections.Generic;

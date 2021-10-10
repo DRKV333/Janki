@@ -1,5 +1,5 @@
 ﻿using IronPython.Hosting;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting.Hosting.Providers;

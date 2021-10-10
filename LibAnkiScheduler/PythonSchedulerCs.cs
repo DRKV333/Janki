@@ -1,5 +1,5 @@
 ﻿using IronPython.Runtime;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using System;
 using System.Collections.Generic;

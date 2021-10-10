@@ -1,7 +1,7 @@
 ﻿using LibAnkiCards.Converters;
 using Newtonsoft.Json;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     [JsonConverter(typeof(ObjectToArrayJsonConverter<Ints>))]
     public class Ints

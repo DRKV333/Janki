@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     public class DeckConfiguration
     {

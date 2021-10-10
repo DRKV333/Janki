@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using LibAnkiCards.AnkiCompat;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

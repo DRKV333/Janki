@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     [Table("notes")]
     public class Note
@@ -34,6 +34,7 @@ namespace LibAnkiCards
         public long CardTypeId { get; set; }
 
         public CardType GetCardType(Collection collection) => collection.CardTypes[CardTypeId];
+
         public CardType GetCardType(IAnkiContext context) => GetCardType(context.Collection);
 
         [Required]

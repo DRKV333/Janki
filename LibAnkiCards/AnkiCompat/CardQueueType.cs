@@ -1,4 +1,4 @@
-﻿namespace LibAnkiCards
+﻿namespace LibAnkiCards.AnkiCompat
 {
     public enum CardQueueType
     {

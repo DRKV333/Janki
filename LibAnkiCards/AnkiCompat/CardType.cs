@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     public class CardType
     {

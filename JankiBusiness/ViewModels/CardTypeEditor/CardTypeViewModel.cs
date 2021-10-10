@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

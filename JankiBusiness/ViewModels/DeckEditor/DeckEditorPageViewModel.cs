@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.Web;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using LibAnkiCards.Importing;
 using System;

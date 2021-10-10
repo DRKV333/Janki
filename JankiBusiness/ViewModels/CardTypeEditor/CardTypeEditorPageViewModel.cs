@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiCards.Context;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

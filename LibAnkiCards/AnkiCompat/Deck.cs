@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace LibAnkiCards
+namespace LibAnkiCards.AnkiCompat
 {
     public class Deck
     {

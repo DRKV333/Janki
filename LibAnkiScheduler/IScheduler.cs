@@ -1,4 +1,4 @@
-﻿using LibAnkiCards;
+﻿using LibAnkiCards.AnkiCompat;
 using System.Collections.Generic;
 
 namespace LibAnkiScheduler

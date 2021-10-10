@@ -1,4 +1,5 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards.AnkiCompat;
+using LibAnkiCards.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

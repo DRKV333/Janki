@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.Services;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 using LibAnkiScheduler;
 
 namespace JankiBusiness.ViewModels.Study

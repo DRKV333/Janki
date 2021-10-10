@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards;
+using LibAnkiCards.AnkiCompat;
 
 namespace JankiBusiness.ViewModels.DeckEditor
 {
