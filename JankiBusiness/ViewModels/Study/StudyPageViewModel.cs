@@ -3,7 +3,7 @@ using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.Web;
 using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiScheduler;
 using System;
 using System.Threading.Tasks;

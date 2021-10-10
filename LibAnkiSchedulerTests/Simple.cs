@@ -1,5 +1,5 @@
 using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
 using LibAnkiCardsTests;
 using LibAnkiScheduler;

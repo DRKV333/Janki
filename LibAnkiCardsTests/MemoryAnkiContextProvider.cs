@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards.AnkiCompat.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
 using System.IO;
 using System.Threading.Tasks;

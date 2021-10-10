@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LibAnkiCards.Context
+namespace LibAnkiCards.AnkiCompat.Context
 {
     public interface IAnkiContext : IDisposable
     {

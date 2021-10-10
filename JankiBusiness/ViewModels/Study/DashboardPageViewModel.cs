@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiScheduler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

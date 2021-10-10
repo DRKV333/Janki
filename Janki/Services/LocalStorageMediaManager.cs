@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.Web;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
 using System;
 using System.IO;

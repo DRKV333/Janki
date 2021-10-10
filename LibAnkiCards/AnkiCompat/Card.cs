@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

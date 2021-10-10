@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.ViewModels.Study;
 using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;

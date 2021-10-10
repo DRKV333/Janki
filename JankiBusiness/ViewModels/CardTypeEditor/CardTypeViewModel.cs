@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.ViewModels.DeckEditor;
 using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

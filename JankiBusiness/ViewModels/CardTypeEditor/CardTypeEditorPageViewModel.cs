@@ -2,7 +2,7 @@
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
 using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.Context;
+using LibAnkiCards.AnkiCompat.Context;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

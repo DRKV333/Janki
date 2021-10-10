@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Context;
+﻿using LibAnkiCards.AnkiCompat.Context;
 using Newtonsoft.Json;
 using System.Linq;
 
