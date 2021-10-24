@@ -1,12 +1,12 @@
 ﻿using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.AnkiCompat;
+using LibAnkiCards.Janki;
 
 namespace JankiBusiness.ViewModels.DeckEditor
 {
     public class CardVariantViewModel : ViewModel, CardTypeEditorPageViewModel.ISelectionRedirector
     {
-        public CardVariant Variant { get; }
+        public VariantType Variant { get; }
 
         public string Name
         {
@@ -44,7 +44,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public CardTypeViewModel TypeVM { get; }
 
-        public CardVariantViewModel(CardTypeViewModel TypeVM, CardType type, CardVariant Variant)
+        public CardVariantViewModel(CardTypeViewModel TypeVM, CardType type, VariantType Variant)
         {
             this.TypeVM = TypeVM;
             this.Variant = Variant;

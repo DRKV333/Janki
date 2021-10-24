@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Services;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
+using LibAnkiCards.Janki.Context;
 using System;
 
 namespace JankiBusiness.ViewModels.Navigation
@@ -27,7 +27,7 @@ namespace JankiBusiness.ViewModels.Navigation
             }
         }
 
-        public IAnkiContextProvider ContextProvider { get; set; }
+        public IJankiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
 

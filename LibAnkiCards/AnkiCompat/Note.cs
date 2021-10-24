@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LibAnkiCards.AnkiCompat
 {
     [Table("notes")]
-    public class Note
+    internal class Note
     {
         public class Configuration : IEntityTypeConfiguration<Note>
         {

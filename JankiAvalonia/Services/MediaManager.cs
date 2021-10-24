@@ -1,19 +1,19 @@
-﻿using LibAnkiCards.AnkiCompat.Context;
-using LibAnkiCards.Importing;
+﻿using LibAnkiCards.Importing;
+using LibAnkiCards.Janki.Context;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace JankiAvalonia.Services
 {
-    public class MediaManager : IAnkiContextProvider, IMediaImporter
+    public class MediaManager : IJankiContextProvider, IMediaImporter
     {
-        public IAnkiContext CreateContext()
+        public JankiContext CreateContext()
         {
-            string path = "collection.anki2";
+            string path = "collection.janki2";
 
             bool creating = !File.Exists(path);
 
-            AnkiContext context = AnkiContext.OpenSQLite(path);
+            JankiContext context = JankiContext.OpenSQLite(path);
 
             if (creating)
                 context.Database.EnsureCreated();

@@ -1,8 +1,9 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             CardTypeViewModel GetCardType();
         }
 
-        public IAnkiContextProvider Provider { get; set; }
+        public IJankiContextProvider Provider { get; set; }
 
         public IDialogService DialogService { get; set; }
 
@@ -77,9 +78,9 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             }
         }
 
-        private string selectedField;
+        private CardFieldType selectedField;
 
-        public string SelectedField
+        public CardFieldType SelectedField
         {
             get => selectedField;
             set => Set(ref selectedField, value);
@@ -106,8 +107,9 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
                     string name = await DialogService.ShowTextPromptDialog("Add Field", "", true);
                     if (name != null)
                     {
-                        SelectedType.Fields.Add(name);
-                        SelectedField = name;
+                        CardFieldType newField = new CardFieldType() { Name = name };
+                        SelectedType.Fields.Add(newField);
+                        SelectedField = newField;
                     }
                 }
             });
@@ -128,12 +130,8 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
                 if (name == null)
                     return;
 
-                using (IAnkiContext context = Provider.CreateContext())
+                using (JankiContext context = Provider.CreateContext())
                 {
-                    Collection collection = context.Collection;
-
-                    long id = collection.CardTypes.Any() ? collection.CardTypes.Max(x => x.Key) + 1 : 0;
-
                     CardType type = new CardType()
                     {
                         Css = @"
@@ -163,27 +161,12 @@ img {
     border-radius: 20px;
 }
 ",
-                        LatexPre = @"
-\documentclass[12pt]{article}
-\special{papersize=3in,5in}
-\usepackage[utf8]{inputenc}
-\usepackage{amssymb,amsmath}
-\pagestyle{empty}
-\setlength{\parindent}{0in}
-\begin{document}
-",
-                        LatexPost = @"
-\end{document}
-",
-                        Id = id,
                         Name = name,
-                        Tags = new List<string>(),
-                        Fields = new List<CardField>() { new CardField() { Id = 0, Name = "Front" }, new CardField() { Id = 1, Name = "Back" } },
-                        Variants = new List<CardVariant>() { MakeVariant("Card 1") }
+                        Fields = new List<CardFieldType>() { new CardFieldType() { Name = "Front", Order = 1 }, new CardFieldType() { Name = "Back", Order = 2 } },
+                        Variants = new List<VariantType>() { MakeVariant("Card 1") }
                     };
 
-                    collection.CardTypes.Add(id, type);
-                    context.Collection = collection;
+                    context.CardTypes.Add(type);
 
                     await context.SaveChangesAsync();
 
@@ -200,7 +183,7 @@ img {
 
                 if (await DialogService.ShowConfirmationDialog(
                     "Delete Card Type",
-                    $"Are you sure you want to delete the \"{SelectedType.Name}\" card type and all {await SelectedType.CountNotes()} cards that use it?",
+                    $"Are you sure you want to delete the \"{SelectedType.Name}\" card type and all {await SelectedType.CountCards()} cards that use it?",
                     "Delete", "Cancel"))
                 {
                     CardTypeViewModel toDelete = SelectedType;
@@ -224,7 +207,7 @@ img {
                 if (name == null)
                     return;
 
-                CardVariant variant = MakeVariant(name);
+                VariantType variant = MakeVariant(name);
 
                 SelectedItem = await SelectedType.AddVariant(variant);
             });
@@ -250,7 +233,7 @@ img {
             });
         }
 
-        private CardVariant MakeVariant(string name) => new CardVariant()
+        private VariantType MakeVariant(string name) => new VariantType()
         {
             FrontFormat = "{{Front}}",
             BackFormat = "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}",
@@ -259,14 +242,17 @@ img {
 
         public override async Task OnNavigatedTo(object param)
         {
-            using (IAnkiContext context = Provider.CreateContext())
+            using (JankiContext context = Provider.CreateContext())
             {
-                List<CardTypeViewModel> cardTypes = await Task.Run(() => context.Collection.CardTypes.Select(x => new CardTypeViewModel(Provider, x.Value)).ToList());
+                List<CardType> cardTypes = await context.CardTypes
+                    .Include(x => x.Fields)
+                    .Include(x => x.Variants)
+                    .ToListAsync();
 
                 CardTypes.Clear();
                 foreach (var item in cardTypes)
                 {
-                    CardTypes.Add(item);
+                    CardTypes.Add(new CardTypeViewModel(Provider, item));
                 }
             }
         }

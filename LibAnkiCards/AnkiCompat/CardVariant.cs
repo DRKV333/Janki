@@ -2,7 +2,7 @@
 
 namespace LibAnkiCards.AnkiCompat
 {
-    public class CardVariant
+    internal class CardVariant
     {
         [JsonProperty("ord", Required = Required.Always)]
         public long Id { get; set; }

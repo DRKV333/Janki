@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LibAnkiCards.AnkiCompat
 {
     [Table("col")]
-    public class Collection
+    internal class Collection
     {
         public class EntityConfiguration : IEntityTypeConfiguration<Collection>
         {

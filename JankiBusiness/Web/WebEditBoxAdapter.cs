@@ -93,6 +93,9 @@ namespace JankiBusiness.Web
                 }
                 else if (split[0] == "format")
                 {
+                    if (Coordinator == null)
+                        return;
+
                     bool boolValue = bool.Parse(split[2]);
                     switch (split[1])
                     {

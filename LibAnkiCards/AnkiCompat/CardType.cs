@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LibAnkiCards.AnkiCompat
 {
-    public class CardType
+    internal class CardType
     {
         [JsonProperty("id", Required = Required.Always)]
         public long Id { get; set; }

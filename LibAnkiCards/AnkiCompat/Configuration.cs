@@ -2,7 +2,7 @@
 
 namespace LibAnkiCards.AnkiCompat
 {
-    public class Configuration
+    internal class Configuration
     {
         [JsonProperty("lastUnburied")]
         public int LastUnburied { get; set; } = 0;

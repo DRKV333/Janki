@@ -18,6 +18,6 @@ namespace LibAnkiCards.Janki
         [Required]
         public string Content { get; set; }
 
-        public IList<Media> UsedMedia { get; set; }
+        public IList<Media> Media { get; set; }
     }
 }

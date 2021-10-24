@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibAnkiCards.Janki
 {
-    public class Card : EntityBase
+    public class Card : BundleItem
     {
         public Guid CardTypeId { get; set; }
 
@@ -15,6 +15,9 @@ namespace LibAnkiCards.Janki
 
         public IList<CardField> Fields { get; set; }
 
-        public IList<Deck> Decks { get; set; }
+        public Guid DeckId { get; set; }
+
+        [Required]
+        public Deck Deck { get; set; }
     }
 }

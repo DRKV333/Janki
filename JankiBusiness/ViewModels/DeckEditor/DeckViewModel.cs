@@ -1,8 +1,8 @@
 ﻿using JankiBusiness.Abstraction;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
     public class DeckViewModel : ViewModel
     {
         private readonly Deck deck;
-        private readonly IAnkiContextProvider provider;
+        private readonly IJankiContextProvider provider;
 
         private ObservableCollection<NoteViewModel> cards;
 
@@ -33,7 +33,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public GenericCommand SaveCard { get; }
 
-        public DeckViewModel(IAnkiContextProvider provider, Deck deck)
+        public DeckViewModel(IJankiContextProvider provider, Deck deck)
         {
             this.deck = deck;
             this.provider = provider;
@@ -43,7 +43,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 if (!(p is NoteViewModel card))
                     return;
 
-                using (IAnkiContext context = provider.CreateContext())
+                using (JankiContext context = provider.CreateContext())
                 {
                     card.SaveChanges(context);
                     await context.SaveChangesAsync();
@@ -51,7 +51,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
             });
         }
 
-        public long Id => deck.Id;
+        public Guid Id => deck.Id;
 
         private string currentTerm = "";
 
@@ -74,31 +74,27 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         private async Task FetchCards()
         {
-            List<Note> notes;
-            Collection collection;
-
-            using (IAnkiContext context = provider.CreateContext())
+            using (JankiContext context = provider.CreateContext())
             {
-                notes = await deck.GetCards(context).Include(x => x.Note).ThenInclude(x => x.Cards).Select(x => x.Note).Distinct().ToListAsync();
-                collection = context.Collection;
+                context.Decks.Attach(deck);
+                await context.Entry(deck).Collection(x => x.Cards).Query()
+                    .Include(x => x.CardType).ThenInclude(x => x.Fields)
+                    .Include(x => x.CardType).ThenInclude(x => x.Variants)
+                    .Include(x => x.Fields)
+                    .LoadAsync();
             }
 
-            foreach (var item in notes)
+            foreach (var item in deck.Cards)
             {
-                Cards.Add(new NoteViewModel(collection, item));
+                Cards.Add(new NoteViewModel(item));
             }
         }
 
         public async Task Delete()
         {
-            using (IAnkiContext context = provider.CreateContext())
+            using (JankiContext context = provider.CreateContext())
             {
-                context.Cards.RemoveRange(deck.GetCards(context));
-
-                Collection collection = context.Collection;
-                collection.Decks.Remove(deck.Id);
-                context.Collection = collection;
-
+                context.Decks.Remove(deck);
                 await context.SaveChangesAsync();
             }
         }

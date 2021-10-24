@@ -1,21 +1,21 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.Web;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace JankiBusiness.ViewModels.DeckEditor
 {
     public class DeckEditorPageViewModel : PageViewModel
     {
-        public IAnkiContextProvider ContextProvider { get; set; }
+        public IJankiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
 
@@ -78,7 +78,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                     $"Are you sure you want to delete \"{SelectedCard.ShortField}\"?",
                     "Delete", "Cancel"))
                 {
-                    using (IAnkiContext context = ContextProvider.CreateContext())
+                    using (JankiContext context = ContextProvider.CreateContext())
                     {
                         SelectedCard.Delete(context);
                         await context.SaveChangesAsync();
@@ -96,22 +96,14 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 if (name == null)
                     return;
 
-                using (IAnkiContext context = ContextProvider.CreateContext())
+                using (JankiContext context = ContextProvider.CreateContext())
                 {
-                    Collection collection = context.Collection;
-
-                    long id = collection.Decks.Any() ? collection.Decks.Max(x => x.Key) + 1 : 0;
-
                     Deck deck = new Deck()
                     {
-                        ConfigurationId = collection.DeckConfigurations.First().Key,
-                        Id = id,
                         Name = name
                     };
 
-                    collection.Decks.Add(id, deck);
-                    context.Collection = collection;
-
+                    context.Decks.Add(deck);
                     await context.SaveChangesAsync();
 
                     DeckViewModel deckVM = new DeckViewModel(ContextProvider, deck);
@@ -141,16 +133,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
             {
                 using (Stream sourceFile = await DialogService.OpenFile(".apkg", ".colpkg"))
                 {
-                    if (sourceFile == null)
-                        return;
-
-                    using (IAnkiContext context = ContextProvider.CreateContext())
-                    {
-                        PackageImporter importer = new PackageImporter(context, MediaImporter);
-                        await importer.Import(sourceFile);
-                        context.Collection = context.Collection; //TODO: Fix this, this is stupid!
-                        await context.SaveChangesAsync();
-                    }
+                    // TODO
                 }
             });
 
@@ -163,17 +146,21 @@ namespace JankiBusiness.ViewModels.DeckEditor
         {
             searchTerm = "";
 
-            using (IAnkiContext context = ContextProvider.CreateContext())
+            using (JankiContext context = ContextProvider.CreateContext())
             {
-                List<DeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new DeckViewModel(ContextProvider, x.Value)).ToList());
+                List<Deck> decks = await context.Decks.ToListAsync();
                 
                 Decks.Clear();
                 foreach (var item in decks)
                 {
-                    Decks.Add(item);
+                    Decks.Add(new DeckViewModel(ContextProvider, item));
                 }
 
-                CardAdderViewModel.LoadTypes(context.Collection);
+                CardAdderViewModel.LoadTypes(
+                    await context.CardTypes
+                        .Include(x => x.Fields)
+                        .Include(x => x.Variants)
+                        .ToListAsync());
             }
         }
 

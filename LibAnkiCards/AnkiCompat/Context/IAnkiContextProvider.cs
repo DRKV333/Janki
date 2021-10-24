@@ -1,6 +1,6 @@
 ﻿namespace LibAnkiCards.AnkiCompat.Context
 {
-    public interface IAnkiContextProvider
+    internal interface IAnkiContextProvider
     {
         IAnkiContext CreateContext();
     }

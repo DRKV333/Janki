@@ -1,7 +1,6 @@
 ﻿using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
-using System;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,23 +11,26 @@ namespace JankiBusiness.ViewModels.DeckEditor
     {
         public class Field : ViewModel
         {
-            public CardField Definition { get; }
+            public CardFieldType Definition { get; }
+            public CardField TheField { get; }
 
-            private string value = "";
+            private string value;
 
             public string Value
             {
                 get => value;
-                set => Set(ref this.value, value);
+                set { TheField.Content = value; Set(ref this.value, value); }
             }
 
-            public Field(CardField definition)
+            public Field(CardFieldType definition, CardField field)
             {
                 Definition = definition;
+                TheField = field;
+                value = field.Content;
             }
         }
 
-        private readonly Note note;
+        private readonly Card card;
 
         public CardType Type { get; }
 
@@ -41,19 +43,20 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         private bool dirty = false;
 
-        public NoteViewModel(Collection collection, Note note)
+        public NoteViewModel(Card card)
         {
-            this.note = note;
+            this.card = card;
 
-            Type = note.GetCardType(collection);
+            Type = card.CardType;
 
-            while (note.Fields.Count < Type.Fields.Count)
+            foreach (var item in Type.Fields.Where(x => !card.Fields.Any(y => y.CardFieldType == x)))
             {
-                note.Fields.Add("");
+                card.Fields.Add(new CardField() { CardFieldType = item, Content = "" });
                 dirty = true;
             }
 
-            Fields = Type.Fields.OrderBy(x => x.Id).Zip(note.Fields, (x, y) => new Field(x) { Value = y }).ToArray();
+            Fields = card.Fields.OrderBy(x => x.CardFieldType?.Order ?? int.MaxValue)
+                        .Select(x => new Field(x.CardFieldType, x)).ToList();
 
             foreach (var item in Fields)
             {
@@ -64,43 +67,44 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 };
             }
 
-            ShortField = note.ShortField;
-
             if (Fields.Any())
             {
+                SetShortField(Fields.First().Value);
                 Fields.First().PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(Field.Value))
                     {
-                        ShortField = Regex.Replace(((Field)s).Value, "<.*?>", "");
-                        RaisePropertyChanged(nameof(ShortField));
+                        SetShortField(((Field)s).Value);
                     }
                 };
             }
 
-            IList<CardViewModel> cards = note.Cards.Select(x => new CardViewModel(collection, x, this)).ToList();
+            IList<CardViewModel> cards = Type.Variants.Select(x => new CardViewModel(x, this)).ToList();
             Cards = cards;
 
             CardCarousel = new CardCarouselViewModel(cards);
         }
 
-        public void SaveChanges(IAnkiContext context)
+        private void SetShortField(string html)
+        {
+            ShortField = Regex.Replace(html, "<.*?>", "");
+            RaisePropertyChanged(nameof(ShortField));
+        }
+
+        public void SaveChanges(JankiContext context)
         {
             if (!dirty)
                 return;
 
-            note.Fields = Fields.Select(x => x.Value).ToList();
-            note.ShortField = ShortField;
-            note.LastModified = DateTime.UtcNow;
-
-            context.Notes.Update(note);
+            context.CardFields.UpdateRange(Fields.Select(x => x.TheField));
+            context.TheCards.Update(card);
 
             dirty = false;
         }
 
-        public void Delete(IAnkiContext context)
+        public void Delete(JankiContext context)
         {
-            context.Notes.Remove(note);
+            context.TheCards.Remove(card);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LibAnkiCards.AnkiCompat
 {
-    public class Deck
+    internal class Deck
     {
         [JsonProperty("id", Required = Required.Always)]
         public long Id { get; set; }

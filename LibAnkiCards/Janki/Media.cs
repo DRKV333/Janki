@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibAnkiCards.Janki
 {
-    public class Media : EntityBase
+    public class Media : BundleItem
     {
         [Required]
         public string Name { get; set; }
@@ -11,6 +11,9 @@ namespace LibAnkiCards.Janki
         [Required]
         public string FilePath { get; set; }
 
-        public IList<CardField> Uses { get; set; }
+        public Guid CardFieldId { get; set; }
+
+        [Required]
+        public CardField CardField { get; set; }
     }
 }

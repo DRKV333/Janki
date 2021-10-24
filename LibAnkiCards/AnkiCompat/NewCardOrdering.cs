@@ -1,6 +1,6 @@
 ﻿namespace LibAnkiCards.AnkiCompat
 {
-    public enum NewCardOrdering
+    internal enum NewCardOrdering
     {
         Distribute = 0,
         Last = 1,

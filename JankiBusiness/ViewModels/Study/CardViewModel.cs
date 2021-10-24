@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards.AnkiCompat;
+using LibAnkiCards.Janki;
 using Stubble.Core;
 using Stubble.Core.Builders;
 using Stubble.Core.Settings;
@@ -46,7 +46,7 @@ namespace JankiBusiness.ViewModels.Study
         private static object PreviewValueGetter(object value, string key, bool ignoreCase) => key;
 
         private static object NoteFieldValueGetter(object value, string key, bool ignoreCase) =>
-            ((CardViewModel)value).Note.Fields.FirstOrDefault(
+            ((CardViewModel)value).Card.Fields.FirstOrDefault(
                 y => StringEquals(key, y.Definition.Name, ignoreCase)
             )?.Value;
 
@@ -73,9 +73,9 @@ namespace JankiBusiness.ViewModels.Study
             SkipHtmlEncoding = true
         };
 
-        public NoteViewModel Note { get; }
+        public NoteViewModel Card { get; }
         public CardType Type { get; }
-        public CardVariant Variant { get; }
+        public VariantType Variant { get; }
 
         private string frontContent;
 
@@ -95,31 +95,36 @@ namespace JankiBusiness.ViewModels.Study
             private set => Set(ref backHtml, value);
         }
 
-        private CardViewModel(CardType Type, CardVariant Variant, NoteViewModel Note)
+        private CardViewModel(CardType Type, VariantType Variant)
         {
             this.Type = Type;
             this.Variant = Variant;
-            this.Note = Note;
             Render();
         }
-        
-        private CardViewModel(CardVariant Variant, NoteViewModel Note)
-            : this(Note.Type, Variant, Note)
+
+        public CardViewModel(VariantType Variant, NoteViewModel Card)
         {
+            Type = Variant.CardType;
+            this.Variant = Variant;
+            this.Card = Card;
+
+            Card.PropertyChanged += (s, e) => Render();
+            Render();
         }
 
-        public CardViewModel(Collection collection, Card card, NoteViewModel note = null) :
-            this(card.GetVariant(collection),
-                 note == null ? new NoteViewModel(collection, card.Note) : note)
+        public CardViewModel(VariantType Variant, Card Card)
         {
-            Note.PropertyChanged += (x, y) => Render();
+            Type = Variant.CardType;
+            this.Variant = Variant;
+            this.Card = new NoteViewModel(Card);
+            Render();
         }
 
-        public static CardViewModel CreatePreview(CardType type, CardVariant variant) => new CardViewModel(type, variant, null);
+        public static CardViewModel CreatePreview(CardType type, VariantType variant) => new CardViewModel(type, variant);
 
-        private StubbleVisitorRenderer FrontRenderer => Note == null ? frontRendererPreview : frontRenderer;
+        private StubbleVisitorRenderer FrontRenderer => Card == null ? frontRendererPreview : frontRenderer;
 
-        private StubbleVisitorRenderer BackRenderer => Note == null ? backRendererPreview : backRenderer;
+        private StubbleVisitorRenderer BackRenderer => Card == null ? backRendererPreview : backRenderer;
 
         public async Task Render()
         {

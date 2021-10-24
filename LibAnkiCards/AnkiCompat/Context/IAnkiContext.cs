@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibAnkiCards.AnkiCompat.Context
 {
-    public interface IAnkiContext : IDisposable
+    internal interface IAnkiContext : IDisposable
     {
         DbSet<Card> Cards { get; set; }
         DbSet<Note> Notes { get; set; }

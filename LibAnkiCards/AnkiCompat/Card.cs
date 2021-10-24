@@ -11,7 +11,7 @@ using System.Linq;
 namespace LibAnkiCards.AnkiCompat
 {
     [Table("cards")]
-    public class Card
+    internal class Card
     {
         public class Configuration : IEntityTypeConfiguration<Card>
         {

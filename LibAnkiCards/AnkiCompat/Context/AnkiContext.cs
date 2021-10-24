@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LibAnkiCards.AnkiCompat.Context
 {
-    public class AnkiContext : DbContext, IAnkiContext
+    internal class AnkiContext : DbContext, IAnkiContext
     {
         private Collection collection;
 

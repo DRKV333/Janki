@@ -2,7 +2,7 @@
 
 namespace LibAnkiCards.AnkiCompat
 {
-    public class DeckReviewConfiguration
+    internal class DeckReviewConfiguration
     {
         [JsonProperty("perDay")]
         public int PerDayLimit { get; set; } = 200;

@@ -1,7 +1,6 @@
 ﻿using JankiBusiness.Abstraction;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
-using System;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,50 +27,29 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 if (page.SelectedDeck == null)
                     return;
 
-                Note note = new Note()
+                Card card = new Card()
                 {
-                    Data = "",
-                    Fields = new List<string>(),
-                    Guid = "",
-                    LastModified = DateTime.UtcNow,
-                    ShortField = "",
-                    Tags = "",
-                    CardTypeId = SelectedType.Id,
-                    Cards = new List<Card>(),
-                    UserId = -1
+                    CardType = SelectedType,
+                    DeckId = page.SelectedDeck.Id,
+                    Fields = new List<CardField>()
                 };
 
-                foreach (var item in SelectedType.Variants)
+                using (JankiContext context = page.ContextProvider.CreateContext())
                 {
-                    note.Cards.Add(new Card()
-                    {
-                        VariantId = (int)item.Id,
-                        LastModified = DateTime.UtcNow,
-                        Data = "",
-                        DeckId = page.SelectedDeck.Id,
-                        Due = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                        Queue = CardQueueType.New,
-                        UserId = -1
-                    });
-                }
-
-                using (IAnkiContext context = page.ContextProvider.CreateContext())
-                {
-                    context.Notes.Add(note);
+                    context.CardTypes.Attach(SelectedType);
+                    context.TheCards.Add(card);
                     await context.SaveChangesAsync();
 
-                    NoteViewModel noteVm = new NoteViewModel(context.Collection, note);
+                    NoteViewModel noteVm = new NoteViewModel(card);
                     page.SelectedDeck.Cards.Add(noteVm);
                     page.SelectedCard = noteVm;
                 }
             });
         }
 
-        public void LoadTypes(Collection collection)
+        public void LoadTypes(IEnumerable<CardType> cardTypes)
         {
-            AvailableTypes = collection.CardTypes.Select(x => x.Value).ToList();
-            RaisePropertyChanged(nameof(AvailableTypes));
-
+            AvailableTypes = cardTypes;
             SelectedType = AvailableTypes.FirstOrDefault();
         }
     }

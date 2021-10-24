@@ -2,9 +2,9 @@
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.Web;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
-using LibAnkiScheduler;
+using JankiScheduler;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +12,7 @@ namespace JankiBusiness.ViewModels.Study
 {
     public class StudyPageViewModel : PageViewModel
     {
-        public IAnkiContextProvider ContextProvider { get; set; }
+        public IJankiContextProvider ContextProvider { get; set; }
         public INavigationService NavigationService { get; set; }
         public IDialogService DialogService { get; set; }
 
@@ -38,14 +38,14 @@ namespace JankiBusiness.ViewModels.Study
             set => Set(ref editorVisible, value);
         }
 
-        private Card currentCard;
+        private CardStudyData currentCard;
         private CardViewModel currentCardVM;
 
         private bool flipped = false;
 
         public string Html => flipped ? currentCardVM?.BackHtml : currentCardVM?.FrontHtml;
 
-        public NoteViewModel CurrentNote => currentCardVM?.Note;
+        public NoteViewModel CurrentNote => currentCardVM?.Card;
 
         public StudyCountsViewModel Counts { get; } = new StudyCountsViewModel();
 
@@ -85,20 +85,12 @@ namespace JankiBusiness.ViewModels.Study
         {
             long deckId = (long)param;
 
-            using (IAnkiContext context = ContextProvider.CreateContext())
+            using (JankiContext context = ContextProvider.CreateContext())
             {
-                deck = context.Collection.Decks[deckId];
+                deck = await context.Decks.FindAsync(deckId);
             }
 
-            if (scheduler == null)
-            {
-                scheduler = await Task.Run(() => new PythonScheduler(ContextProvider));
-            }
-
-            scheduler.SetSelectedDeck(deck);
-            scheduler.Reset();
-
-            Counts.FillCounts(scheduler);
+            // TODO: Create scheduler if necessary, set active deck and reset, update counts.
 
             await FetchNextCard();
         }
@@ -107,9 +99,9 @@ namespace JankiBusiness.ViewModels.Study
         {
             if (currentCardVM != null)
             {
-                using (IAnkiContext context = ContextProvider.CreateContext())
+                using (JankiContext context = ContextProvider.CreateContext())
                 {
-                    currentCardVM.Note.SaveChanges(context);
+                    currentCardVM.Card.SaveChanges(context);
                     await context.SaveChangesAsync();
                 }
             }
@@ -131,18 +123,18 @@ namespace JankiBusiness.ViewModels.Study
                 return;
             }
 
-            using (IAnkiContext context = ContextProvider.CreateContext())
+            using (JankiContext context = ContextProvider.CreateContext())
             {
-                context.Cards.Attach(currentCard);
-                await context.Entry(currentCard).Reference(x => x.Note).LoadAsync();
+                context.CardStudyDatas.Attach(currentCard);
+                await context.Entry(currentCard).Reference(x => x.Card).LoadAsync();
 
                 if (currentCardVM != null)
                 {
-                    currentCardVM.Note.SaveChanges(context);
+                    currentCardVM.Card.SaveChanges(context);
                     await context.SaveChangesAsync();
                 }
 
-                currentCardVM = new CardViewModel(context.Collection, currentCard);
+                currentCardVM = new CardViewModel(currentCard.Variant, currentCard.Card);
 
                 currentCardVM.PropertyChanged += (s, e) =>
                 {

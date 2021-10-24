@@ -3,8 +3,8 @@ using JankiBusiness.Services;
 using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
+using LibAnkiCards.Janki.Context;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +12,7 @@ namespace JankiBusiness.ViewModels.Navigation
 {
     public class NavigationViewModel : ContentPageViewModel
     {
-        public IAnkiContextProvider ContextProvider { get; set; }
+        public IJankiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public INavigationService NavigationService { get; set; }
         public IMediaImporter MediaImporter { get; set; }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LibAnkiCards.AnkiCompat
 {
     [Table("revlog")]
-    public class Review
+    internal class Review
     {
         public class Configuration : IEntityTypeConfiguration<Review>
         {

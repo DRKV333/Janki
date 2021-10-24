@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace LibAnkiCards.AnkiCompat
 {
     [JsonConverter(typeof(ObjectToArrayJsonConverter<TodayValue>))]
-    public class TodayValue
+    internal class TodayValue
     {
         [JsonProperty(Order = 1)]
         public int Today { get; set; }

@@ -1,4 +1,4 @@
-﻿using LibAnkiScheduler;
+﻿using JankiScheduler;
 
 namespace JankiBusiness.ViewModels.Study
 {

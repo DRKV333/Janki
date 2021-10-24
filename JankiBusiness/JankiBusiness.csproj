@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JankiScheduler\JankiScheduler.csproj" />
     <ProjectReference Include="..\LibAnkiCards\LibAnkiCards.csproj" />
-    <ProjectReference Include="..\LibAnkiScheduler\LibAnkiScheduler.csproj" />
   </ItemGroup>
 
   <ItemGroup>

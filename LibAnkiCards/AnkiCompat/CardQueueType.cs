@@ -1,6 +1,6 @@
 ﻿namespace LibAnkiCards.AnkiCompat
 {
-    public enum CardQueueType
+    internal enum CardQueueType
     {
         New = 0,
         LearnRelearn = 1,

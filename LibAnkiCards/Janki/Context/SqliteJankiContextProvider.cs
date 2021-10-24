@@ -1,6 +1,6 @@
-﻿namespace LibAnkiCards.AnkiCompat.Context
+﻿namespace LibAnkiCards.Janki.Context
 {
-    internal class SQLiteAnkiContextProvider : IAnkiContextProvider
+    internal class SQLiteAnkiContextProvider : IJankiContextProvider
     {
         private readonly string path;
         private readonly bool readOnly;
@@ -11,6 +11,6 @@
             this.readOnly = readOnly;
         }
 
-        public IAnkiContext CreateContext() => AnkiContext.OpenSQLite(path, readOnly);
+        public JankiContext CreateContext() => JankiContext.OpenSQLite(path, readOnly);
     }
 }

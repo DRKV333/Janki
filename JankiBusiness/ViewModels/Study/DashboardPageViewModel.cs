@@ -1,7 +1,6 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
-using LibAnkiCards.AnkiCompat.Context;
-using LibAnkiScheduler;
+using LibAnkiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace JankiBusiness.ViewModels.Study
 {
     public class DashboardPageViewModel : PageViewModel
     {
-        public IAnkiContextProvider ContextProvider { get; set; }
+        public IJankiContextProvider ContextProvider { get; set; }
         public INavigationService NavigationService { get; set; }
 
         public ObservableCollection<StudiableDeckViewModel> Decks { get; } = new ObservableCollection<StudiableDeckViewModel>();
@@ -39,11 +38,11 @@ namespace JankiBusiness.ViewModels.Study
         {
             Loading = true;
 
-            using (IAnkiContext context = ContextProvider.CreateContext())
+            using (JankiContext context = ContextProvider.CreateContext())
             {
-                IScheduler scheduler = await Task.Run(() => new PythonScheduler(ContextProvider));
+                // TODO: Creadte a scheduler and pass it to the StudiableDeckViewModel.
 
-                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Collection.Decks.Select(x => new StudiableDeckViewModel(scheduler, x.Value)).ToList());
+                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Decks.Select(x => new StudiableDeckViewModel(x)).ToList());
 
                 Decks.Clear();
                 foreach (var item in decks)

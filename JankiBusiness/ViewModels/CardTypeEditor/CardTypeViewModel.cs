@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards.AnkiCompat;
-using LibAnkiCards.AnkiCompat.Context;
+using LibAnkiCards.Janki;
+using LibAnkiCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
     public class CardTypeViewModel : ViewModel, CardTypeEditorPageViewModel.ISelectionRedirector
     {
         private readonly CardType type;
-        private readonly IAnkiContextProvider provider;
+        private readonly IJankiContextProvider provider;
 
         private string name;
 
@@ -33,19 +33,19 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             }
         }
 
-        public ObservableCollection<string> Fields { get; }
+        public ObservableCollection<CardFieldType> Fields { get; }
 
         public ObservableCollection<CardVariantViewModel> Variants { get; }
 
         private CardVariantViewModel singleVariant;
 
-        public CardTypeViewModel(IAnkiContextProvider provider, CardType type)
+        public CardTypeViewModel(IJankiContextProvider provider, CardType type)
         {
             this.provider = provider;
             this.type = type;
 
             name = type.Name;
-            Fields = new ObservableCollection<string>(type.Fields.OrderBy(x => x.Id).Select(x => x.Name));
+            Fields = new ObservableCollection<CardFieldType>(type.Fields.OrderBy(x => x.Order));
 
             List<CardVariantViewModel> variants = type.Variants.Select(x => new CardVariantViewModel(this, type, x)).ToList();
             if (variants.Count > 1)
@@ -75,33 +75,25 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             }
         }
 
-        public async Task<int> CountNotes()
+        public async Task<int> CountCards()
         {
-            using (IAnkiContext context = provider.CreateContext())
+            using (JankiContext context = provider.CreateContext())
             {
-                return await context.Notes.CountAsync(x => x.CardTypeId == type.Id);
+                return await context.TheCards.CountAsync(x => x.CardTypeId == type.Id);
             }
         }
 
         public async Task Delete()
         {
-            using (IAnkiContext context = provider.CreateContext())
+            using (JankiContext context = provider.CreateContext())
             {
-                context.Notes.RemoveRange(context.Notes.Where(x => x.CardTypeId == type.Id));
-
-                Collection collection = context.Collection;
-                collection.CardTypes.Remove(type.Id);
-                context.Collection = collection;
-
+                context.CardTypes.Remove(type);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task<CardVariantViewModel> AddVariant(CardVariant variant)
+        public async Task<CardVariantViewModel> AddVariant(VariantType variant)
         {
-            long id = type.Variants.Max(x => x.Id) + 1;
-            variant.Id = id;
-
             type.Variants.Add(variant);
 
             await SaveChanges();
@@ -134,20 +126,14 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
 
         public async Task SaveChanges()
         {
-            int fieldNum = 0;
-            type.Fields.Clear();
-            foreach (var item in Fields)
+            using (JankiContext context = provider.CreateContext())
             {
-                type.Fields.Add(new CardField() { Id = fieldNum++, Name = item });
-            }
+                foreach (var item in Fields)
+                {
+                    item.CardType = type;
+                }
 
-            using (IAnkiContext context = provider.CreateContext())
-            {
-                Collection collection = context.Collection;
-
-                collection.CardTypes[type.Id] = type;
-
-                context.Collection = collection;
+                context.CardFieldTypes.UpdateRange(Fields);
 
                 await context.SaveChangesAsync();
             }
