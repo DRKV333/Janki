@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.Web;
-using LibAnkiCards.AnkiCompat.Context;
 using LibAnkiCards.Importing;
+using LibAnkiCards.Janki.Context;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Windows.Storage;
 
 namespace Janki.Services
 {
-    internal class LocalStorageMediaManager : IMediaImporter, IAnkiContextProvider
+    internal class LocalStorageMediaManager : IMediaImporter, IJankiContextProvider
     {
         private readonly StorageFolderMediaProvider media = new StorageFolderMediaProvider(ApplicationData.Current.LocalFolder, "media", true);
 
@@ -32,13 +32,13 @@ namespace Janki.Services
             }
         }
 
-        public IAnkiContext CreateContext()
+        public JankiContext CreateContext()
         {
-            string path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "collection.anki2");
+            string path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "collection.janki2");
 
             bool creating = !File.Exists(path);
 
-            AnkiContext context = AnkiContext.OpenSQLite(path);
+            JankiContext context = JankiContext.OpenSQLite(path);
 
             if (creating)
                 context.Database.EnsureCreated();
