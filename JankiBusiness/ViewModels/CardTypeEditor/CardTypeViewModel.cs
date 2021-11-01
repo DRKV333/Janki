@@ -96,7 +96,22 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
         {
             type.Variants.Add(variant);
 
-            await SaveChanges();
+            using (JankiContext context = provider.CreateContext())
+            {
+                context.CardTypes.Attach(type);
+                context.VariantTypes.Add(variant);
+
+                foreach (var item in await context.TheCards.Where(x => x.CardType == type).ToListAsync())
+                {
+                    context.CardStudyDatas.Add(new CardStudyData()
+                    {
+                        Card = item,
+                        Variant = variant
+                    });
+                }
+
+                await context.SaveChangesAsync();
+            }
 
             if (singleVariant != null)
             {

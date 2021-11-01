@@ -1,4 +1,5 @@
 ﻿using JankiBusiness.Services;
+using JankiScheduler;
 using LibAnkiCards.Janki;
 
 namespace JankiBusiness.ViewModels.Study
@@ -11,11 +12,12 @@ namespace JankiBusiness.ViewModels.Study
 
         public StudyCountsViewModel Counts { get; } = new StudyCountsViewModel();
 
-        public StudiableDeckViewModel(Deck deck)
+        public StudiableDeckViewModel(Scheduler scheduler, Deck deck)
         {
             this.deck = deck;
 
-            // TODO: Update counts from scheduler.
+            scheduler.SelectDeck(deck).Wait();
+            Counts.FillCounts(scheduler);
         }
 
         public void NavigateTo(INavigationService navigation)

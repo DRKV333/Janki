@@ -100,7 +100,8 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 {
                     Deck deck = new Deck()
                     {
-                        Name = name
+                        Name = name,
+                        StudyData = new DeckStudyData()
                     };
 
                     context.Decks.Add(deck);

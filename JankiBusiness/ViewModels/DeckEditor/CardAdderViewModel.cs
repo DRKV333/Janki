@@ -38,6 +38,16 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 {
                     context.CardTypes.Attach(SelectedType);
                     context.TheCards.Add(card);
+
+                    foreach (var item in selectedType.Variants)
+                    {
+                        context.CardStudyDatas.Add(new CardStudyData()
+                        {
+                            Card = card,
+                            Variant = item
+                        });
+                    }
+
                     await context.SaveChangesAsync();
 
                     NoteViewModel noteVm = new NoteViewModel(card);

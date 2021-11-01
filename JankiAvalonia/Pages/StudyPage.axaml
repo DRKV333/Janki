@@ -10,6 +10,9 @@
         <SolidColorBrush x:Key="TextColorNew" Color="Blue" />
         <SolidColorBrush x:Key="TextColorDue" Color="Green" />
         <SolidColorBrush x:Key="TextColorReview" Color="Red" />
+        <SolidColorBrush x:Key="BackgroundColorBlackout" Color="LightGray" />
+        <SolidColorBrush x:Key="BackgroundColorIncorrect" Color="Salmon" />
+        <SolidColorBrush x:Key="BackgroundColorCorrect" Color="LightGreen" />
     </UserControl.Resources>
     
     <SplitView PanePlacement="Right" DisplayMode="Inline" IsPaneOpen="{Binding EditorVisible}">
@@ -40,11 +43,13 @@
                 <Grid>
                     <Button HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Command="{Binding Flip}">Flip</Button>
 
-                    <Grid VerticalAlignment="Bottom" Margin="20" ColumnDefinitions="* * * *" IsVisible="{Binding AnswersVisible}">
-                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="1">😟</Button>
-                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="2">😐</Button>
-                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="3">🙂</Button>
-                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" CommandParameter="4">😄</Button>
+                    <Grid VerticalAlignment="Bottom" Margin="20" ColumnDefinitions="* * * * * *" IsVisible="{Binding AnswersVisible}">
+                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorBlackout}" CommandParameter="Blackout">⚫</Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorIncorrect}" CommandParameter="IncorrectFamiliar">🤔</Button>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorIncorrect}" CommandParameter="IncorrectEasy">🤨</Button>
+                        <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorCorrect}" CommandParameter="CorrectDifficult">🙂</Button>
+                        <Button Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorCorrect}" CommandParameter="CorrectHesitation">😄</Button>
+                        <Button Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Answer}" Background="{StaticResource BackgroundColorCorrect}" CommandParameter="CorrectPerfect">🥱</Button>
                     </Grid>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">

@@ -1,5 +1,6 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
+using JankiScheduler;
 using LibAnkiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +20,8 @@ namespace JankiBusiness.ViewModels.Study
 
         private bool loading = true;
 
+        private Scheduler scheduler;
+
         public bool Loading
         {
             get => loading;
@@ -36,13 +39,14 @@ namespace JankiBusiness.ViewModels.Study
 
         public override async Task OnNavigatedTo(object param)
         {
+            if (scheduler == null)
+                scheduler = new Scheduler(ContextProvider);
+
             Loading = true;
 
             using (JankiContext context = ContextProvider.CreateContext())
             {
-                // TODO: Creadte a scheduler and pass it to the StudiableDeckViewModel.
-
-                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Decks.Select(x => new StudiableDeckViewModel(x)).ToList());
+                List<StudiableDeckViewModel> decks = await Task.Run(() => context.Decks.Select(x => new StudiableDeckViewModel(scheduler, x)).ToList());
 
                 Decks.Clear();
                 foreach (var item in decks)

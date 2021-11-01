@@ -14,5 +14,7 @@ namespace LibAnkiCards.Janki
         public Deck ParentDeck { get; set; }
 
         public IList<Card> Cards { get; set; }
+
+        public DeckStudyData StudyData { get; set; }
     }
 }

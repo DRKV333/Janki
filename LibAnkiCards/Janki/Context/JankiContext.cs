@@ -13,6 +13,7 @@ namespace LibAnkiCards.Janki.Context
         public DbSet<Media> Medias { get; set; }
         public DbSet<VariantType> VariantTypes { get; set; }
         public DbSet<CardStudyData> CardStudyDatas { get; set; }
+        public DbSet<DeckStudyData> DeckStudyDatas { get; set; }
 
         public JankiContext(DbContextOptions options) : base(options)
         {

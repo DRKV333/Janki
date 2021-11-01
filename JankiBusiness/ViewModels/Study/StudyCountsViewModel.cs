@@ -9,7 +9,7 @@ namespace JankiBusiness.ViewModels.Study
         public int ReviewCount { get; private set; }
         public int Total { get; private set; }
 
-        public void FillCounts(IScheduler scheduler)
+        public void FillCounts(Scheduler scheduler)
         {
             NewCount = scheduler.NewCount;
             RaisePropertyChanged(nameof(NewCount));

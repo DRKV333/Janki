@@ -16,11 +16,11 @@ namespace JankiBusiness.ViewModels.Study
         public INavigationService NavigationService { get; set; }
         public IDialogService DialogService { get; set; }
 
-        private Lazy<WebEditBoxToolbarCoordinator> coordinator;
+        private readonly Lazy<WebEditBoxToolbarCoordinator> coordinator;
         public WebEditBoxToolbarCoordinator Coordinator => coordinator.Value;
 
         private Deck deck;
-        private IScheduler scheduler;
+        private readonly Lazy<Scheduler> scheduler;
 
         private bool answersVisible = false;
 
@@ -67,8 +67,8 @@ namespace JankiBusiness.ViewModels.Study
 
             Answer = new GenericDelegateCommand(async p =>
             {
-                int ease = int.Parse((string)p);
-                scheduler.AnswerCard(currentCard, ease);
+                Ease ease = (Ease)Enum.Parse(typeof(Ease), (string)p);
+                await scheduler.Value.AnswerCard(currentCard, ease);
                 await FetchNextCard();
             });
 
@@ -79,18 +79,20 @@ namespace JankiBusiness.ViewModels.Study
             });
 
             coordinator = new Lazy<WebEditBoxToolbarCoordinator>(() => new WebEditBoxToolbarCoordinator() { DialogService = DialogService });
+            scheduler = new Lazy<Scheduler>(() => new Scheduler(ContextProvider));
         }
 
         public override async Task OnNavigatedTo(object param)
         {
-            long deckId = (long)param;
+            Guid deckId = (Guid)param;
 
             using (JankiContext context = ContextProvider.CreateContext())
             {
                 deck = await context.Decks.FindAsync(deckId);
             }
 
-            // TODO: Create scheduler if necessary, set active deck and reset, update counts.
+            await scheduler.Value.SelectDeck(deck);
+            Counts.FillCounts(scheduler.Value);
 
             await FetchNextCard();
         }
@@ -115,7 +117,7 @@ namespace JankiBusiness.ViewModels.Study
             AnswersVisible = false;
             EditorVisible = false;
 
-            currentCard = scheduler.GetCard();
+            currentCard = await scheduler.Value.GetCard();
 
             if (currentCard == null)
             {
@@ -148,7 +150,7 @@ namespace JankiBusiness.ViewModels.Study
             RaisePropertyChanged(nameof(Html));
             RaisePropertyChanged(nameof(CurrentNote));
 
-            Counts.FillCounts(scheduler);
+            Counts.FillCounts(scheduler.Value);
         }
     }
 }
