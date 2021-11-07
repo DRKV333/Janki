@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Services;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.Importing;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Importing;
+using JankiCards.Janki.Context;
 using System;
 
 namespace JankiBusiness.ViewModels.Navigation

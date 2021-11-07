@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Janki;
+﻿using JankiCards.Janki;
 using System.Collections.Generic;
 
 namespace JankiScheduler

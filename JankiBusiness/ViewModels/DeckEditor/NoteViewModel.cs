@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.Janki;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Janki;
+using JankiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

@@ -1,9 +1,9 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.Web;
-using LibAnkiCards.Importing;
-using LibAnkiCards.Janki;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Importing;
+using JankiCards.Janki;
+using JankiCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using LibAnkiCards.Janki;
+﻿using JankiCards.Janki;
 using System;
 using System.Linq;
 

@@ -1,5 +1,5 @@
-﻿using LibAnkiCards.Importing;
-using LibAnkiCards.Janki.Context;
+﻿using JankiCards.Importing;
+using JankiCards.Janki.Context;
 using System.IO;
 using System.Threading.Tasks;
 

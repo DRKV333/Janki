@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels;
-using LibAnkiCards.Importing;
+using JankiCards.Importing;
 using System.IO;
 
 namespace JankiBusiness.Web

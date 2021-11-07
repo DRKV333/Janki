@@ -3,8 +3,8 @@ using JankiBusiness.Services;
 using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.ViewModels.Study;
-using LibAnkiCards.Importing;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Importing;
+using JankiCards.Janki.Context;
 using System;
 using System.Collections.Generic;
 

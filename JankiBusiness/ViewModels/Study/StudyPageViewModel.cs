@@ -3,8 +3,8 @@ using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.Web;
 using JankiScheduler;
-using LibAnkiCards.Janki;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Janki;
+using JankiCards.Janki.Context;
 using System;
 using System.Threading.Tasks;
 

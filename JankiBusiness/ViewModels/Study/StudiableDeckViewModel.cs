@@ -1,6 +1,6 @@
 ﻿using JankiBusiness.Services;
 using JankiScheduler;
-using LibAnkiCards.Janki;
+using JankiCards.Janki;
 
 namespace JankiBusiness.ViewModels.Study
 {

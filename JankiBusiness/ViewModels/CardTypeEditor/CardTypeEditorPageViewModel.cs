@@ -1,8 +1,8 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards.Janki;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Janki;
+using JankiCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

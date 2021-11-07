@@ -1,7 +1,7 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
 using JankiScheduler;
-using LibAnkiCards.Janki.Context;
+using JankiCards.Janki.Context;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

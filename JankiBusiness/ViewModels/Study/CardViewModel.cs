@@ -1,5 +1,5 @@
 ﻿using JankiBusiness.ViewModels.DeckEditor;
-using LibAnkiCards.Janki;
+using JankiCards.Janki;
 using Stubble.Core;
 using Stubble.Core.Builders;
 using Stubble.Core.Settings;
