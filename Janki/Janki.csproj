@@ -225,6 +225,10 @@
       <Project>{ba7dde8e-2aa4-4d39-9888-0a6a5300c449}</Project>
       <Name>JankiCards</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JankiClientCards\JankiClientCards.csproj">
+      <Project>{d8703ed0-fbb1-474f-9393-febe317b8922}</Project>
+      <Name>JankiClientCards</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

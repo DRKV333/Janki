@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JankiCards\JankiCards.csproj" />
+    <ProjectReference Include="..\JankiClientCards\JankiClientCards.csproj" />
   </ItemGroup>
 
 </Project>
