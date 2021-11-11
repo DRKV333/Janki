@@ -32,10 +32,10 @@ namespace JankiCards.Janki.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Card>().Ignore(x => x.Bundle);
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CardType>().Ignore(x => x.Bundle);
             modelBuilder.Entity<Deck>().Ignore(x => x.Bundle);
-            modelBuilder.Entity<Media>().Ignore(x => x.Bundle);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(JankiContext).Assembly);
         }

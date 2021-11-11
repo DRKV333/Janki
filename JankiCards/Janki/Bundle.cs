@@ -4,12 +4,12 @@ namespace JankiCards.Janki
 {
     public class Bundle : EntityBase
     {
-        public IList<Card> Cards { get; set; }
+        public string Name { get; set; }
+
+        public bool IsPublic { get; set; }
 
         public IList<Deck> Decks { get; set; }
 
         public IList<CardType> CardTypes { get; set; }
-
-        public IList<Media> Medias { get; set; }
     }
 }

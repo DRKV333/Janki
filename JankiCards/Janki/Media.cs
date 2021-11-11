@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JankiCards.Janki
 {
-    public class Media : BundleItem
+    public class Media : EntityBase
     {
         [Required]
         public string Name { get; set; }

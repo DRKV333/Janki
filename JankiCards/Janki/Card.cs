@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JankiCards.Janki
 {
-    public class Card : BundleItem
+    public class Card : EntityBase
     {
         public Guid CardTypeId { get; set; }
 
