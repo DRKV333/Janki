@@ -30,6 +30,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public IJankiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
+        public IMediaUnimporter MediaUnimporter { get; set; }
 
         private readonly INavigationService navigationService;
 
@@ -48,7 +49,8 @@ namespace JankiBusiness.ViewModels.Navigation
                     ContextProvider = ContextProvider,
                     DialogService = DialogService,
                     NavigationService = navigationService,
-                    MediaImporter = MediaImporter
+                    MediaImporter = MediaImporter,
+                    MediaUnimporter = MediaUnimporter
                 });
 
             studyPageViewModel = new Lazy<StudyPageViewModel>(
@@ -56,7 +58,8 @@ namespace JankiBusiness.ViewModels.Navigation
                 {
                     ContextProvider = ContextProvider,
                     NavigationService = navigationService,
-                    DialogService = DialogService
+                    DialogService = DialogService,
+                    MediaUnimporter = MediaUnimporter
                 });
         }
     }

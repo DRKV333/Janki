@@ -7,12 +7,14 @@ using JankiCards.Janki;
 using JankiCards.Janki.Context;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace JankiBusiness.ViewModels.Study
 {
     public class StudyPageViewModel : PageViewModel
     {
         public IJankiContextProvider ContextProvider { get; set; }
+        public IMediaUnimporter MediaUnimporter { get; set; }
         public INavigationService NavigationService { get; set; }
         public IDialogService DialogService { get; set; }
 
@@ -103,7 +105,7 @@ namespace JankiBusiness.ViewModels.Study
             {
                 using (JankiContext context = ContextProvider.CreateContext())
                 {
-                    currentCardVM.Card.SaveChanges(context);
+                    currentCardVM.Card.SaveChanges(context, MediaUnimporter);
                     await context.SaveChangesAsync();
                 }
             }
@@ -128,11 +130,15 @@ namespace JankiBusiness.ViewModels.Study
             using (JankiContext context = ContextProvider.CreateContext())
             {
                 context.CardStudyDatas.Attach(currentCard);
-                await context.Entry(currentCard).Reference(x => x.Card).LoadAsync();
+                await context.Entry(currentCard).Reference(x => x.Card).Query()
+                    .Include(x => x.CardType).ThenInclude(x => x.Fields)
+                    .Include(x => x.CardType).ThenInclude(x => x.Variants)
+                    .Include(x => x.Fields).ThenInclude(x => x.Media)
+                    .LoadAsync();
 
                 if (currentCardVM != null)
                 {
-                    currentCardVM.Card.SaveChanges(context);
+                    currentCardVM.Card.SaveChanges(context, MediaUnimporter);
                     await context.SaveChangesAsync();
                 }
 

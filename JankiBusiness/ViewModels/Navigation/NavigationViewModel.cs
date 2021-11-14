@@ -16,6 +16,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public IDialogService DialogService { get; set; }
         public INavigationService NavigationService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
+        public IMediaUnimporter MediaUnimporter { get; set; }
 
         private readonly Lazy<List<NavigationItem>> navigationItems;
         public IReadOnlyList<NavigationItem> NavigationItems => navigationItems.Value;
@@ -52,7 +53,8 @@ namespace JankiBusiness.ViewModels.Navigation
                     {
                         ContextProvider = ContextProvider,
                         DialogService = DialogService,
-                        MediaImporter = MediaImporter
+                        MediaImporter = MediaImporter,
+                        MediaUnimporter = MediaUnimporter
                     }),
                     new NavigationItem("Card Type Editor", "PreviewLink", new CardTypeEditorPageViewModel()
                     {

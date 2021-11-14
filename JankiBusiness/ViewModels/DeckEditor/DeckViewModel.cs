@@ -1,4 +1,5 @@
 ﻿using JankiBusiness.Abstraction;
+using JankiBusiness.Services;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public GenericCommand SaveCard { get; }
 
-        public DeckViewModel(IJankiContextProvider provider, Deck deck)
+        public DeckViewModel(IJankiContextProvider provider, IMediaUnimporter unimporter, Deck deck)
         {
             this.deck = deck;
             this.provider = provider;
@@ -45,7 +46,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
                 using (JankiContext context = provider.CreateContext())
                 {
-                    card.SaveChanges(context);
+                    card.SaveChanges(context, unimporter);
                     await context.SaveChangesAsync();
                 }
             });
@@ -80,7 +81,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 await context.Entry(deck).Collection(x => x.Cards).Query()
                     .Include(x => x.CardType).ThenInclude(x => x.Fields)
                     .Include(x => x.CardType).ThenInclude(x => x.Variants)
-                    .Include(x => x.Fields)
+                    .Include(x => x.Fields).ThenInclude(x => x.Media)
                     .LoadAsync();
             }
 

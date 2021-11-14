@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.DataContext>
-        <vm:StudyPageViewModel ContextProvider="{StaticResource MediaManager}" NavigationService="{StaticResource NavigationService}" />
+        <vm:StudyPageViewModel ContextProvider="{StaticResource MediaManager}" MediaUnimporter="{StaticResource MediaManager}" NavigationService="{StaticResource NavigationService}" />
     </Page.DataContext>
 
     <SplitView IsPaneOpen="{Binding EditorVisible, Mode=TwoWay}" PanePlacement="Right" DisplayMode="Inline">

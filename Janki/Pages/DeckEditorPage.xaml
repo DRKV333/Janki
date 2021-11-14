@@ -17,7 +17,8 @@
     <Page.DataContext>
         <vm:DeckEditorPageViewModel ContextProvider="{StaticResource MediaManager}"
                                     DialogService="{StaticResource DialogService}"
-                                    MediaImporter="{StaticResource MediaManager}"/>
+                                    MediaImporter="{StaticResource MediaManager}"
+                                    MediaUnimporter="{StaticResource MediaManager}"/>
     </Page.DataContext>
 
     <Page.Resources>

@@ -1,4 +1,5 @@
-﻿using JankiBusiness.Web;
+﻿using JankiBusiness.Services;
+using JankiBusiness.Web;
 using JankiCards.Importing;
 using JankiCards.Janki.Context;
 using System;
@@ -8,7 +9,7 @@ using Windows.Storage;
 
 namespace Janki.Services
 {
-    internal class LocalStorageMediaManager : IMediaImporter, IJankiContextProvider
+    internal class LocalStorageMediaManager : IMediaImporter, IMediaUnimporter, IJankiContextProvider
     {
         private readonly StorageFolderMediaProvider media = new StorageFolderMediaProvider(ApplicationData.Current.LocalFolder, "media", true);
 
@@ -44,6 +45,18 @@ namespace Janki.Services
                 context.Database.EnsureCreated();
 
             return context;
+        }
+
+        public async Task UnimportMedia(string name)
+        {
+            try
+            {
+                await (await (await media.GetMediaFolder()).GetFileAsync(name)).DeleteAsync();
+            }
+            catch (Exception)
+            {
+                // This is not really a problem.
+            }
         }
     }
 }

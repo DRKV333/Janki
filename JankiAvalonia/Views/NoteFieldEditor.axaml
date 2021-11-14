@@ -31,7 +31,7 @@
                             <StackPanel>
                                 <TextBlock Margin="5,10,0,3" Text="{Binding Definition.Name}" />
                                 <Border Classes="EditorText">
-                                    <jav:WebEditBox Margin="3" Classes="NoAdorner" Text="{Binding Value}"
+                                    <jav:WebEditBox Margin="3" Classes="NoAdorner" Text="{Binding Value}" Provider="{StaticResource MediaManager}"
                                                     Coordinator="{Binding $parent[jav:NoteFieldEditor].Parent.DataContext.Coordinator}" />
                                 </Border>
                             </StackPanel>

@@ -18,8 +18,9 @@ namespace JankiBusiness.ViewModels.DeckEditor
         public IJankiContextProvider ContextProvider { get; set; }
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
+        public IMediaUnimporter MediaUnimporter { get; set; }
 
-        private Lazy<WebEditBoxToolbarCoordinator> coordinator;
+        private readonly Lazy<WebEditBoxToolbarCoordinator> coordinator;
         public WebEditBoxToolbarCoordinator Coordinator => coordinator.Value;
 
         public ObservableCollection<DeckViewModel> Decks { get; } = new ObservableCollection<DeckViewModel>();
@@ -107,7 +108,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                     context.Decks.Add(deck);
                     await context.SaveChangesAsync();
 
-                    DeckViewModel deckVM = new DeckViewModel(ContextProvider, deck);
+                    DeckViewModel deckVM = new DeckViewModel(ContextProvider, MediaUnimporter, deck);
                     Decks.Add(deckVM);
                     SelectedDeck = deckVM;
                 }
@@ -140,7 +141,11 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             Search = new GenericDelegateCommand(p => SelectedDeck.SetSearchTerm(SearchTerm));
 
-            coordinator = new Lazy<WebEditBoxToolbarCoordinator>(() => new WebEditBoxToolbarCoordinator() { DialogService = DialogService });
+            coordinator = new Lazy<WebEditBoxToolbarCoordinator>(() => new WebEditBoxToolbarCoordinator()
+            {
+                DialogService = DialogService,
+                Importer = MediaImporter
+            });
         }
 
         public override async Task OnNavigatedTo(object param)
@@ -154,7 +159,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 Decks.Clear();
                 foreach (var item in decks)
                 {
-                    Decks.Add(new DeckViewModel(ContextProvider, item));
+                    Decks.Add(new DeckViewModel(ContextProvider, MediaUnimporter, item));
                 }
 
                 CardAdderViewModel.LoadTypes(

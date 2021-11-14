@@ -1,4 +1,5 @@
-﻿using JankiBusiness.ViewModels.Study;
+﻿using JankiBusiness.Services;
+using JankiBusiness.ViewModels.Study;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             foreach (var item in Type.Fields.Where(x => !card.Fields.Any(y => y.CardFieldType == x)))
             {
-                card.Fields.Add(new CardField() { CardFieldType = item, Content = "" });
+                card.Fields.Add(new CardField() { CardFieldType = item, Content = "", Media = new List<Media>() });
                 dirty = true;
             }
 
@@ -95,13 +96,38 @@ namespace JankiBusiness.ViewModels.DeckEditor
             RaisePropertyChanged(nameof(ShortField));
         }
 
-        public void SaveChanges(JankiContext context)
+        public void SaveChanges(JankiContext context, IMediaUnimporter unimporter)
         {
             if (!dirty)
                 return;
 
             context.CardFields.UpdateRange(Fields.Select(x => x.TheField));
             context.TheCards.Update(card);
+
+            foreach (var item in Fields)
+            {
+                List<string> currentImages = Regex.Matches(item.Value, @"src=""(.*)""").Cast<Match>().Select(x => x.Groups[1].Value).ToList();
+
+                foreach (var newItem in currentImages.Where(x => !item.TheField.Media.Any(y => y.FilePath == x)))
+                {
+                    Media media = new Media()
+                    {
+                        CardField = item.TheField,
+                        FilePath = newItem,
+                        Name = newItem
+                    };
+
+                    item.TheField.Media.Add(media);
+                    context.Medias.Add(media);
+                }
+
+                foreach (var oldItem in item.TheField.Media.Where(x => !currentImages.Any(y => y == x.FilePath)).ToList())
+                {
+                    item.TheField.Media.Remove(oldItem);
+                    context.Medias.Remove(oldItem);
+                    unimporter.UnimportMedia(oldItem.FilePath);
+                }
+            }
 
             dirty = false;
         }
