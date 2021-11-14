@@ -24,7 +24,11 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             public Field(CardFieldType definition, CardField field)
             {
-                Definition = definition;
+                if (definition == null)
+                    Definition = new CardFieldType() { Name = "Removed Field" };
+                else
+                    Definition = definition;
+                
                 TheField = field;
                 value = field.Content;
             }

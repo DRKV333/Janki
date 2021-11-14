@@ -114,13 +114,18 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
                 }
             });
 
-            RemoveField = new GenericDelegateCommand(p =>
+            RemoveField = new GenericDelegateCommand(async p =>
             {
                 if (SelectedType != null && SelectedField != null)
                 {
+                    using (JankiContext context = Provider.CreateContext())
+                    {
+                        context.CardFieldTypes.Remove(SelectedField);
+                        await context.SaveChangesAsync();
+                    }
+
                     SelectedType.Fields.Remove(SelectedField);
                 }
-                return Task.CompletedTask;
             });
 
             AddCardType = new GenericDelegateCommand(async p =>

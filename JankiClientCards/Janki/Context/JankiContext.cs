@@ -37,6 +37,8 @@ namespace JankiCards.Janki.Context
             modelBuilder.Entity<CardType>().Ignore(x => x.Bundle);
             modelBuilder.Entity<Deck>().Ignore(x => x.Bundle);
 
+            modelBuilder.Entity<CardField>().HasOne(x => x.CardFieldType).WithMany().OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(JankiContext).Assembly);
         }
     }
