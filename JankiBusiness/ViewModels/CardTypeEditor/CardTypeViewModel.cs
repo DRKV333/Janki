@@ -129,7 +129,11 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             if (!type.Variants.Remove(variant.Variant))
                 return;
 
-            await SaveChanges();
+            using (JankiContext context = provider.CreateContext())
+            {
+                context.VariantTypes.Remove(variant.Variant);
+                await SaveChanges(context);
+            }
 
             Variants.Remove(variant);
             if (Variants.Count == 1)
@@ -143,15 +147,20 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
         {
             using (JankiContext context = provider.CreateContext())
             {
-                foreach (var item in Fields)
-                {
-                    item.CardType = type;
-                }
-
-                context.CardFieldTypes.UpdateRange(Fields);
-
-                await context.SaveChangesAsync();
+                await SaveChanges(context);
             }
+        }
+
+        private async Task SaveChanges(JankiContext context)
+        {
+            foreach (var item in Fields)
+            {
+                item.CardType = type;
+            }
+
+            context.CardFieldTypes.UpdateRange(Fields);
+
+            await context.SaveChangesAsync();
         }
     }
 }
