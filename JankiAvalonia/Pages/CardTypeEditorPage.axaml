@@ -93,7 +93,13 @@
                     <ListBox Margin="5" Grid.Row="1"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5"
-                              Items="{Binding SelectedType.Fields}" SelectedItem="{Binding SelectedField}" />
+                              Items="{Binding SelectedType.Fields}" SelectedItem="{Binding SelectedField}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <fauic:CommandBar Grid.Row="2" HorizontalAlignment="Center" IsDynamicOverflowEnabled="False">
                         <fauic:CommandBar.PrimaryCommands>
                             <fauic:CommandBarButton Command="{Binding AddField}" Icon="Add" Tag="Add" ToolTip.Tip="Add" />

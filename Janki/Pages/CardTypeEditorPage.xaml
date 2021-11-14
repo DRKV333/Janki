@@ -117,7 +117,13 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5"
                       ItemsSource="{Binding SelectedType.Fields}" SelectedItem="{Binding SelectedField, Mode=TwoWay}"
-                      AllowDrop="True" CanDragItems="True" CanReorderItems="True" />
+                      AllowDrop="True" CanDragItems="True" CanReorderItems="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Border Margin="5,5,5,10" Grid.Row="2"
                     Background="{ThemeResource SystemChromeMediumColor}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
