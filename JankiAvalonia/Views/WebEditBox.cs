@@ -56,7 +56,7 @@ namespace JankiAvalonia.Views
 
         protected override IMediaProvider? ApplyMediaOverrides(IMediaProvider? provider)
         {
-            IMediaProvider mine = ManifestResourceMedaiProvider.FieldEditor;
+            IMediaProvider mine = ManifestResourceMediaProvider.FieldEditor;
             if (provider == null)
                 return mine;
             else

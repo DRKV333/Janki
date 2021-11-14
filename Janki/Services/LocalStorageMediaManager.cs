@@ -18,8 +18,8 @@ namespace Janki.Services
 
         public LocalStorageMediaManager()
         {
-            CardMediaProvider = new CompositeMediaProvider(ManifestResourceMedaiProvider.MathJax, media);
-            FieldEditorMediaProvider = new CompositeMediaProvider(ManifestResourceMedaiProvider.FieldEditor, media);
+            CardMediaProvider = new CompositeMediaProvider(ManifestResourceMediaProvider.MathJax, media);
+            FieldEditorMediaProvider = new CompositeMediaProvider(ManifestResourceMediaProvider.FieldEditor, media);
         }
 
         public async Task ImportMedia(string name, Stream content)
