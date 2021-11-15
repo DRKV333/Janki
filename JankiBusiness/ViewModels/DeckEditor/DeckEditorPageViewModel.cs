@@ -4,6 +4,7 @@ using JankiBusiness.Web;
 using JankiCards.Importing;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
+using JankiClientCards.Importing;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         private readonly Lazy<WebEditBoxToolbarCoordinator> coordinator;
         public WebEditBoxToolbarCoordinator Coordinator => coordinator.Value;
+
+        private readonly Lazy<PackageImporter> packageImporter;
 
         public ObservableCollection<DeckViewModel> Decks { get; } = new ObservableCollection<DeckViewModel>();
 
@@ -67,6 +70,8 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public DeckEditorPageViewModel()
         {
+            packageImporter = new Lazy<PackageImporter>(() => new PackageImporter(ContextProvider, MediaImporter));
+
             CardAdderViewModel = new CardAdderViewModel(this);
 
             DeleteSelectedCard = new GenericDelegateCommand(async p =>
@@ -135,8 +140,13 @@ namespace JankiBusiness.ViewModels.DeckEditor
             {
                 using (Stream sourceFile = await DialogService.OpenFile(".apkg", ".colpkg"))
                 {
-                    // TODO
+                    if (sourceFile == null)
+                        return;
+
+                    await packageImporter.Value.Import(sourceFile);
                 }
+
+                await OnNavigatedTo(null);
             });
 
             Search = new GenericDelegateCommand(p => SelectedDeck.SetSearchTerm(SearchTerm));
