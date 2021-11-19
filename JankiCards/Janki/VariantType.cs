@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JankiCards.Janki
 {
-    public class VariantType : EntityBase
+    public class VariantType : BundleItem
     {
         [Required]
         public string Name { get; set; }

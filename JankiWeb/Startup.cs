@@ -1,3 +1,5 @@
+using JankiTransfer.ChangeDetection;
+using JankiWeb.Services;
 using JankiWeb.StartupExtentions;
 using JankiWebCards.Janki.Context;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +29,9 @@ namespace JankiWeb
             });
 
             services.AddJankiIdentity();
+
+            services.AddScoped<IChangeContext<JankiWebContext>, JankiWebChangeContext>();
+            services.AddScoped<ChangeDetector<JankiWebContext>>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -14,10 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\JankiTransfer\JankiTransfer.csproj" />
     <ProjectReference Include="..\JankiWebCards\JankiWebCards.csproj" />
   </ItemGroup>
 

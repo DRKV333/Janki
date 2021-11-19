@@ -12,6 +12,7 @@ namespace JankiWeb.StartupExtentions
         public const string JankiAPIDesc = "Undersea API";
         public const string ROPClientId = "rop";
         public const string ROPClientSecret = "SuperSecretClientSecret";
+        public const string BundleIdClaim = "BundleId";
 
         public static IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>

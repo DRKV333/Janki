@@ -13,5 +13,7 @@ namespace JankiCards.Janki
 
         [Required]
         public DateTime LastModified { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

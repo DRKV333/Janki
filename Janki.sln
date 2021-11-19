@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JankiClientCards", "JankiCl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JankiWebCards", "JankiWebCards\JankiWebCards.csproj", "{DCAC5D35-4EDC-4D0A-A9F8-79A68797967B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JankiWeb", "JankiWeb\JankiWeb.csproj", "{40A2957A-991C-4341-865E-3637ECA14C73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JankiWeb", "JankiWeb\JankiWeb.csproj", "{40A2957A-991C-4341-865E-3637ECA14C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JankiTransfer", "JankiTransfer\JankiTransfer.csproj", "{90555408-0E2A-4A24-BD23-92C56ABB5A46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -221,6 +223,26 @@ Global
 		{40A2957A-991C-4341-865E-3637ECA14C73}.Release|x64.Build.0 = Release|Any CPU
 		{40A2957A-991C-4341-865E-3637ECA14C73}.Release|x86.ActiveCfg = Release|Any CPU
 		{40A2957A-991C-4341-865E-3637ECA14C73}.Release|x86.Build.0 = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|ARM.Build.0 = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|x64.Build.0 = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Debug|x86.Build.0 = Debug|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|ARM.ActiveCfg = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|ARM.Build.0 = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|ARM64.Build.0 = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|x64.ActiveCfg = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|x64.Build.0 = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|x86.ActiveCfg = Release|Any CPU
+		{90555408-0E2A-4A24-BD23-92C56ABB5A46}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
