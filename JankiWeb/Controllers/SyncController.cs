@@ -33,7 +33,7 @@ namespace JankiWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> PostSync(ChangeData data)
         {
-            await changeDetector.ApplyChanges(data, Guid.Parse(HttpContext.User.Claims.First(x => x.Type.Equals(IdentityServerConfig.BundleIdClaim, StringComparison.OrdinalIgnoreCase))?.Value), context);
+            await changeDetector.ApplyChanges(data, HttpContext.User.GetBundleId(), context);
             await context.SaveChangesAsync();
             return NoContent();
         }

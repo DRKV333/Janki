@@ -1,5 +1,5 @@
 ﻿using JankiCards.Janki;
-using JankiWeb.Models;
+using JankiTransfer.DTO;
 using JankiWebCards.Janki.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,16 +26,16 @@ namespace JankiWeb.Services
             this.context = context;
         }
 
-        public async Task<IEnumerable<DeckTreeModel>> GetAllDecks(Guid bundleId) => await GetChildren(null);
+        public async Task<IEnumerable<DeckTreeModel>> GetAllDecks(Guid bundleId) => await GetChildren(bundleId, null);
 
-        private async Task<IList<DeckTreeModel>> GetChildren(Guid? parentId)
+        private async Task<IList<DeckTreeModel>> GetChildren(Guid bundleId, Guid? parentId)
         {
-            List<Deck> topLevel = await context.Decks.Where(x => x.ParentDeckId == parentId).ToListAsync();
+            List<Deck> topLevel = await context.Decks.Where(x => x.BundleId == bundleId && x.ParentDeckId == parentId).ToListAsync();
             List<DeckTreeModel> topLevelTree = topLevel.Select(x => new DeckTreeModel() { Id = x.Id, Name = x.Name }).ToList();
 
             foreach (var item in topLevelTree)
             {
-                item.Children = await GetChildren(item.Id);
+                item.Children = await GetChildren(bundleId, item.Id);
             }
 
             return topLevelTree;
@@ -49,6 +49,7 @@ namespace JankiWeb.Services
         {
             Bundle newBundle = new Bundle()
             {
+                Id = Guid.NewGuid(),
                 Name = bundleName,
                 IsPublic = true
             };
@@ -58,9 +59,9 @@ namespace JankiWeb.Services
                 .Where(x => deckIds.Contains(x.Id))
                 .ToListAsync();
 
-            DetachAndAssingToBundle(decks, newBundle);
-
             context.Bundles.Add(newBundle);
+
+            DetachAndAssingToBundle(decks, newBundle);
 
             await context.SaveChangesAsync();
         }
@@ -76,8 +77,6 @@ namespace JankiWeb.Services
 
             DetachAndAssingToBundle(decks, destBundle);
 
-            context.Decks.AddRange(decks);
-
             await context.SaveChangesAsync();
         }
 
@@ -87,47 +86,72 @@ namespace JankiWeb.Services
             .Include(x => x.Cards).ThenInclude(x => x.CardType).ThenInclude(x => x.Fields)
             .Include(x => x.Cards).ThenInclude(x => x.CardType).ThenInclude(x => x.Variants);
 
-        private static void DetachAndAssingToBundle(IEnumerable<Deck> decks, Bundle bundle)
+        private void DetachAndAssingToBundle(IEnumerable<Deck> decks, Bundle bundle)
         {
+            Dictionary<object, Guid> guids = new Dictionary<object, Guid>();
+
+            Guid MakeGuid(object obj)
+            {
+                if (!guids.TryGetValue(obj, out Guid id))
+                {
+                    id = Guid.NewGuid();
+                    guids.Add(obj, id);
+                }
+                return id;
+            }
+
             foreach (var deck in decks)
             {
-                deck.Id = default;
-                deck.ParentDeckId = default;
-                deck.BundleId = default;
+                deck.Id = MakeGuid(deck);
+                deck.ParentDeckId = deck.ParentDeck == null ? null : MakeGuid(deck.ParentDeck);
+                deck.BundleId = bundle.Id;
                 deck.Bundle = bundle;
+
+                context.Decks.Add(deck);
 
                 foreach (var card in deck.Cards)
                 {
-                    card.Id = default;
-                    card.DeckId = default;
-                    card.CardTypeId = default;
+                    card.Id = MakeGuid(card);
+                    card.DeckId = deck.Id;
 
-                    card.CardType.Id = default;
-                    card.CardType.BundleId = default;
+                    card.CardType.Id = MakeGuid(card.CardType);
+                    card.CardType.BundleId = bundle.Id;
                     card.CardType.Bundle = bundle;
+
+                    card.CardTypeId = card.CardType.Id;
+
+                    context.TheCards.Add(card);
 
                     foreach (var fieldType in card.CardType.Fields)
                     {
-                        fieldType.Id = default;
-                        fieldType.CardTypeId = default;
+                        fieldType.Id = MakeGuid(fieldType);
+                        fieldType.CardTypeId = card.CardType.Id;
+
+                        context.CardFieldTypes.Add(fieldType);
                     }
 
                     foreach (var variant in card.CardType.Variants)
                     {
-                        variant.Id = default;
-                        variant.CardTypeId = default;
+                        variant.Id = MakeGuid(variant);
+                        variant.CardTypeId = card.CardType.Id;
+
+                        context.VariantTypes.Add(variant);
                     }
 
                     foreach (var cardField in card.Fields)
                     {
-                        cardField.Id = default;
-                        cardField.CardFieldTypeId = default;
-                        cardField.CardId = default;
+                        cardField.Id = MakeGuid(cardField);
+                        cardField.CardFieldTypeId = cardField.CardFieldType == null ? null : MakeGuid(cardField.CardFieldType);
+                        cardField.CardId = card.Id;
+
+                        context.CardFields.Add(cardField);
 
                         foreach (var media in cardField.Media)
                         {
-                            media.Id = default;
-                            media.CardFieldId = default;
+                            media.Id = MakeGuid(media);
+                            media.CardFieldId = cardField.Id;
+
+                            context.Medias.Add(media);
                         }
                     }
                 }

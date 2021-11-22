@@ -18,6 +18,26 @@ namespace JankiBusiness.Services
 
         private readonly HttpClient client = new HttpClient();
 
+        public async Task ImportBundle(Guid id)
+        {
+            await client.PostAsync($"{ServerAddress}/bundle/import", new StringContent(
+                JsonSerializer.Serialize(new ImportData() { Id = id }),
+                Encoding.UTF8,
+                "application/json"));
+        }
+
+        public async Task PublishBundle(IList<Guid> deckIds, string name)
+        {
+            await client.PostAsync($"{ServerAddress}/bundle/publish", new StringContent(
+                JsonSerializer.Serialize(new PublishData() { DeckIds = deckIds, Name = name }),
+                Encoding.UTF8,
+                "application/json"));
+        }
+
+        public Task<List<DeckTreeModel>> GetAllDecks() => GetJsonAsync<List<DeckTreeModel>>($"{ServerAddress}/bundle/decks");
+
+        public Task<List<BundleModel>> GetPublicBundles() => GetJsonAsync<List<BundleModel>>($"{ServerAddress}/bundle/bundles");
+
         public async Task PostSync(ChangeData data)
         {
             await client.PostAsync($"{ServerAddress}/sync", new StringContent(

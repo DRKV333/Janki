@@ -1,6 +1,5 @@
 ﻿using JankiCards.Janki;
 using JankiTransfer.ChangeDetection;
-using JankiWeb.StartupExtentions;
 using JankiWebCards.Janki.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ namespace JankiWeb.Services
 
         public JankiWebChangeContext(IHttpContextAccessor httpContextAccessor)
         {
-            bundleId = Guid.Parse(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type.Equals(IdentityServerConfig.BundleIdClaim, StringComparison.OrdinalIgnoreCase))?.Value);
+            bundleId = httpContextAccessor.HttpContext.User.GetBundleId();
         }
 
         public void Add(JankiWebContext context, object entity) => context.Add(entity);

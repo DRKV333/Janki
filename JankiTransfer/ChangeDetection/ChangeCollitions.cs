@@ -116,16 +116,16 @@ namespace JankiTransfer.ChangeDetection
 
         private void MakeChanges<T>(ChangeGroup<T> group, ChangeData remoteCopy)
         {
-            MakeChangesForOneList(group.Added(local), group, remoteCopy, true);
-            MakeChangesForOneList(group.Changed(local), group, remoteCopy, true);
-            MakeChangesForRemoved(group.Removed(local), group, remoteCopy, true);
+            MakeChangesForOneList(group.Added(local), group, remoteCopy, true, LocalChanges, RemoteChanges);
+            MakeChangesForOneList(group.Changed(local), group, remoteCopy, true, LocalChanges, RemoteChanges);
+            MakeChangesForRemoved(group.Removed(local), group, remoteCopy, true, LocalChanges, RemoteChanges);
 
-            MakeChangesForOneList(group.Added(remoteCopy), group, remoteCopy, false);
-            MakeChangesForOneList(group.Changed(remoteCopy), group, remoteCopy, false);
-            MakeChangesForRemoved(group.Removed(remoteCopy), group, remoteCopy, false);
+            MakeChangesForOneList(group.Added(remoteCopy), group, remoteCopy, false, RemoteChanges, LocalChanges);
+            MakeChangesForOneList(group.Changed(remoteCopy), group, remoteCopy, false, RemoteChanges, LocalChanges);
+            MakeChangesForRemoved(group.Removed(remoteCopy), group, remoteCopy, false, RemoteChanges, LocalChanges);
         }
 
-        private void MakeChangesForOneList<T>(IList<T> theList, ChangeGroup<T> group, ChangeData remoteCopy, bool checkRemote)
+        private void MakeChangesForOneList<T>(IList<T> theList, ChangeGroup<T> group, ChangeData remoteCopy, bool checkRemote, IList<Change> whereList, IList<Change> otherList)
         {
             foreach (var item in theList)
             {
@@ -136,17 +136,17 @@ namespace JankiTransfer.ChangeDetection
                     Change other = AnyOtherChange(change, group.Id(item), group, remoteCopy, remote);
                     if (other != null)
                     {
-                        change.Remove = () => { theList.Remove(item); RemoteChanges.Add(other); };
+                        change.Remove = () => { theList.Remove(item); otherList.Add(other); };
                         Collitions.Add(new Collition() { Local = change, Remote = other });
                         continue;
                     }
                 }
 
-                LocalChanges.Add(change);
+                whereList.Add(change);
             }
         }
 
-        private void MakeChangesForRemoved<T>(IList<Guid> theList, ChangeGroup<T> group, ChangeData remoteCopy, bool checkRemote)
+        private void MakeChangesForRemoved<T>(IList<Guid> theList, ChangeGroup<T> group, ChangeData remoteCopy, bool checkRemote, IList<Change> whereList, IList<Change> otherList)
         {
             foreach (var item in theList)
             {
@@ -163,13 +163,13 @@ namespace JankiTransfer.ChangeDetection
                     Change other = AnyOtherChange(change, item, group, remoteCopy, remote);
                     if (other != null)
                     {
-                        change.Remove = () => { theList.Remove(item); RemoteChanges.Add(other); };
+                        change.Remove = () => { theList.Remove(item); otherList.Add(other); };
                         Collitions.Add(new Collition() { Local = change, Remote = other });
                         continue;
                     }
                 }
 
-                LocalChanges.Add(change);
+                whereList.Add(change);
             }
         }
 

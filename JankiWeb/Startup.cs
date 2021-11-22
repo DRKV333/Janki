@@ -26,13 +26,15 @@ namespace JankiWeb
             services.AddDbContext<JankiWebContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("JankiDatabase"));
+                options.EnableSensitiveDataLogging();
             });
 
             services.AddJankiIdentity();
 
             services.AddScoped<IChangeContext<JankiWebContext>, JankiWebChangeContext>();
             services.AddScoped<ChangeDetector<JankiWebContext>>();
-
+            services.AddScoped<IBundleManagerService, BundleManagerService>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

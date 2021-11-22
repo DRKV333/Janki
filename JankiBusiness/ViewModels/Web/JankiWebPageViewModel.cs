@@ -18,6 +18,8 @@ namespace JankiBusiness.ViewModels.Web
                     webPage.SetContent(webPage.loginPage.Value, parameter);
                 else if (vm == typeof(SyncPageViewModel))
                     webPage.SetContent(webPage.syncPage.Value, parameter);
+                else if (vm == typeof(BundlePageViewModel))
+                    webPage.SetContent(webPage.bundlePage.Value, parameter);
 
                 return true;
             }
@@ -30,6 +32,7 @@ namespace JankiBusiness.ViewModels.Web
 
         private readonly Lazy<LoginPageViewModel> loginPage;
         private readonly Lazy<SyncPageViewModel> syncPage;
+        private readonly Lazy<BundlePageViewModel> bundlePage;
 
         protected override PageViewModel DefaultPage => loginPage.Value;
 
@@ -38,7 +41,8 @@ namespace JankiBusiness.ViewModels.Web
             NavigationService navigation = new NavigationService(this);
 
             loginPage = new Lazy<LoginPageViewModel>(() => new LoginPageViewModel(client, navigation));
-            syncPage = new Lazy<SyncPageViewModel>(() => new SyncPageViewModel(LastSyncTimeAccessor, ContextProvider, client));
+            syncPage = new Lazy<SyncPageViewModel>(() => new SyncPageViewModel(LastSyncTimeAccessor, ContextProvider, client, navigation));
+            bundlePage = new Lazy<BundlePageViewModel>(() => new BundlePageViewModel(client, navigation));
         }
     }
 }

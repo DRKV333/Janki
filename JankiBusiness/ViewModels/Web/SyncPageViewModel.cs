@@ -14,7 +14,7 @@ namespace JankiBusiness.ViewModels.Web
         private readonly IJankiContextProvider contextProvider;
         private readonly JankiWebClient jankiWebClient;
 
-        public SyncPageViewModel(ILastSyncTimeAccessor lastSyncTime, IJankiContextProvider contextProvider, JankiWebClient jankiWebClient)
+        public SyncPageViewModel(ILastSyncTimeAccessor lastSyncTime, IJankiContextProvider contextProvider, JankiWebClient jankiWebClient, INavigationService navigationService)
         {
             this.lastSyncTime = lastSyncTime;
             this.contextProvider = contextProvider;
@@ -59,6 +59,12 @@ namespace JankiBusiness.ViewModels.Web
                     RaisePropertyChanged(nameof(Changes));
                 }
             });
+
+            Other = new GenericDelegateCommand(p =>
+            {
+                navigationService.NavigateToVM(typeof(BundlePageViewModel), null);
+                return Task.CompletedTask;
+            });
         }
 
         private readonly ChangeDetector<JankiContext> detector = new ChangeDetector<JankiContext>(new JankiChangeContext());
@@ -88,8 +94,9 @@ namespace JankiBusiness.ViewModels.Web
 
         public GenericCommand Sync { get; }
 
+        public GenericCommand Other { get; }
+
         public override async Task OnNavigatedTo(object param)
-        
         {
             DateTime lastTime = await lastSyncTime.GetLastSyncTime();
 

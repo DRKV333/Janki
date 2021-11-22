@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JankiWeb.Models
+namespace JankiTransfer.DTO
 {
     public class BundleModel
     {

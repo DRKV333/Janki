@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace JankiWeb.Models
+namespace JankiTransfer.DTO
 {
     public class DeckTreeModel
     {
