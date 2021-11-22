@@ -50,6 +50,8 @@ namespace JankiTransfer.ChangeDetection
 
         public ChangeCollitions(ChangeData local, ChangeData remote)
         {
+            string[] emtyStringArr = new string[0];
+
             this.local = local;
             this.remote = remote;
 
@@ -74,9 +76,9 @@ namespace JankiTransfer.ChangeDetection
                 Type = "Card Type",
                 Name = x => x.Name,
                 Description = x => string.Join("\n",
-                    x.VariantsAdded.Select(y => $"+ {y.Name}"),
-                    x.VariantsChanged.Select(y => $"{y.Name} -> {y.FrontFormat ?? ""}{y.BackFormat ?? ""}"),
-                    x.VariantsRemoved.Select(y => $"- {y}"))
+                    string.Join("\n", x.VariantsAdded?.Select(y => $"+ {y.Name}") ?? emtyStringArr),
+                    string.Join("\n", x.VariantsChanged?.Select(y => $"{y.Name} -> {y.FrontFormat ?? ""}{y.BackFormat ?? ""}") ?? emtyStringArr),
+                    string.Join("\n", x.VariantsRemoved?.Select(y => $"- {y}") ?? emtyStringArr))
             };
 
             MakeChanges(cardType, remoteCopy);
@@ -103,9 +105,9 @@ namespace JankiTransfer.ChangeDetection
                 Type = "Card",
                 Name = x => "",
                 Description = x => string.Join("\n",
-                    x.FieldsAdded.Select(y => $"+ {y.CardFieldTypeId}"),
-                    x.FieldsChanged.Select(y => $"{y.CardFieldTypeId} -> {y.Content}"),
-                    x.FieldsRemoved.Select(y => $"- {y}")
+                    string.Join("\n", x.FieldsAdded?.Select(y => $"+ {y.CardFieldTypeId}") ?? emtyStringArr),
+                    string.Join("\n", x.FieldsChanged?.Select(y => $"{y.CardFieldTypeId} -> {y.Content}") ?? emtyStringArr),
+                    string.Join("\n", x.FieldsRemoved?.Select(y => $"- {y}") ?? emtyStringArr)
                 )
             };
 

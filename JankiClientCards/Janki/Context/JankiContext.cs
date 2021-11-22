@@ -52,7 +52,7 @@ namespace JankiCards.Janki.Context
                                 prop.Metadata.Name == nameof(EntityBase.IsDeleted))
                                 continue;
 
-                            if (prop.IsModified)
+                            if (prop.IsModified && prop.OriginalValue != prop.CurrentValue && !(prop?.OriginalValue.Equals(prop.CurrentValue) ?? false))
                             {
                                 AuditLog log = new AuditLog()
                                 {
@@ -61,8 +61,8 @@ namespace JankiCards.Janki.Context
                                     ChangedId = entityBase.Id,
                                     Table = item.Entity.GetType().Name,
                                     Column = prop.Metadata.Name,
-                                    OldValue = prop.OriginalValue.ToString(),
-                                    NewValue = prop.CurrentValue.ToString()
+                                    OldValue = prop.OriginalValue?.ToString(),
+                                    NewValue = prop.CurrentValue?.ToString()
                                 };
 
                                 AuditLogs.Add(log);
@@ -98,7 +98,16 @@ namespace JankiCards.Janki.Context
 
             modelBuilder.Entity<CardField>().HasOne(x => x.CardFieldType).WithMany().OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(JankiContext).Assembly);
+            modelBuilder.Entity<Card>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<CardField>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<CardFieldType>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<CardType>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<Deck>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<Media>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<VariantType>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<CardStudyData>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<DeckStudyData>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<AuditLog>().HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }

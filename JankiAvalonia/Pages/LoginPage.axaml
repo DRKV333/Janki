@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JankiAvalonia.Pages.LoginPage">
+    <Grid RowDefinitions="* * *" ColumnDefinitions="* * *">
+        <Grid Grid.Column="1" Grid.Row="1"
+              RowDefinitions="Auto Auto Auto" ColumnDefinitions="* *">
+            <TextBox Margin="5" Grid.Row="0" Grid.ColumnSpan="2" Watermark="Username" Text="{Binding Username}" />
+            <TextBox Margin="5" Grid.Row="1" Grid.ColumnSpan="2" Watermark="Password" PasswordChar="*" Text="{Binding Password}" />
+            <Button Margin="5" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Command="{Binding Login}">Login</Button>
+            <Button Margin="5" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Command="{Binding Register}">Register</Button>
+        </Grid>
+    </Grid>
+</UserControl>

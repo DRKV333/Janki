@@ -1,5 +1,5 @@
 ﻿using JankiCards.Janki;
-using JankiWeb.Models;
+using JankiTransfer.DTO;
 using JankiWebCards.Janki;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,16 +20,16 @@ namespace Undersea.Controllers
             this.userManager = userManager;
         }
 
-/*
-curl --request POST \
-  --url 'http://localhost:5000/connect/token' \
-  --header 'content-type: application/x-www-form-urlencoded' \
-  --data grant_type=password \
-  --data username=Vince \
-  --data password=MyPass1* \
-  --data client_id=rop \
-  --data client_secret=SuperSecretClientSecret
-*/
+        /*
+        curl --request POST \
+          --url 'http://localhost:5000/connect/token' \
+          --header 'content-type: application/x-www-form-urlencoded' \
+          --data grant_type=password \
+          --data username=Vince \
+          --data password=MyPass1* \
+          --data client_id=rop \
+          --data client_secret=SuperSecretClientSecret
+        */
 
         [Route("signup")]
         [HttpPost]

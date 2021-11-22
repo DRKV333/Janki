@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JankiWeb.Models
+namespace JankiTransfer.DTO
 {
     public class Signup
     {

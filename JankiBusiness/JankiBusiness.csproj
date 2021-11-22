@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\JankiClientCards\JankiClientCards.csproj" />
     <ProjectReference Include="..\JankiScheduler\JankiScheduler.csproj" />
+    <ProjectReference Include="..\JankiTransfer\JankiTransfer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

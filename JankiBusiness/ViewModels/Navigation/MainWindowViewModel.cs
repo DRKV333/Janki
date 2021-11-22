@@ -31,6 +31,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public IDialogService DialogService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
         public IMediaUnimporter MediaUnimporter { get; set; }
+        public ILastSyncTimeAccessor LastSyncTimeAccessor { get; set; }
 
         private readonly INavigationService navigationService;
 
@@ -50,7 +51,8 @@ namespace JankiBusiness.ViewModels.Navigation
                     DialogService = DialogService,
                     NavigationService = navigationService,
                     MediaImporter = MediaImporter,
-                    MediaUnimporter = MediaUnimporter
+                    MediaUnimporter = MediaUnimporter,
+                    LastSyncTimeAccessor = LastSyncTimeAccessor
                 });
 
             studyPageViewModel = new Lazy<StudyPageViewModel>(

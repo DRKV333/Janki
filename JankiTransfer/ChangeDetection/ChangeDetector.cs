@@ -223,11 +223,12 @@ namespace JankiTransfer.ChangeDetection
                     Id = item.Id,
                     BundleId = bundleId,
                     Css = item.Css,
-                    Fields = item.FieldsAdded.Select(x => new CardFieldType() { Name = x.Name, Order = x.Order }).ToList(),
+                    Fields = item.FieldsAdded.Select(x => new CardFieldType() { Id = x.Id, Name = x.Name, Order = x.Order }).ToList(),
                     Name = item.Name,
                     Tags = item.Tags,
                     Variants = item.VariantsAdded.Select(x => new VariantType()
                     {
+                        Id = x.Id,
                         BundleId = bundleId,
                         BackFormat = x.BackFormat,
                         FrontFormat = x.FrontFormat,
@@ -257,6 +258,7 @@ namespace JankiTransfer.ChangeDetection
                     CardTypeId = item.CardTypeId,
                     Fields = item.FieldsAdded.Select(x => new CardField()
                     {
+                        Id = x.Id,
                         BundleId = bundleId,
                         Content = x.Content,
                         CardFieldTypeId = x.CardFieldTypeId

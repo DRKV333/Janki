@@ -11,7 +11,8 @@ namespace JankiWeb.StartupExtentions
         public static void AddJankiIdentity(this IServiceCollection services)
         {
             services.AddIdentity<JankiUser, IdentityRole>()
-                .AddEntityFrameworkStores<JankiWebContext>();
+                .AddEntityFrameworkStores<JankiWebContext>()
+                .AddClaimsPrincipalFactory<JankiClaimsFactory>();
 
             services.AddIdentityServer(options =>
             {

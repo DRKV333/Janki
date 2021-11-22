@@ -8,8 +8,8 @@ namespace JankiWeb.StartupExtentions
 {
     internal static class IdentityServerConfig
     {
-        public const string JankiAPIName = "undersea";
-        public const string JankiAPIDesc = "Undersea API";
+        public const string JankiAPIName = "janki";
+        public const string JankiAPIDesc = "Janki API";
         public const string ROPClientId = "rop";
         public const string ROPClientSecret = "SuperSecretClientSecret";
         public const string BundleIdClaim = "BundleId";
@@ -27,7 +27,8 @@ namespace JankiWeb.StartupExtentions
                 new ApiScope(JankiAPIName, JankiAPIDesc, new string[] {
                     ClaimTypes.NameIdentifier,
                     JwtClaimTypes.Name,
-                    ClaimTypes.Role
+                    ClaimTypes.Role,
+                    BundleIdClaim
                 })
             };
 

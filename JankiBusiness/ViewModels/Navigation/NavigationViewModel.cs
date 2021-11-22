@@ -3,6 +3,7 @@ using JankiBusiness.Services;
 using JankiBusiness.ViewModels.CardTypeEditor;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.ViewModels.Study;
+using JankiBusiness.ViewModels.Web;
 using JankiCards.Importing;
 using JankiCards.Janki.Context;
 using System;
@@ -17,6 +18,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public INavigationService NavigationService { get; set; }
         public IMediaImporter MediaImporter { get; set; }
         public IMediaUnimporter MediaUnimporter { get; set; }
+        public ILastSyncTimeAccessor LastSyncTimeAccessor { get; set; }
 
         private readonly Lazy<List<NavigationItem>> navigationItems;
         public IReadOnlyList<NavigationItem> NavigationItems => navigationItems.Value;
@@ -60,6 +62,11 @@ namespace JankiBusiness.ViewModels.Navigation
                     {
                         Provider = ContextProvider,
                         DialogService = DialogService
+                    }),
+                    new NavigationItem("JankiWeb™", "Globe", new JankiWebPageViewModel()
+                    {
+                        ContextProvider = ContextProvider,
+                        LastSyncTimeAccessor = LastSyncTimeAccessor
                     })
                 });
 

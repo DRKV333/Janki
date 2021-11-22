@@ -18,6 +18,7 @@
         <jbvmn:MainWindowViewModel ContextProvider="{StaticResource MediaManager}"
                                    DialogService="{StaticResource DialogService}"
                                    MediaImporter="{StaticResource MediaManager}"
-                                   MediaUnimporter="{StaticResource MediaManager}" />
+                                   MediaUnimporter="{StaticResource MediaManager}"
+                                   LastSyncTimeAccessor="{StaticResource MediaManager}" />
     </Window.DataContext>
 </Window>

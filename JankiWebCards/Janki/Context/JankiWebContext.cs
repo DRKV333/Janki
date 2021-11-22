@@ -36,6 +36,12 @@ namespace JankiWebCards.Janki.Context
             {
                 if (item.Entity is EntityBase entityBase)
                 {
+                    if (item.State == EntityState.Deleted)
+                    {
+                        item.State = EntityState.Modified;
+                        entityBase.IsDeleted = true;
+                    }    
+
                     if (item.State == EntityState.Added)
                     {
                         entityBase.Created = DateTime.UtcNow;
@@ -54,7 +60,7 @@ namespace JankiWebCards.Janki.Context
                                 prop.Metadata.Name == nameof(EntityBase.IsDeleted))
                                 continue;
 
-                            if (prop.IsModified)
+                            if (prop.IsModified && prop.OriginalValue != prop.CurrentValue && !(prop?.OriginalValue.Equals(prop.CurrentValue) ?? false))
                             {
                                 AuditLog log = new AuditLog()
                                 {
@@ -63,8 +69,8 @@ namespace JankiWebCards.Janki.Context
                                     ChangedId = entityBase.Id,
                                     Table = item.Entity.GetType().Name,
                                     Column = prop.Metadata.Name,
-                                    OldValue = prop.OriginalValue.ToString(),
-                                    NewValue = prop.CurrentValue.ToString()
+                                    OldValue = prop.OriginalValue?.ToString(),
+                                    NewValue = prop.CurrentValue?.ToString()
                                 };
 
                                 AuditLogs.Add(log);
@@ -85,6 +91,20 @@ namespace JankiWebCards.Janki.Context
             builder.Entity<Card>().HasOne(x => x.Deck).WithMany(x => x.Cards).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<CardStudyData>().HasOne(x => x.Card).WithOne().OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Media>().HasOne(x => x.CardField).WithMany(x => x.Media).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<VariantType>().HasOne(x => x.CardType).WithMany(x => x.Variants).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<CardField>().HasOne(x => x.Card).WithMany(x => x.Fields).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Card>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<CardField>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<CardFieldType>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<CardType>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Deck>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Media>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<VariantType>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<CardStudyData>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<DeckStudyData>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Bundle>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<AuditLog>().HasQueryFilter(x => !x.IsDeleted);    
         }
     }
 }

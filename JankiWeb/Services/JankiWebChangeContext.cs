@@ -23,21 +23,28 @@ namespace JankiWeb.Services
         public void Add(JankiWebContext context, object entity) => context.Add(entity);
 
         public IQueryable<AuditLog> AuditLogs(JankiWebContext context) =>
-            context.AuditLogs.IgnoreQueryFilters();
+            context.AuditLogs.OrderBy(x => x.Created).IgnoreQueryFilters();
 
         public IQueryable<CardField> CardFields(JankiWebContext context) =>
             context.CardFields.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
 
         public IQueryable<CardFieldType> CardFieldTypes(JankiWebContext context) => context.CardFieldTypes;
 
-        public IQueryable<Card> Cards(JankiWebContext context)
-            => context.TheCards.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
+        public IQueryable<Card> Cards(JankiWebContext context) => context.TheCards
+            .Include(x => x.Fields)
+            .ThenInclude(x => x.Media)
+            .IgnoreQueryFilters()
+            .Where(x => x.BundleId == bundleId);
 
         public IQueryable<CardType> CardTypes(JankiWebContext context) =>
-            context.CardTypes.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
+            context.CardTypes
+            .Include(x => x.Fields)
+            .Include(x => x.Variants)
+            .IgnoreQueryFilters()
+            .Where(x => x.BundleId == bundleId);
 
-        public IQueryable<Deck> Decks(JankiWebContext context)
-            => context.Decks.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
+        public IQueryable<Deck> Decks(JankiWebContext context) =>
+            context.Decks.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
 
         public void Remove(JankiWebContext context, object entity) => context.Remove(entity);
 
@@ -47,7 +54,7 @@ namespace JankiWeb.Services
 
         public void Update(JankiWebContext context, object entity) => context.Update(entity);
 
-        public IQueryable<VariantType> VariantTypes(JankiWebContext context)
-            => context.VariantTypes.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
+        public IQueryable<VariantType> VariantTypes(JankiWebContext context) =>
+            context.VariantTypes.IgnoreQueryFilters().Where(x => x.BundleId == bundleId);
     }
 }
