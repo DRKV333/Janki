@@ -113,6 +113,8 @@ namespace JankiWeb.Services
                 {
                     card.Id = MakeGuid(card);
                     card.DeckId = deck.Id;
+                    card.BundleId = bundle.Id;
+                    card.Bundle = bundle;
 
                     card.CardType.Id = MakeGuid(card.CardType);
                     card.CardType.BundleId = bundle.Id;
@@ -134,6 +136,8 @@ namespace JankiWeb.Services
                     {
                         variant.Id = MakeGuid(variant);
                         variant.CardTypeId = card.CardType.Id;
+                        variant.BundleId = bundle.Id;
+                        variant.Bundle = bundle;
 
                         context.VariantTypes.Add(variant);
                     }
@@ -143,6 +147,8 @@ namespace JankiWeb.Services
                         cardField.Id = MakeGuid(cardField);
                         cardField.CardFieldTypeId = cardField.CardFieldType == null ? null : MakeGuid(cardField.CardFieldType);
                         cardField.CardId = card.Id;
+                        cardField.BundleId = bundle.Id;
+                        cardField.Bundle = bundle;
 
                         context.CardFields.Add(cardField);
 

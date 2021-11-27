@@ -223,7 +223,13 @@ namespace JankiTransfer.ChangeDetection
                     Id = item.Id,
                     BundleId = bundleId,
                     Css = item.Css,
-                    Fields = item.FieldsAdded.Select(x => new CardFieldType() { Id = x.Id, Name = x.Name, Order = x.Order }).ToList(),
+                    Fields = item.FieldsAdded.Select(x => new CardFieldType()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Order = x.Order,
+                        CardTypeId = item.Id
+                    }).ToList(),
                     Name = item.Name,
                     Tags = item.Tags,
                     Variants = item.VariantsAdded.Select(x => new VariantType()
@@ -232,7 +238,8 @@ namespace JankiTransfer.ChangeDetection
                         BundleId = bundleId,
                         BackFormat = x.BackFormat,
                         FrontFormat = x.FrontFormat,
-                        Name = x.Name
+                        Name = x.Name,
+                        CardTypeId = item.Id
                     }).ToList(),
                 });
             }
@@ -261,7 +268,8 @@ namespace JankiTransfer.ChangeDetection
                         Id = x.Id,
                         BundleId = bundleId,
                         Content = x.Content,
-                        CardFieldTypeId = x.CardFieldTypeId
+                        CardFieldTypeId = x.CardFieldTypeId,
+                        CardId = item.Id
                     }).ToList(),
                 });
             }
@@ -295,14 +303,17 @@ namespace JankiTransfer.ChangeDetection
 
                 foreach (var item2 in item.VariantsAdded)
                 {
-                    existing.Variants.Add(new VariantType()
+                    VariantType variantType = new VariantType()
                     {
                         BundleId = bundleId,
                         Id = item2.Id,
                         FrontFormat = item2.FrontFormat,
                         BackFormat = item2.BackFormat,
-                        Name = item2.Name
-                    });
+                        Name = item2.Name,
+                        CardTypeId = existing.Id
+                    };
+                    existing.Variants.Add(variantType);
+                    changeContext.Add(context, variantType);
                 }
 
                 foreach (var item2 in item.VariantsChanged)
@@ -337,13 +348,16 @@ namespace JankiTransfer.ChangeDetection
 
                 foreach (var item2 in item.FieldsAdded)
                 {
-                    existing.Fields.Add(new CardField()
+                    CardField cardField = new CardField()
                     {
                         BundleId = bundleId,
                         Id = item2.Id,
                         Content = item2.Content,
-                        CardFieldTypeId = item2.CardFieldTypeId
-                    });
+                        CardFieldTypeId = item2.CardFieldTypeId,
+                        CardId = existing.Id
+                    };
+                    existing.Fields.Add(cardField);
+                    changeContext.Add(context, cardField);
                 }
 
                 foreach (var item2 in item.FieldsChanged)

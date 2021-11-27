@@ -56,7 +56,7 @@ namespace JankiBusiness.ViewModels.Web
 
                     await lastSyncTime.SetLastSyncTime(DateTime.UtcNow + TimeSpan.FromSeconds(5));
 
-                    RaisePropertyChanged(nameof(Changes));
+                    await OnNavigatedTo(null);
                 }
             });
 
