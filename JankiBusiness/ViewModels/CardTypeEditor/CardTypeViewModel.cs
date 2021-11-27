@@ -156,9 +156,13 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
             foreach (var item in Fields)
             {
                 item.CardType = type;
-            }
 
-            context.CardFieldTypes.UpdateRange(Fields);
+                CardFieldType dbField = await context.CardFieldTypes.FindAsync();
+                dbField.CardType = item.CardType;
+                dbField.CardTypeId = item.CardTypeId;
+                dbField.Name = item.Name;
+                dbField.Order = item.Order;
+            }
 
             await context.SaveChangesAsync();
         }

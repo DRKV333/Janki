@@ -2,9 +2,11 @@
 using JankiBusiness.ViewModels.Study;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace JankiBusiness.ViewModels.DeckEditor
 {
@@ -96,13 +98,16 @@ namespace JankiBusiness.ViewModels.DeckEditor
             RaisePropertyChanged(nameof(ShortField));
         }
 
-        public void SaveChanges(JankiContext context, IMediaUnimporter unimporter)
+        public async Task SaveChanges(JankiContext context, IMediaUnimporter unimporter)
         {
             if (!dirty)
                 return;
 
-            context.CardFields.UpdateRange(Fields.Select(x => x.TheField));
-            context.TheCards.Update(card);
+            foreach (var item in Fields.Select(x => x.TheField))
+            {
+                CardField dbField = await context.CardFields.FindAsync(item.Id);
+                dbField.Content = item.Content;
+            }
 
             foreach (var item in Fields)
             {
@@ -125,7 +130,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 {
                     item.TheField.Media.Remove(oldItem);
                     context.Medias.Remove(oldItem);
-                    unimporter.UnimportMedia(oldItem.FilePath);
+                    await unimporter.UnimportMedia(oldItem.FilePath);
                 }
             }
 

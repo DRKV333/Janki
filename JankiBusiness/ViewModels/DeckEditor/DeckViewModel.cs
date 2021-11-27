@@ -46,7 +46,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
                 using (JankiContext context = provider.CreateContext())
                 {
-                    card.SaveChanges(context, unimporter);
+                    await card.SaveChanges(context, unimporter);
                     await context.SaveChangesAsync();
                 }
             });

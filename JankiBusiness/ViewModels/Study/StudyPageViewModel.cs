@@ -105,7 +105,7 @@ namespace JankiBusiness.ViewModels.Study
             {
                 using (JankiContext context = ContextProvider.CreateContext())
                 {
-                    currentCardVM.Card.SaveChanges(context, MediaUnimporter);
+                    await currentCardVM.Card.SaveChanges(context, MediaUnimporter);
                     await context.SaveChangesAsync();
                 }
             }
@@ -138,7 +138,7 @@ namespace JankiBusiness.ViewModels.Study
 
                 if (currentCardVM != null)
                 {
-                    currentCardVM.Card.SaveChanges(context, MediaUnimporter);
+                    await currentCardVM.Card.SaveChanges(context, MediaUnimporter);
                     await context.SaveChangesAsync();
                 }
 

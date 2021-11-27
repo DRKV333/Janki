@@ -61,7 +61,6 @@ namespace JankiTransfer.ChangeDetection
                         Id = y.Id,
                         Content = y.Content,
                         CardFieldTypeId = y.CardFieldTypeId,
-                        Media = y.Media.Select(z => z.Id).ToList()
                     }).ToList()
                 }).ToList();
 
@@ -173,7 +172,6 @@ namespace JankiTransfer.ChangeDetection
                     Id = item.Id,
                     CardFieldTypeId = item.CardFieldTypeId,
                     Content = item.Content,
-                    Media = item.Media.Select(x => x.Id).ToList()
                 });
             }
 
@@ -198,8 +196,7 @@ namespace JankiTransfer.ChangeDetection
                     CardData cardData = GetOrCreateCardData(cardChanges, cardField.Id);
                     itemField = new CardFieldData()
                     {
-                        Id = cardField.Id,
-                        Media = cardField.Media.Select(x => x.Id).ToList()
+                        Id = cardField.Id
                     };
                     fieldChanges.Add(cardField.Id, itemField);
                     cardData.FieldsChanged.Add(itemField);
