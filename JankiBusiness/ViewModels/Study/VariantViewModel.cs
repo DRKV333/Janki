@@ -11,23 +11,23 @@ using System.Threading.Tasks;
 
 namespace JankiBusiness.ViewModels.Study
 {
-    public class CardViewModel : ViewModel
+    public class VariantViewModel : ViewModel
     {
         private static readonly StubbleVisitorRenderer frontRenderer = new StubbleBuilder()
             .Configure(
-                x => x.AddValueGetter(typeof(CardViewModel), NoteFieldValueGetter)
+                x => x.AddValueGetter(typeof(VariantViewModel), NoteFieldValueGetter)
             )
             .Build();
         
         private static readonly StubbleVisitorRenderer frontRendererPreview = new StubbleBuilder()
             .Configure(
-                x => x.AddValueGetter(typeof(CardViewModel), PreviewValueGetter)
+                x => x.AddValueGetter(typeof(VariantViewModel), PreviewValueGetter)
             )
             .Build();
 
         private static readonly StubbleVisitorRenderer backRenderer = new StubbleBuilder()
             .Configure(
-                x => x.AddValueGetter(typeof(CardViewModel), ComposeValueGetter(
+                x => x.AddValueGetter(typeof(VariantViewModel), ComposeValueGetter(
                         FrontSideValueGetter,
                         NoteFieldValueGetter
                      ))
@@ -36,7 +36,7 @@ namespace JankiBusiness.ViewModels.Study
         
         private static readonly StubbleVisitorRenderer backRendererPreview = new StubbleBuilder()
             .Configure(
-                x => x.AddValueGetter(typeof(CardViewModel), ComposeValueGetter(
+                x => x.AddValueGetter(typeof(VariantViewModel), ComposeValueGetter(
                         FrontSideValueGetter,
                         PreviewValueGetter
                      ))
@@ -46,12 +46,12 @@ namespace JankiBusiness.ViewModels.Study
         private static object PreviewValueGetter(object value, string key, bool ignoreCase) => key;
 
         private static object NoteFieldValueGetter(object value, string key, bool ignoreCase) =>
-            ((CardViewModel)value).Card.Fields.FirstOrDefault(
+            ((VariantViewModel)value).Card.Fields.FirstOrDefault(
                 y => StringEquals(key, y.Definition.Name, ignoreCase)
             )?.Value;
 
         private static object FrontSideValueGetter(object value, string key, bool ignoreCase) =>
-            StringEquals(key, "FrontSide", ignoreCase) ? ((CardViewModel)value).frontContent : null;
+            StringEquals(key, "FrontSide", ignoreCase) ? ((VariantViewModel)value).frontContent : null;
 
         private static bool StringEquals(string a, string b, bool ignoreCase) =>
             string.Equals(a, b, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
@@ -73,7 +73,7 @@ namespace JankiBusiness.ViewModels.Study
             SkipHtmlEncoding = true
         };
 
-        public NoteViewModel Card { get; }
+        public CardViewModel Card { get; }
         public CardType Type { get; }
         public VariantType Variant { get; }
 
@@ -95,14 +95,14 @@ namespace JankiBusiness.ViewModels.Study
             private set => Set(ref backHtml, value);
         }
 
-        private CardViewModel(CardType Type, VariantType Variant)
+        private VariantViewModel(CardType Type, VariantType Variant)
         {
             this.Type = Type;
             this.Variant = Variant;
             Render();
         }
 
-        public CardViewModel(VariantType Variant, NoteViewModel Card)
+        public VariantViewModel(VariantType Variant, CardViewModel Card)
         {
             Type = Variant.CardType;
             this.Variant = Variant;
@@ -112,15 +112,15 @@ namespace JankiBusiness.ViewModels.Study
             Render();
         }
 
-        public CardViewModel(VariantType Variant, Card Card)
+        public VariantViewModel(VariantType Variant, Card Card)
         {
             Type = Variant.CardType;
             this.Variant = Variant;
-            this.Card = new NoteViewModel(Card);
+            this.Card = new CardViewModel(Card);
             Render();
         }
 
-        public static CardViewModel CreatePreview(CardType type, VariantType variant) => new CardViewModel(type, variant);
+        public static VariantViewModel CreatePreview(CardType type, VariantType variant) => new VariantViewModel(type, variant);
 
         private StubbleVisitorRenderer FrontRenderer => Card == null ? frontRendererPreview : frontRenderer;
 

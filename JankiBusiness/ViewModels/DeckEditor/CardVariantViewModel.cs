@@ -40,7 +40,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
             }
         }
 
-        public CardViewModel Preview { get; }
+        public VariantViewModel Preview { get; }
 
         public CardTypeViewModel TypeVM { get; }
 
@@ -48,7 +48,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
         {
             this.TypeVM = TypeVM;
             this.Variant = Variant;
-            Preview = CardViewModel.CreatePreview(type, Variant);
+            Preview = VariantViewModel.CreatePreview(type, Variant);
         }
 
         public CardTypeEditorPageViewModel.ISelectionRedirector Redirect() => null;

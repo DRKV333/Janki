@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JankiBusiness.ViewModels.DeckEditor
 {
-    public class NoteViewModel : ViewModel
+    public class CardViewModel : ViewModel
     {
         public class Field : ViewModel
         {
@@ -44,13 +44,13 @@ namespace JankiBusiness.ViewModels.DeckEditor
         public IEnumerable<Field> Fields { get; }
         public string ShortField { get; private set; }
 
-        public IEnumerable<CardViewModel> Cards { get; }
+        public IEnumerable<VariantViewModel> Cards { get; }
 
         public CardCarouselViewModel CardCarousel { get; }
 
         private bool dirty = false;
 
-        public NoteViewModel(Card card)
+        public CardViewModel(Card card)
         {
             this.card = card;
 
@@ -86,7 +86,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                 };
             }
 
-            IList<CardViewModel> cards = Type.Variants.Select(x => new CardViewModel(x, this)).ToList();
+            IList<VariantViewModel> cards = Type.Variants.Select(x => new VariantViewModel(x, this)).ToList();
             Cards = cards;
 
             CardCarousel = new CardCarouselViewModel(cards);

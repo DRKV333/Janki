@@ -38,9 +38,9 @@ namespace JankiBusiness.ViewModels.DeckEditor
             set { selectedDeck?.SetSearchTerm(""); Set(ref selectedDeck, value); }
         }
 
-        private NoteViewModel selectedCard;
+        private CardViewModel selectedCard;
 
-        public NoteViewModel SelectedCard
+        public CardViewModel SelectedCard
         {
             get => selectedCard;
             set

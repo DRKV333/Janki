@@ -9,9 +9,9 @@ namespace JankiBusiness.ViewModels.DeckEditor
     {
         private int selectedIndex = 0;
 
-        private CardViewModel selectedCard;
+        private VariantViewModel selectedCard;
 
-        public CardViewModel SelectedCard
+        public VariantViewModel SelectedCard
         {
             get => selectedCard;
             private set => Set(ref selectedCard, value);
@@ -21,7 +21,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
         public GenericCommand Next { get; }
 
-        public CardCarouselViewModel(IList<CardViewModel> cards)
+        public CardCarouselViewModel(IList<VariantViewModel> cards)
         {
             SelectedCard = cards[0];
 

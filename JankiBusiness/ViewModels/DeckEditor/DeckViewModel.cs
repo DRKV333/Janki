@@ -15,15 +15,15 @@ namespace JankiBusiness.ViewModels.DeckEditor
         private readonly Deck deck;
         private readonly IJankiContextProvider provider;
 
-        private ObservableCollection<NoteViewModel> cards;
+        private ObservableCollection<CardViewModel> cards;
 
-        public ObservableCollection<NoteViewModel> Cards
+        public ObservableCollection<CardViewModel> Cards
         {
             get
             {
                 if (cards == null)
                 {
-                    cards = new ObservableCollection<NoteViewModel>();
+                    cards = new ObservableCollection<CardViewModel>();
                     FetchCards();
                 }
                 return cards;
@@ -41,7 +41,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             SaveCard = new GenericDelegateCommand(async (p) =>
             {
-                if (!(p is NoteViewModel card))
+                if (!(p is CardViewModel card))
                     return;
 
                 using (JankiContext context = provider.CreateContext())
@@ -68,7 +68,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             if (currentTerm != "")
             {
-                cards = new ObservableCollection<NoteViewModel>(cards.Where(x => x.ShortField.ToLower().Contains(term.ToLower())));
+                cards = new ObservableCollection<CardViewModel>(cards.Where(x => x.ShortField.ToLower().Contains(term.ToLower())));
                 RaisePropertyChanged(nameof(Cards));
             }
         }
@@ -87,7 +87,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             foreach (var item in deck.Cards)
             {
-                Cards.Add(new NoteViewModel(item));
+                Cards.Add(new CardViewModel(item));
             }
         }
 

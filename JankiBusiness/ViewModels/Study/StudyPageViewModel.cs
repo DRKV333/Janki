@@ -41,13 +41,13 @@ namespace JankiBusiness.ViewModels.Study
         }
 
         private CardStudyData currentCard;
-        private CardViewModel currentCardVM;
+        private VariantViewModel currentCardVM;
 
         private bool flipped = false;
 
         public string Html => flipped ? currentCardVM?.BackHtml : currentCardVM?.FrontHtml;
 
-        public NoteViewModel CurrentNote => currentCardVM?.Card;
+        public CardViewModel CurrentNote => currentCardVM?.Card;
 
         public StudyCountsViewModel Counts { get; } = new StudyCountsViewModel();
 
@@ -142,11 +142,11 @@ namespace JankiBusiness.ViewModels.Study
                     await context.SaveChangesAsync();
                 }
 
-                currentCardVM = new CardViewModel(currentCard.Variant, currentCard.Card);
+                currentCardVM = new VariantViewModel(currentCard.Variant, currentCard.Card);
 
                 currentCardVM.PropertyChanged += (s, e) =>
                 {
-                    if (e.PropertyName == nameof(CardViewModel.FrontHtml) || e.PropertyName == nameof(CardViewModel.BackHtml))
+                    if (e.PropertyName == nameof(VariantViewModel.FrontHtml) || e.PropertyName == nameof(VariantViewModel.BackHtml))
                         RaisePropertyChanged(nameof(Html));
                 };
             }

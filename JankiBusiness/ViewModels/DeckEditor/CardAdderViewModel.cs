@@ -50,7 +50,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
                     await context.SaveChangesAsync();
 
-                    NoteViewModel noteVm = new NoteViewModel(card);
+                    CardViewModel noteVm = new CardViewModel(card);
                     page.SelectedDeck.Cards.Add(noteVm);
                     page.SelectedCard = noteVm;
                 }
