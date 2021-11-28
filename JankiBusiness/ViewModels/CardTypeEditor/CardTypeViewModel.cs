@@ -153,15 +153,27 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
 
         private async Task SaveChanges(JankiContext context)
         {
+            CardType dbCardType = await context.CardTypes.FindAsync(type.Id);
+            dbCardType.Css = type.Css;
+
             foreach (var item in Fields)
             {
                 item.CardType = type;
 
-                CardFieldType dbField = await context.CardFieldTypes.FindAsync();
-                dbField.CardType = item.CardType;
-                dbField.CardTypeId = item.CardTypeId;
+                CardFieldType dbField = await context.CardFieldTypes.FindAsync(item.Id);
                 dbField.Name = item.Name;
                 dbField.Order = item.Order;
+            }
+
+            VariantType dbVariantSingle = await context.VariantTypes.FindAsync(singleVariant.Variant.Id);
+            dbVariantSingle.BackFormat = singleVariant.Variant.BackFormat;
+            dbVariantSingle.FrontFormat = singleVariant.Variant.FrontFormat;     
+
+            foreach (var item in Variants)
+            {
+                VariantType dbVariant = await context.VariantTypes.FindAsync(item.Variant.Id);
+                dbVariant.BackFormat = item.Variant.BackFormat;
+                dbVariant.FrontFormat = item.Variant.FrontFormat;
             }
 
             await context.SaveChangesAsync();
