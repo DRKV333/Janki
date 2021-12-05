@@ -58,7 +58,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
 
             foreach (var item in Type.Fields.Where(x => !card.Fields.Any(y => y.CardFieldType == x)))
             {
-                card.Fields.Add(new CardField() { CardFieldType = item, Content = "", Media = new List<Media>() });
+                card.Fields.Add(new CardField() { CardFieldType = item, Card = card, Content = "", Media = new List<Media>() });
                 dirty = true;
             }
 
@@ -106,7 +106,18 @@ namespace JankiBusiness.ViewModels.DeckEditor
             foreach (var item in Fields.Select(x => x.TheField))
             {
                 CardField dbField = await context.CardFields.FindAsync(item.Id);
-                dbField.Content = item.Content;
+
+                if (dbField != null)
+                {
+                    dbField.Content = item.Content;
+                }
+                else
+                {
+                    context.CardFieldTypes.Attach(item.CardFieldType);
+                    context.TheCards.Attach(item.Card);
+
+                    context.CardFields.Add(item);
+                }
             }
 
             foreach (var item in Fields)
