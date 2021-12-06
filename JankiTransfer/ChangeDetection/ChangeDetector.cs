@@ -193,7 +193,7 @@ namespace JankiTransfer.ChangeDetection
 
                 if (!fieldChanges.TryGetValue(cardField.Id, out CardFieldData itemField))
                 {
-                    CardData cardData = GetOrCreateCardData(cardChanges, cardField.Id);
+                    CardData cardData = GetOrCreateCardData(cardChanges, cardField.CardId);
                     itemField = new CardFieldData()
                     {
                         Id = cardField.Id
