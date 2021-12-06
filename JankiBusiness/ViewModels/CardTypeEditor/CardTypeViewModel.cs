@@ -161,13 +161,24 @@ namespace JankiBusiness.ViewModels.CardTypeEditor
                 item.CardType = type;
 
                 CardFieldType dbField = await context.CardFieldTypes.FindAsync(item.Id);
-                dbField.Name = item.Name;
-                dbField.Order = item.Order;
+                if (dbField != null)
+                {
+                    dbField.Name = item.Name;
+                    dbField.Order = item.Order;
+                }
+                else
+                {
+                    item.CardType = dbCardType;
+                    context.CardFieldTypes.Add(item);
+                }
             }
 
-            VariantType dbVariantSingle = await context.VariantTypes.FindAsync(singleVariant.Variant.Id);
-            dbVariantSingle.BackFormat = singleVariant.Variant.BackFormat;
-            dbVariantSingle.FrontFormat = singleVariant.Variant.FrontFormat;     
+            if (singleVariant != null)
+            {
+                VariantType dbVariantSingle = await context.VariantTypes.FindAsync(singleVariant.Variant.Id);
+                dbVariantSingle.BackFormat = singleVariant.Variant.BackFormat;
+                dbVariantSingle.FrontFormat = singleVariant.Variant.FrontFormat;
+            }
 
             foreach (var item in Variants)
             {

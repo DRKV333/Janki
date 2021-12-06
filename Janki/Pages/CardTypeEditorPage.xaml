@@ -99,7 +99,7 @@
                 <TextBox Margin="5" Grid.Column="0" Grid.Row="1"
                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                          AcceptsReturn="True"
-                         Text="{Binding SelectedVariant.BackFormat}" />
+                         Text="{Binding SelectedVariant.BackFormat, Mode=TwoWay}" />
                 <jv:HtmlWebView Margin="5" Grid.Column="1" Grid.Row="1"
                                    Html="{Binding SelectedVariant.Preview.BackHtml}" />
             </Grid>
