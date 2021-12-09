@@ -55,9 +55,9 @@
                             <TextBlock Grid.Column="1" Text="{Binding Local.Name}" />
                             <TextBlock Grid.Column="2" Text="{Binding Local.ChangeType}" />
                             <TextBlock Grid.Column="3" Text="&gt;=&lt;" />
-                            <TextBlock Grid.Column="0" Text="{Binding Remote.Type}" />
-                            <TextBlock Grid.Column="1" Text="{Binding Remote.Name}" />
-                            <TextBlock Grid.Column="2" Text="{Binding Remote.ChangeType}" />
+                            <TextBlock Grid.Column="4" Text="{Binding Remote.Type}" />
+                            <TextBlock Grid.Column="5" Text="{Binding Remote.Name}" />
+                            <TextBlock Grid.Column="6" Text="{Binding Remote.ChangeType}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -66,11 +66,13 @@
         
         <TextBox Margin="5" Grid.Column="2" Grid.Row="2"
                  IsReadOnly="True"
-                 Text="{Binding SelectedCollition.Local.ChangeDescrition}" />
+                 Text="{Binding SelectedCollition.Local.ChangeDescrition}"
+                 TextWrapping="Wrap" />
         
         <TextBox Margin="5" Grid.Column="3" Grid.Row="2"
                  IsReadOnly="True"
-                 Text="{Binding SelectedCollition.Remote.ChangeDescrition}" />
+                 Text="{Binding SelectedCollition.Remote.ChangeDescrition}"
+                 TextWrapping="Wrap" />
 
         <Border Classes="BorderToolbarDarker" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3">
             <StackPanel Orientation="Horizontal">
