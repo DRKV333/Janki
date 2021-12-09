@@ -107,8 +107,6 @@ namespace JankiWeb.Services
                 deck.BundleId = bundle.Id;
                 deck.Bundle = bundle;
 
-                context.Decks.Add(deck);
-
                 foreach (var card in deck.Cards)
                 {
                     card.Id = MakeGuid(card);
@@ -122,14 +120,10 @@ namespace JankiWeb.Services
 
                     card.CardTypeId = card.CardType.Id;
 
-                    context.TheCards.Add(card);
-
                     foreach (var fieldType in card.CardType.Fields)
                     {
                         fieldType.Id = MakeGuid(fieldType);
                         fieldType.CardTypeId = card.CardType.Id;
-
-                        context.CardFieldTypes.Add(fieldType);
                     }
 
                     foreach (var variant in card.CardType.Variants)
@@ -138,8 +132,6 @@ namespace JankiWeb.Services
                         variant.CardTypeId = card.CardType.Id;
                         variant.BundleId = bundle.Id;
                         variant.Bundle = bundle;
-
-                        context.VariantTypes.Add(variant);
                     }
 
                     foreach (var cardField in card.Fields)
@@ -150,17 +142,18 @@ namespace JankiWeb.Services
                         cardField.BundleId = bundle.Id;
                         cardField.Bundle = bundle;
 
-                        context.CardFields.Add(cardField);
-
                         foreach (var media in cardField.Media)
                         {
                             media.Id = MakeGuid(media);
                             media.CardFieldId = cardField.Id;
-
-                            context.Medias.Add(media);
                         }
                     }
                 }
+            }
+
+            foreach (var deck in decks)
+            {
+                context.Decks.Add(deck);
             }
         }
 
