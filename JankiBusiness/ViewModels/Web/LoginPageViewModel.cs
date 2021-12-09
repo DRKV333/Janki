@@ -30,10 +30,16 @@ namespace JankiBusiness.ViewModels.Web
         {
             Login = new GenericDelegateCommand(async p =>
             {
-                client.SetBearerToken((await client.Login(username, password)).access_token);
+                string token = (await client.Login(username, password)).access_token;
+                
                 Username = "";
                 Password = "";
-                navigation.NavigateToVM(typeof(SyncPageViewModel), null);
+
+                if (token != null)
+                {
+                    client.SetBearerToken(token);
+                    navigation.NavigateToVM(typeof(SyncPageViewModel), null);
+                }
             });
 
             Register = new GenericDelegateCommand(async p =>
