@@ -25,8 +25,8 @@ namespace JankiBusiness.ViewModels.Web
                 if (SelectedCollition != null)
                 {
                     SelectedCollition.Remote.Remove();
+                    Changes.Collitions.Remove(SelectedCollition);
                     SelectedCollition = null;
-                    RaisePropertyChanged(nameof(Changes));
                 }
                 return Task.CompletedTask;
             });
@@ -36,8 +36,8 @@ namespace JankiBusiness.ViewModels.Web
                 if (SelectedCollition != null)
                 {
                     SelectedCollition.Local.Remove();
+                    Changes.Collitions.Remove(SelectedCollition);
                     SelectedCollition = null;
-                    RaisePropertyChanged(nameof(Changes));
                 }
                 return Task.CompletedTask;
             });

@@ -1,6 +1,7 @@
 ﻿using JankiTransfer.DTO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace JankiTransfer.ChangeDetection
@@ -44,9 +45,9 @@ namespace JankiTransfer.ChangeDetection
         private readonly ChangeData local;
         private readonly ChangeData remote;
 
-        public IList<Change> LocalChanges { get; set; } = new List<Change>();
-        public IList<Change> RemoteChanges { get; set; } = new List<Change>();
-        public IList<Collition> Collitions { get; set; } = new List<Collition>();
+        public ObservableCollection<Change> LocalChanges { get; } = new ObservableCollection<Change>();
+        public ObservableCollection<Change> RemoteChanges { get; } = new ObservableCollection<Change>();
+        public ObservableCollection<Collition> Collitions { get; } = new ObservableCollection<Collition>();
 
         public ChangeCollitions(ChangeData local, ChangeData remote)
         {
