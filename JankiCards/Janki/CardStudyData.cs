@@ -28,6 +28,6 @@ namespace JankiCards.Janki
 
         public DateTime LastAnswerTime { get; set; }
 
-        public int LastAnswer { get; set; } 
+        public int LastAnswer { get; set; }
     }
 }

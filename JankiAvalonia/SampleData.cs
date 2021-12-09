@@ -23,7 +23,6 @@ namespace JankiAvalonia
             "Item3",
             "Item4",
             "Item5"
-        
         };
 
         public static readonly IReadOnlyList<TreeLevel1> ListOfTreeItems = new List<TreeLevel1>()

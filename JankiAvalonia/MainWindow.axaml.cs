@@ -1,9 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using FluentAvalonia.UI.Controls;
-using JankiAvalonia.Pages;
-using System;
 
 namespace JankiAvalonia
 {

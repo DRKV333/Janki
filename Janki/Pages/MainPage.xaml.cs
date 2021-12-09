@@ -33,7 +33,7 @@ namespace Janki.Pages
         }
 
         private FrameNavigationOptions FrameNavOptions() => new FrameNavigationOptions()
-        { 
+        {
             IsNavigationStackEnabled = false
         };
     }

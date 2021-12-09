@@ -18,7 +18,7 @@ namespace JankiBusiness.ViewModels.Study
                 x => x.AddValueGetter(typeof(VariantViewModel), NoteFieldValueGetter)
             )
             .Build();
-        
+
         private static readonly StubbleVisitorRenderer frontRendererPreview = new StubbleBuilder()
             .Configure(
                 x => x.AddValueGetter(typeof(VariantViewModel), PreviewValueGetter)
@@ -33,7 +33,7 @@ namespace JankiBusiness.ViewModels.Study
                      ))
             )
             .Build();
-        
+
         private static readonly StubbleVisitorRenderer backRendererPreview = new StubbleBuilder()
             .Configure(
                 x => x.AddValueGetter(typeof(VariantViewModel), ComposeValueGetter(

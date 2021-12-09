@@ -7,6 +7,7 @@ namespace JankiBusiness.ViewModels
         private bool inited = false;
 
         private PageViewModel content;
+
         public PageViewModel Content
         {
             get

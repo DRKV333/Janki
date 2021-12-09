@@ -41,7 +41,7 @@ namespace JankiAvalonia.Services
             Directory.CreateDirectory("media");
 
             using FileStream fs = new FileStream(GetMediaPath(name), FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 4096, true);
-            
+
             await content.CopyToAsync(fs);
         }
 

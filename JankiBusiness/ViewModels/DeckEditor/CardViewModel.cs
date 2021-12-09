@@ -2,7 +2,6 @@
 using JankiBusiness.ViewModels.Study;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -31,7 +30,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
                     Definition = new CardFieldType() { Name = "Removed Field" };
                 else
                     Definition = definition;
-                
+
                 TheField = field;
                 value = field.Content;
             }

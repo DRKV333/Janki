@@ -1,11 +1,9 @@
 ﻿using JankiTransfer.ChangeDetection;
 using JankiTransfer.DTO;
-using JankiWeb.StartupExtentions;
 using JankiWebCards.Janki.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace JankiWeb.Controllers

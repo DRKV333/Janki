@@ -22,7 +22,7 @@ namespace JankiScheduler
             }
         }
 
-        public override IQueryable<CardStudyData> FilterCards(DateTime now, IQueryable<CardStudyData> cards) => 
+        public override IQueryable<CardStudyData> FilterCards(DateTime now, IQueryable<CardStudyData> cards) =>
             cards.Where(x => x.Reps == 0 && x.Card.Deck.StudyData.NewCardsLeftToday > 0)
             .OrderBy(x => x.Card.Created);
 

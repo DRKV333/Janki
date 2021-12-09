@@ -18,7 +18,9 @@ namespace JankiBusiness.Abstraction
         public abstract Task ExecuteAsync(object parameter);
 
         public event EventHandler CanExecuteChanged;
+
         public void Execute(object parameter) => ExecuteAsync(parameter);
+
         bool ICommand.CanExecute(object parameter) => CanExecute;
     }
 }

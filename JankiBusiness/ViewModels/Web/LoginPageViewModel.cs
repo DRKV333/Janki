@@ -1,6 +1,5 @@
 ﻿using JankiBusiness.Abstraction;
 using JankiBusiness.Services;
-using System;
 
 namespace JankiBusiness.ViewModels.Web
 {
@@ -31,7 +30,7 @@ namespace JankiBusiness.ViewModels.Web
             Login = new GenericDelegateCommand(async p =>
             {
                 string token = (await client.Login(username, password)).access_token;
-                
+
                 Username = "";
                 Password = "";
 

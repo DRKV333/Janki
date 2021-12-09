@@ -16,6 +16,7 @@ namespace JankiAvalonia.Behaviours
                 BindingMode.TwoWay);
 
 #pragma warning disable S3963 // "static" fields should be initialized inline
+
         static TextEditorBindingBehaviour()
         {
             TextProperty.Changed.Subscribe(x =>
@@ -29,11 +30,13 @@ namespace JankiAvalonia.Behaviours
                 }
             });
         }
+
 #pragma warning restore S3963 // "static" fields should be initialized inline
 
         private bool handling = false;
 
         private string text = "";
+
         public string Text
         {
             get => text;

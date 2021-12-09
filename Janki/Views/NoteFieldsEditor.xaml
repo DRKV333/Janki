@@ -15,7 +15,7 @@
             <jbw:WebEditBoxToolbarCoordinator x:Key="EditCoordinator" DialogService="{StaticResource DialogService}" Importer="{StaticResource MediaManager}" />
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

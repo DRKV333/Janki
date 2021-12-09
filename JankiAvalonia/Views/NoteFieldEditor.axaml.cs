@@ -6,7 +6,7 @@ namespace JankiAvalonia.Views
 {
     public partial class NoteFieldEditor : UserControl
     {
-        public static readonly DirectProperty<NoteFieldEditor, bool> IsDynamicOverflowEnabledProperty = 
+        public static readonly DirectProperty<NoteFieldEditor, bool> IsDynamicOverflowEnabledProperty =
             AvaloniaProperty.RegisterDirect<NoteFieldEditor, bool>(nameof(IsDynamicOverflowEnabled),
                 x => x.IsDynamicOverflowEnabled,
                 (x, v) => x.IsDynamicOverflowEnabled = v,

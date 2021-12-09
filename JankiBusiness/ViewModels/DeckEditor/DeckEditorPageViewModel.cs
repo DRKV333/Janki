@@ -165,7 +165,7 @@ namespace JankiBusiness.ViewModels.DeckEditor
             using (JankiContext context = ContextProvider.CreateContext())
             {
                 List<Deck> decks = await context.Decks.ToListAsync();
-                
+
                 Decks.Clear();
                 foreach (var item in decks)
                 {

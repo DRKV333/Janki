@@ -10,7 +10,7 @@ namespace JankiScheduler
 
         public override IQueryable<CardStudyData> FilterCards(DateTime now, IQueryable<CardStudyData> cards)
         {
-            DateTime oneDayAgo = now - TimeSpan.FromDays(1); 
+            DateTime oneDayAgo = now - TimeSpan.FromDays(1);
             return cards.Where(x => x.LastAnswerTime > oneDayAgo && x.LastAnswer < 3 && x.IncorrectRepsInARow < RereviewCountLimit);
         }
     }

@@ -19,7 +19,7 @@
                 <jv:NoteFieldsEditor DataContext="{Binding CurrentNote}" />
             </StackPanel>
         </SplitView.Pane>
-        
+
         <Grid Background="{ThemeResource SystemChromeMediumColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -81,7 +81,7 @@
                             <Run Text="Cards Left:" />
                             <Run Text="{Binding Counts.Total}" />
                         </TextBlock>
-                        <TextBlock HorizontalAlignment="Right" Foreground="Blue" >
+                        <TextBlock HorizontalAlignment="Right" Foreground="Blue">
                             <Run Text="New:" />
                             <Run Text="{Binding Counts.NewCount}" />
                         </TextBlock>

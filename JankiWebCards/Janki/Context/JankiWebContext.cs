@@ -40,7 +40,7 @@ namespace JankiWebCards.Janki.Context
                     {
                         item.State = EntityState.Modified;
                         entityBase.IsDeleted = true;
-                    }    
+                    }
 
                     if (item.State == EntityState.Added)
                     {
@@ -104,7 +104,7 @@ namespace JankiWebCards.Janki.Context
             builder.Entity<CardStudyData>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<DeckStudyData>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Bundle>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<AuditLog>().HasQueryFilter(x => !x.IsDeleted);    
+            builder.Entity<AuditLog>().HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }

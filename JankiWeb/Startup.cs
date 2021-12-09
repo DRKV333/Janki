@@ -34,7 +34,7 @@ namespace JankiWeb
             services.AddScoped<IChangeContext<JankiWebContext>, JankiWebChangeContext>();
             services.AddScoped<ChangeDetector<JankiWebContext>>();
             services.AddScoped<IBundleManagerService, BundleManagerService>();
-            
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

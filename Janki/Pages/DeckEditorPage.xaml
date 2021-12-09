@@ -18,7 +18,7 @@
         <vm:DeckEditorPageViewModel ContextProvider="{StaticResource MediaManager}"
                                     DialogService="{StaticResource DialogService}"
                                     MediaImporter="{StaticResource MediaManager}"
-                                    MediaUnimporter="{StaticResource MediaManager}"/>
+                                    MediaUnimporter="{StaticResource MediaManager}" />
     </Page.DataContext>
 
     <Page.Resources>
@@ -26,7 +26,7 @@
             <jcnv:UnselectedValueConverter x:Key="UnselectedValueConverter" />
         </ResourceDictionary>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -41,7 +41,7 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Grid.Row="0" Background="{ThemeResource SystemChromeMediumColor}">
-            <StackPanel Orientation="Horizontal" 
+            <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button Margin="5" Command="{Binding AddDeck}">Add</Button>
                 <Button Margin="5" Command="{Binding DeleteSelectedDeck}">Delete</Button>
@@ -53,7 +53,7 @@
                        Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                        Background="{ThemeResource SystemChromeLowColor}"
-                       ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck, Mode=TwoWay}" >
+                       ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck, Mode=TwoWay}">
             <muxc:TreeView.ItemTemplate>
                 <DataTemplate>
                     <muxc:TreeViewItem Content="{Binding Name}" />
@@ -95,7 +95,7 @@
                     </TextBlock>
                     <muxc:SplitButton.Flyout>
                         <Flyout Placement="Bottom" x:Name="AddCardFlyout">
-                            <ListView SelectedItem="{Binding CardAdderViewModel.SelectedType, Mode=TwoWay}" ItemsSource="{Binding CardAdderViewModel.AvailableTypes}" 
+                            <ListView SelectedItem="{Binding CardAdderViewModel.SelectedType, Mode=TwoWay}" ItemsSource="{Binding CardAdderViewModel.AvailableTypes}"
                                       DisplayMemberPath="Name" IsItemClickEnabled="True" ItemClick="ListView_ItemClick" />
                         </Flyout>
                     </muxc:SplitButton.Flyout>

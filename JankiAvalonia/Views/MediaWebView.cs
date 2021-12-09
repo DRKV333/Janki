@@ -15,6 +15,7 @@ namespace JankiAvalonia.Views
         private const string LocalPrefix = "http://local.local/";
 
         private IMediaProvider? provider;
+
         public IMediaProvider? Provider
         {
             get => provider;

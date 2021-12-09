@@ -2,12 +2,12 @@
 using JankiBusiness.Services;
 using JankiBusiness.ViewModels.DeckEditor;
 using JankiBusiness.Web;
-using JankiScheduler;
 using JankiCards.Janki;
 using JankiCards.Janki.Context;
+using JankiScheduler;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace JankiBusiness.ViewModels.Study
 {

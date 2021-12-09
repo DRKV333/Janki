@@ -103,7 +103,6 @@ namespace JankiBusiness.Services
             }
         }
 
-
         private async Task<T> GetJsonAsync<T>(HttpResponseMessage response, CancellationToken cancellationToken = default) where T : new()
         {
             try

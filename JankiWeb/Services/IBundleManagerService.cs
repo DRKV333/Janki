@@ -12,8 +12,11 @@ namespace JankiWeb.Services
     public interface IBundleManagerService
     {
         Task<IEnumerable<DeckTreeModel>> GetAllDecks(Guid bundleId);
+
         Task<IEnumerable<BundleModel>> GetPublicBundles();
+
         Task PublishBundle(IList<Guid> deckIds, string bundleName);
+
         Task ImportBundle(Guid source, Guid dest);
     }
 

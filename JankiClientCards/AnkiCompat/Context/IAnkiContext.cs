@@ -1,5 +1,4 @@
-﻿using JankiCards.AnkiCompat;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Threading;

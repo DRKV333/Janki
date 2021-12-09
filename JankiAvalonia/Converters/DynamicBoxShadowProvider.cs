@@ -7,16 +7,16 @@ namespace JankiAvalonia.Converters
     {
         public static readonly StyledProperty<bool> IsInsetProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, bool>(nameof(IsInset));
-        
+
         public static readonly StyledProperty<double> OffsetXProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, double>(nameof(OffsetX));
-        
+
         public static readonly StyledProperty<double> OffsetYProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, double>(nameof(OffsetY));
-        
+
         public static readonly StyledProperty<double> BlurProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, double>(nameof(Blur));
-        
+
         public static readonly StyledProperty<double> SpreadProperty =
             AvaloniaProperty.Register<DynamicBoxShadowProvider, double>(nameof(Spread));
 
@@ -31,25 +31,25 @@ namespace JankiAvalonia.Converters
             get => GetValue(IsInsetProperty);
             set => SetValue(IsInsetProperty, value);
         }
-        
+
         public double OffsetX
         {
             get => GetValue(OffsetXProperty);
             set => SetValue(OffsetXProperty, value);
         }
-        
+
         public double OffsetY
         {
             get => GetValue(OffsetYProperty);
             set => SetValue(OffsetYProperty, value);
         }
-        
+
         public double Blur
         {
             get => GetValue(BlurProperty);
             set => SetValue(BlurProperty, value);
         }
-        
+
         public double Spread
         {
             get => GetValue(SpreadProperty);

@@ -24,6 +24,7 @@ namespace JankiBusiness.ViewModels.Navigation
         public IReadOnlyList<NavigationItem> NavigationItems => navigationItems.Value;
 
         private NavigationItem selectedItem;
+
         public NavigationItem SelectedItem
         {
             get => selectedItem;
