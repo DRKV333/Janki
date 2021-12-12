@@ -4,7 +4,7 @@ This repo contains my Bachelor's thesis project. Janki is a flash card learning 
 
 # About the Python scheduler
 
-Earlier versions of the Janki client used the original Python scheduler in UWP through IronPython. The latest version does not have this any more, but you can see how it worked here: https://github.com/DRKV333/Janki/tree/onlab
+Earlier versions of the Janki client used the original Python scheduler in UWP through IronPython. The latest version does not have this any more, but you can see how it worked here: https://github.com/DRKV333/Janki/tree/python-sched
 
 This version of the project contains source code from the Python standard library, licensed under the [PSF License Agreement](https://github.com/DRKV333/Janki/blob/dc40cb8fc79870ffef1fc305df660aafe60b8f29/LibAnkiScheduler/lib/LICENSE).
 
@@ -25,7 +25,7 @@ The most technically challenging part of this project was getting Python to run 
 
 When switching to the old version of the code, remember to update submodules:
 ```
-git checkout onlab
+git checkout python-sched
 git submodule update --init --recursive
 ```
 
