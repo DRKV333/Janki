@@ -10,7 +10,7 @@ This version of the project contains source code from the Python standard librar
 
 The ANKI scheduler is available under the [GNU Affero General Public License](http://www.gnu.org/licenses/agpl.html), version 3 or later.
 
-To comply with ANKI licensing requirements, the versions of Janki between and including commits 8ce67a00defa1cb981017fafea5a6fd5b2bb1545 to d5388c70ec85a2227bd351bc345e3ebc93b8cd37 are available under the [GNU Affero General Public License](http://www.gnu.org/licenses/agpl.html), version 3 or later. Other versions are provided under the MIT License. See the LICENSE file provided with the appropriate version of Janki for more information.
+To comply with ANKI licensing requirements, the versions of Janki between and including commits [8ce67a0](https://github.com/DRKV333/Janki/commit/8ce67a00defa1cb981017fafea5a6fd5b2bb1545) to [d5388c7](https://github.com/DRKV333/Janki/commit/d5388c70ec85a2227bd351bc345e3ebc93b8cd37) are available under the [GNU Affero General Public License](http://www.gnu.org/licenses/agpl.html), version 3 or later. Other versions are provided under the MIT License. See the LICENSE file provided with the appropriate version of Janki for more information.
 
 # How to compile
 
